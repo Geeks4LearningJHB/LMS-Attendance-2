@@ -1,6 +1,8 @@
 package com.geeks.AttendanceSpringBootBackend.controller;
 
 import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
+import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceRequestDto;
+import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.service.impl.AttendanceImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +18,9 @@ public class AttendanceRecController {
     private AttendanceImplementation attendanceImplementation;
 
     @PostMapping
-    public AttendanceRecord addNewAttendance(@RequestBody AttendanceRecord attendanceRecord){
-
+    public AttendanceResponseDto addNewAttendance(@RequestBody AttendanceRequestDto attendanceRecord){
         System.out.println(attendanceRecord.toString());
         return attendanceImplementation.newAttendance(attendanceRecord);
-
 
     }
 

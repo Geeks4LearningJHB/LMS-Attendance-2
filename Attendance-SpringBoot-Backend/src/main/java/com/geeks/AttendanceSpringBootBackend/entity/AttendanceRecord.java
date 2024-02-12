@@ -21,7 +21,14 @@ public class AttendanceRecord {
     private Date date;
     private String logInLocation;
     private Status status;
+
+    //Join Attendance and UserDummy tables
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserDummy userId;
+
+    //Join Attendance  and Leave tables
+    @ManyToOne
+    @JoinColumn(name = "leave_id")
+    private LeaveDummy leaveId;
 }

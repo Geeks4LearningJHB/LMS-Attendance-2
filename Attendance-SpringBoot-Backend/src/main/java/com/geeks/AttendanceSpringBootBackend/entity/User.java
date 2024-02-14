@@ -10,7 +10,8 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserDummy {
+@Table(name = "Users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

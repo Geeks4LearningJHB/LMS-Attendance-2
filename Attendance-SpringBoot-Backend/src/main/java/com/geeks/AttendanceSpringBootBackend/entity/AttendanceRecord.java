@@ -25,10 +25,10 @@ public class AttendanceRecord {
     //Join Attendance and UserDummy tables
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserDummy userId;
+    private User userId;
 
     //Join Attendance  and Leave tables
     @ManyToOne
     @JoinColumn(name = "leave_id")
-    private LeaveDummy leaveId;
+    private Leave leaveId;
 }

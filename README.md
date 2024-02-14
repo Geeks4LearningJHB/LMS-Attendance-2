@@ -1,6 +1,8 @@
 # LMS-Attendance-2
 
 This repository contains the codebase for the Attendance Management System of our Learning Management System (LMS).
+![MicrosoftTeams-image](https://github.com/Geeks4LearningJHB/LMS-Attendance-2/assets/101478790/849c837f-6635-4b00-9109-a4a75ac5eccb)
+
 
 ## Overview
 

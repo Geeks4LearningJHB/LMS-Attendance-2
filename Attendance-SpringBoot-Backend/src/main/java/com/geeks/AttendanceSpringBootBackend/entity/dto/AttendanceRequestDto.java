@@ -6,22 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
+
+@AllArgsConstructor
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class AttendanceRequestDto {
 
-
-    private Time logInTime;
+    private long id;
+    private LocalTime logInTime;
     private Time logOutTime;
-    private Date date;
+    private LocalDate date;
     private String logInLocation;
     private Status status;
+    private long leaveId;
     private long userId;
-
-
-
 
 }

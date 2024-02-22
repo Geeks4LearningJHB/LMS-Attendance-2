@@ -1,25 +1,31 @@
 package com.geeks.AttendanceSpringBootBackend.entity.dto;
 
-import com.geeks.AttendanceSpringBootBackend.entity.UserDummy;
+import com.geeks.AttendanceSpringBootBackend.entity.Leave;
+import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.enums.Status;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 
+@AllArgsConstructor
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class AttendanceResponseDto {
 
     private long id;
-    private Time logInTime;
+    private LocalTime logInTime;
     private Time logOutTime;
-    private Date date;
+    private LocalDate date;
     private String logInLocation;
     private Status status;
-    private UserDummy userId;
+    private Leave leaveId;
+    private User userId;
+
+
 }

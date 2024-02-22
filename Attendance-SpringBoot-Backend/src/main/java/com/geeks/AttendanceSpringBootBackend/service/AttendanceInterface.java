@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface AttendanceInterface {
 
-     AttendanceRecord[] attendanceList();
+     List<AttendanceResponseDto> attendanceList();
      AttendanceResponseDto newAttendance (AttendanceRequestDto attendance);
 
 

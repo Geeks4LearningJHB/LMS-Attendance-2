@@ -7,7 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Data
@@ -18,12 +19,13 @@ public class AttendanceRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private Time logInTime;
+    private LocalTime logInTime;
     private Time logOutTime;
-    private Date date;
+    private LocalDate date;
     private String logInLocation;
     private Status status;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserDummy userId;
+    private User userId;
 }

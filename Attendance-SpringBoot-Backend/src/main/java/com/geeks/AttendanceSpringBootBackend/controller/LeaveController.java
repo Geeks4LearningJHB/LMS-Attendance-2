@@ -38,7 +38,7 @@ public class LeaveController {
             Leave data = leaveInterface.onLeaveUser(id);
             return ResponseEntity.ok(data);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occured : " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occured : " + "User not on leave");
 
         }
 

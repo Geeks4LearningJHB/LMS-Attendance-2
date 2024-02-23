@@ -29,6 +29,10 @@ public class AttendanceImplementation implements AttendanceInterface {
     AttendanceDtoMapper attendanceDtoMapper;
     @Autowired
     LeaveInterface leaveInterface;
+    @Autowired
+    LoginTimeChecker loginTimeChecker;
+
+
     @Override
     public List<AttendanceResponseDto> attendanceList() {
 
@@ -40,42 +44,50 @@ public class AttendanceImplementation implements AttendanceInterface {
         return attendanceRecords;
     }
 
+
+
+
+
     @Override
     public AttendanceResponseDto newAttendance(AttendanceRequestDto requestDto) {
 
-        LocalTime afterTime = LocalTime.of(9, 0); //If the user doesnt' log in before 09h00 then will return as absent
-        LocalTime clockInTime = LocalTime.of(7 , 30);
+
+
+        String ip ="41.160.85.94";
 
         //Mapping my attendanceRequest to attendance entity
         AttendanceRecord attendanceRecord =   attendanceDtoMapper.mapTOEntity(requestDto);
-
         //check if user exists
         User user= userRepository.findById(requestDto.getUserId())
                 .orElseThrow(()-> new IllegalStateException("User not found"));
         attendanceRecord.setUserId(user);
 
-        //Check log in time
-        if (attendanceRecord.getLogInTime().isAfter(clockInTime)
-                && leaveInterface.onLeaveUser(user.getUserId()) == null) {
-
-            attendanceRecord.setStatus(Status.LATE);
-
-        }
-
-        //check is_onLeave
-        //if user logs in  , in the office the onLeave method must not get executed
-    ;
-
-       if ( leaveInterface.onLeaveUser(user.getUserId()) != null){
-          attendanceRecord.setStatus(Status.ON_LEAVE);
-       }
-       else {
-           attendanceRecord.setStatus(Status.ABSENT);
-       }
-        //create log out time from the log in time
-
 
         //check location
+        //if user logs in  , in the office the onLeave method must not get executed
+        if (attendanceRecord.getLogInLocation().equals(ip)) {
+            //Check log in time
+            LocalTime logInTime = attendanceRecord.getLogInTime();
+            if (loginTimeChecker.isLate(logInTime)) {
+                attendanceRecord.setStatus(Status.LATE);
+
+            }
+            //check is_onLeave
+            else {
+                if (leaveInterface.onLeaveUser(user.getUserId()) != null) {
+                    attendanceRecord.setStatus(Status.ON_LEAVE);
+                } else {
+                    attendanceRecord.setStatus(Status.PRESENT);
+                }
+
+            }
+
+        }
+        else {
+            attendanceRecord.setStatus(Status.ABSENT);
+        }
+        //create log out time from the log in time
+
 
 
         //save attendance and store to newAttendanceRecord

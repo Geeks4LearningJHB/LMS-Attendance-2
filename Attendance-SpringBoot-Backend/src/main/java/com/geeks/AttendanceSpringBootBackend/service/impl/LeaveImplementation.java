@@ -42,13 +42,13 @@ public class LeaveImplementation implements LeaveInterface {
 
 
     public Leave onLeaveUser (long id){
-
-        if (leaveRepository.findByUserUserIdAndIsOnLeaveTrue(id) == null ){
-            throw new IllegalStateException("User not on leave");
-        }
+        Leave leave = leaveRepository.findByUserUserIdAndIsOnLeaveTrue(id);
+//        if (leave == null ){
+//            throw new IllegalStateException("User not on leave");
+//        }
        // Leave leave = leaveRepository.findByUserUserIdAndIsOnLeaveTrue(id);
 
-       return leaveRepository.findByUserUserIdAndIsOnLeaveTrue(id);
+       return leave;
     }
 
 

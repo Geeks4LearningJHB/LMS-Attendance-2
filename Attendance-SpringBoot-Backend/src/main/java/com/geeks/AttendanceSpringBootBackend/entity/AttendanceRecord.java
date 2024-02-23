@@ -20,7 +20,7 @@ public class AttendanceRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalTime logInTime;
-    private Time logOutTime;
+    private LocalTime logOutTime;
     private LocalDate date;
     private String logInLocation;
     private Status status;

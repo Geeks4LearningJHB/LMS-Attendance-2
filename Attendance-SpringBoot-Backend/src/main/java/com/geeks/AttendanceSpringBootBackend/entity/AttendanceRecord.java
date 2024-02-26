@@ -2,9 +2,8 @@ package com.geeks.AttendanceSpringBootBackend.entity;
 
 import com.geeks.AttendanceSpringBootBackend.enums.Status;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 import java.sql.Time;
 import java.util.Date;
@@ -21,6 +20,7 @@ public class AttendanceRecord {
     private Date date;
     private String logInLocation;
     private Status status;
+    private String ipAddress;
 
     //Join Attendance and UserDummy tables
     @ManyToOne

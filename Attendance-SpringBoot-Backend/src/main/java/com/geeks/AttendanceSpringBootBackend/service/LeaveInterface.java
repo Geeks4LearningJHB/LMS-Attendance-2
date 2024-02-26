@@ -12,10 +12,10 @@ public interface LeaveInterface {
 
 
     Leave createLeave(Leave leave);
-    Leave getLeaveType(String leaveType);
-    Boolean checkIsOnLeave();
+
     List<Leave> usersOnLeave();
    Leave onLeaveUser (long id);
+   boolean isOnLeave(long userId);
 
 
 }

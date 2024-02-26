@@ -18,38 +18,34 @@ public class LeaveImplementation implements LeaveInterface {
     @Override
     public Leave createLeave(Leave leave) {
 
-
-
         return leaveRepository.save(leave);
     }
 
-    @Override
-    public Leave getLeaveType(String leaveType) {
-
-        return null;
-
-    }
-
-    @Override
-    public Boolean checkIsOnLeave() {
-        return null;
-    }
 
     @Override
     public List<Leave> usersOnLeave() {
         return leaveRepository.findUserByIsOnLeaveTrue();
     }
 
-
+    @Override
     public Leave onLeaveUser (long id){
         Leave leave = leaveRepository.findByUserUserIdAndIsOnLeaveTrue(id);
 //        if (leave == null ){
 //            throw new IllegalStateException("User not on leave");
 //        }
        // Leave leave = leaveRepository.findByUserUserIdAndIsOnLeaveTrue(id);
-
        return leave;
     }
+
+    @Override
+    //Check if user is on leave at log in time
+    public boolean isOnLeave (long userId){
+        if (onLeaveUser(userId) != null){
+            return true;
+        }
+        return false;
+    }
+
 
 
 

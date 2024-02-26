@@ -9,10 +9,13 @@ import com.geeks.AttendanceSpringBootBackend.enums.Status;
 import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
 import com.geeks.AttendanceSpringBootBackend.repository.UserRepository;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
+import com.geeks.AttendanceSpringBootBackend.service.IpAdressInterface;
 import com.geeks.AttendanceSpringBootBackend.service.LeaveInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.UnknownHostException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +35,8 @@ public class AttendanceImplementation implements AttendanceInterface {
     LoginTimeChecker loginTimeChecker;
     @Autowired
     LeaveInterface leaveInterface;
+    @Autowired
+    IpAdressInterface ipAdressInterface;
 
 
     @Override
@@ -57,26 +62,32 @@ public class AttendanceImplementation implements AttendanceInterface {
                 .orElseThrow(()-> new IllegalStateException("User not found"));
         attendanceRecord.setUserId(user);
 
+      String logInIp =   ipAdressInterface.getLocation(attendanceRecord.getLogInLocation());
+
         //check location
+
+
+
         //if user logs in  , in the office the onLeave method must not get executed
-        if(leaveInterface.isOnLeave(user.getUserId())){
-            attendanceRecord.setStatus(Status.ON_LEAVE);
 
-            //check location
-            //if user logs in  , in the office the onLeave method must not get executed
-        } else if (attendanceRecord.getLogInLocation().equals(ip)) {
+            if (leaveInterface.isOnLeave(user.getUserId())) {
+                attendanceRecord.setStatus(Status.ON_LEAVE);
 
-            //Check log in time
-            if (loginTimeChecker.isLate(attendanceRecord.getLogInTime())) {
-                attendanceRecord.setStatus(Status.LATE);
-            } else if (loginTimeChecker.isPresent(attendanceRecord.getLogInTime())) {
-                attendanceRecord.setStatus(Status.PRESENT);
-            }else {
+                //check location
+                //if user logs in  , in the office the onLeave method must not get executed
+            } else if (logInIp.equals("Office") && logInIp != ("Unkown")) {
+                //Check log in time
+                if (loginTimeChecker.isLate(attendanceRecord.getLogInTime())) {
+                    attendanceRecord.setStatus(Status.LATE);
+                } else if (loginTimeChecker.isPresent(attendanceRecord.getLogInTime())) {
+                    attendanceRecord.setStatus(Status.PRESENT);
+                } else {
+                    attendanceRecord.setStatus(Status.ABSENT);
+                }
+            } else {
                 attendanceRecord.setStatus(Status.ABSENT);
             }
-        }else {
-            attendanceRecord.setStatus(Status.ABSENT);
-        }
+
         //create log out time from the log in time
 
 
@@ -130,5 +141,11 @@ public class AttendanceImplementation implements AttendanceInterface {
     public void deleteAttendanceRecord(long id) {
         attendanceRepository.deleteById(id);
     }
+    @Override
+    public List<AttendanceResponseDto> deadlineChecker(LocalDate systemDate){
+        List<AttendanceResponseDto> allAttendancesForToday = attendanceRepository.findAttendanceByDate(systemDate);
+        return allAttendancesForToday;
+    }
+
 
 }

@@ -42,9 +42,9 @@ public class AttendanceRecController {
         return ipAdressInterface.getLocation(ip);
     }
 
-    @GetMapping("/today")
+    @GetMapping("/today/{date}")
 
-    public List<AttendanceResponseDto>  attendancesForToday (@RequestBody LocalDate date){
+    public AttendanceResponseDto[] attendancesForToday (@PathVariable LocalDate date){
 
         return attendanceInterface.deadlineChecker(date);
     }

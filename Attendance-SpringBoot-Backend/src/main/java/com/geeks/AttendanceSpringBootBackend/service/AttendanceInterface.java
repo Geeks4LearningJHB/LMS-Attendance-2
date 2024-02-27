@@ -17,6 +17,6 @@ public interface AttendanceInterface {
      AttendanceResponseDto updateAttendanceRecord(long id, AttendanceRequestDto requestDTO);
      List<AttendanceResponseDto> getAllAttendanceRecords();
     void deleteAttendanceRecord(long id);
-     List <AttendanceResponseDto> deadlineChecker(LocalDate date);
+     AttendanceResponseDto[] deadlineChecker(LocalDate date);
 
 }

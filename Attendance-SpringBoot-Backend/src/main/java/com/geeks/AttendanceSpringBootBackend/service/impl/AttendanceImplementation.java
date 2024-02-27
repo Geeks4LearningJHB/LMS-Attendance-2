@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -52,9 +53,7 @@ public class AttendanceImplementation implements AttendanceInterface {
 
     @Override
     public AttendanceResponseDto newAttendance(AttendanceRequestDto requestDto) {
-
-        String ip ="41.160.85.94";
-
+        LocalTime expectedLogOutTime ;
         //Mapping my attendanceRequest to attendance entity
         AttendanceRecord attendanceRecord =   attendanceDtoMapper.mapTOEntity(requestDto);
         //check if user exists
@@ -64,18 +63,13 @@ public class AttendanceImplementation implements AttendanceInterface {
 
       String logInIp =   ipAdressInterface.getLocation(attendanceRecord.getLogInLocation());
 
-        //check location
-
-
-
-        //if user logs in  , in the office the onLeave method must not get executed
+        //(re-visit) if user logs in  , in the office the onLeave method must not get executed
 
             if (leaveInterface.isOnLeave(user.getUserId())) {
                 attendanceRecord.setStatus(Status.ON_LEAVE);
 
                 //check location
-                //if user logs in  , in the office the onLeave method must not get executed
-            } else if (logInIp.equals("Office") && logInIp != ("Unkown")) {
+            } else if (logInIp.equals("Office")) {
                 //Check log in time
                 if (loginTimeChecker.isLate(attendanceRecord.getLogInTime())) {
                     attendanceRecord.setStatus(Status.LATE);
@@ -87,19 +81,23 @@ public class AttendanceImplementation implements AttendanceInterface {
             } else {
                 attendanceRecord.setStatus(Status.ABSENT);
             }
-
         //create log out time from the log in time
-
+            expectedLogOutTime = attendanceRecord.getLogInTime().plusHours(9);
+                     System.out.println(expectedLogOutTime);
+                if (attendanceRecord.getLogOutTime().isBefore(expectedLogOutTime)){
+                    long oweTime = Math.abs(ChronoUnit.MINUTES.between(attendanceRecord.getLogOutTime(), expectedLogOutTime));
+                    System.out.println("Yo owe us :" + "" + oweTime + " minutes");
+                }
 
 
         //save attendance and store to newAttendanceRecord
         AttendanceRecord newAttendanceRecord = attendanceRepository.save(attendanceRecord);
         //Converting the new record to a response
-        return attendanceDtoMapper.mapToDto(newAttendanceRecord);
+        if (attendanceRecord != null){
+            return attendanceDtoMapper.mapToDto(newAttendanceRecord);
+        }
+       return null;
     }
-
-
-
 
     //search record
     @Override
@@ -142,9 +140,10 @@ public class AttendanceImplementation implements AttendanceInterface {
         attendanceRepository.deleteById(id);
     }
     @Override
-    public List<AttendanceResponseDto> deadlineChecker(LocalDate systemDate){
+    public AttendanceResponseDto[] deadlineChecker(LocalDate systemDate){
         List<AttendanceResponseDto> allAttendancesForToday = attendanceRepository.findAttendanceByDate(systemDate);
-        return allAttendancesForToday;
+        AttendanceResponseDto[] arr = new AttendanceResponseDto[allAttendancesForToday.size()];
+        return allAttendancesForToday.toArray(arr);
     }
 
 

@@ -1,0 +1,213 @@
+<div class="container-fluid m-0 p-0">
+  <div class="card m-0 p-2">
+    <div class="card-header border-bottom p-3">
+      <div class="row align-items-center m-0">
+        <div class="col-8 p-0">
+          <div>
+            <h6 class="mb-0 text-muted">GOAL</h6>
+          </div>
+        </div>
+        <div class="col-4 text-end p-0">
+          <a
+            *ngIf="allowModalClosure"
+            class="cursor-pointer"
+            (click)="closeViewGoalModal()"
+          >
+            <i class="fa-solid fa-xmark"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h5 class="heading-small mb-4">
+        <strong>{{ goalObject.title | uppercase }}</strong>
+      </h5>
+      <div class="row">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <h6>Status:</h6>
+            </div>
+            <div class="col rounded">
+              <span
+                class="rounded fw-bold"
+                [ngClass]="{
+                  backlogBackgroundColor: goalStatus === 'backlog',
+                  archivedBackgroundColor: goalStatus === 'archived',
+                  completedBackgroundColor: goalStatus === 'completed',
+                  pausedBackgroundColor: goalStatus === 'paused',
+                  startedBackgroundColor: goalStatus === 'started'
+                }"
+              >
+                {{ goalObject.goalStatus | titlecase }}</span
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="col"><h6>Estimated Time:</h6></div>
+            <div class="col">
+              <h6 class="flex-nowrap">
+                {{ goalObject.duration | formatDuration }}
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <h6 class="flex-nowrap">Remaining Time:</h6>
+            </div>
+            <div class="col">
+              <h6 class="flex-nowrap">
+                {{ goalObject.timeRemaining | formatRemainingTime }}
+              </h6>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="col-3"><h6>Paused:</h6></div>
+            <div class="col">
+              <h6 class="flex-nowrap">
+                {{ goalObject.pausedCount }}
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <h6 class="flex-nowrap">Archived:</h6>
+            </div>
+            <div class="col">
+              <h6 class="flex-nowrap">
+                {{ goalObject.archiveCount }}
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row position-relative">
+        <div class="row" *ngIf="hasTasks()">
+          <div class="col-3">
+            <h6>Progress:</h6>
+          </div>
+          <div class="col">
+            <ngb-progressbar
+              [type]="progressState"
+              [value]="getProgressValue()"
+              [striped]="true"
+              [animated]="true"
+            >
+              <b>{{ getProgress() | percent }} Complete</b>
+            </ngb-progressbar>
+          </div>
+        </div>
+        <!-- Descriptions -->
+        <h6 class="heading-small text-muted mt-2 mb-1">DESCRIPTION</h6>
+        <div class="col-lg-12">
+          <span *ngIf="goalObject.description.length > 0; else defaultCase">{{
+            goalObject.description
+          }}</span>
+          <ng-template #defaultCase>
+            <i class="defaultCase">No Description</i>
+          </ng-template>
+        </div>
+
+        <!-- Add Task Component here -->
+        <app-tasks
+          *ngIf="goalObject?.tasks"
+          [goalObject]="goalObject"
+          [viewType]="'view'"
+          [goalStatus]="goalObject.goalStatus"
+        ></app-tasks>
+
+        <!-- Action buttons -->
+        <div class="row mt-4 border-top pt-2">
+          <div class="col-8">
+            <button
+              *ngIf="
+                goalStatus === 'started' &&
+                goalObject.timeRemaining === '00:00:00'
+              "
+              class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark"
+              (click)="addMoreTime()"
+            >
+              <i class="fa-solid fa-pen"></i>
+              <span>ADD MORE TIME</span>
+            </button>
+          </div>
+          <div class="col-4 text-end">
+            <div [ngSwitch]="goalStatus">
+              <div *ngSwitchCase="'completed'">
+                <button
+                  class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark"
+                  (click)="closeViewGoalModal()"
+                >
+                  <span>DONE</span>
+                </button>
+              </div>
+              <div *ngSwitchDefault>
+                <a
+                  class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark dropdown-toggle"
+                  id="dropdownAction"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  &nbsp;&nbsp;ACTION GOAL&nbsp;&nbsp;
+                  <i aria-hidden="true" class="fa fa-caret-down text-xs"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdown">
+                  <a
+                    class="dropdown-item text-center"
+                    *ngIf="
+                      goalStatus === 'backlog' || goalStatus === 'archived'
+                    "
+                    (click)="onGoalAction('start', goalObject)"
+                  >
+                    &nbsp;&nbsp;{{ "Start goal" | titlecase }}&nbsp;&nbsp;
+                  </a>
+                  <a
+                    class="dropdown-item text-center"
+                    *ngIf="goalStatus === 'paused'"
+                    (click)="onGoalAction('resume', goalObject)"
+                  >
+                    &nbsp;&nbsp;{{ "Resume goal" | titlecase }}&nbsp;&nbsp;
+                  </a>
+                  <a
+                    class="dropdown-item text-center"
+                    *ngIf="goalStatus === 'started'"
+                    (click)="onGoalAction('complete', goalObject)"
+                  >
+                    &nbsp;&nbsp;{{ "Complete goal" | titlecase }}&nbsp;&nbsp;
+                  </a>
+                  <a
+                    class="dropdown-item text-center"
+                    *ngIf="goalStatus === 'started'"
+                    (click)="onGoalAction('pause', goalObject)"
+                  >
+                    &nbsp;&nbsp;{{ "Pause goal" | titlecase }}&nbsp;&nbsp;
+                  </a>
+                  <a
+                    class="dropdown-item text-center"
+                    *ngIf="goalStatus === 'archived'"
+                    (click)="onGoalAction('restore', goalObject)"
+                  >
+                    &nbsp;&nbsp;{{ "Restore goal" | titlecase }}&nbsp;&nbsp;
+                  </a>
+                  <a
+                    class="dropdown-item text-center"
+                    *ngIf="
+                      goalStatus === 'started' ||
+                      goalStatus === 'paused' ||
+                      goalStatus === 'backlog'
+                    "
+                    (click)="onGoalAction('archive', goalObject)"
+                  >
+                    &nbsp;&nbsp;{{ "Archive goal" | titlecase }}&nbsp;&nbsp;
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

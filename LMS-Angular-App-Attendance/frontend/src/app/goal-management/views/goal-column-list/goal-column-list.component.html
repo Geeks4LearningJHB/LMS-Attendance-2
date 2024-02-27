@@ -1,0 +1,13 @@
+<div
+  cdkDropList
+  [id]="listID"
+  [cdkDropListData]="goalsList"
+  [cdkDropListConnectedTo]="connectedIDList"
+  (cdkDropListDropped)="onDropRef($event)"
+  class="goal-list"
+>
+  <app-goal-card
+    *ngFor="let goal of goalsList"
+    [goal]="goal"
+  ></app-goal-card>
+</div>

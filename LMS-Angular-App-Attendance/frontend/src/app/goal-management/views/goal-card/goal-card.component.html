@@ -1,0 +1,59 @@
+<mat-card
+  (click)="onViewGoal(goal)"
+  (pointerdown)="grab($event)"
+  (pointerup)="release($event)"
+  cdkDrag
+>
+  <mat-card-header>
+    <mat-card-title>
+      {{ goal.title }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="d-block" [ngClass]="goal.goalStatus">
+      <div
+        class="goal-content-item goal-description"
+        *ngIf="goal.description"
+      >
+        <div class="goal-item-icon">
+          <i class="fa-solid fa-pen"></i>
+        </div>
+        <div class="goal-item-description">
+          {{ goal.description }}
+        </div>
+      </div>
+      <div
+        class="goal-content-item goal-duration"
+        *ngIf="goal.goalStatus !== 'started'"
+      >
+        <div class="goal-item-icon">
+          <i class="fa-solid fa-clock"></i>
+        </div>
+        <div class="goal-duration">
+          {{ goal.duration | formatDuration : goal.goalStatus : "close" }}
+        </div>
+      </div>
+      <div
+        class="goal-content-item goal-duration"
+        *ngIf="goal.goalStatus !== 'archived' && goal.goalStatus !== 'completed' && goal.goalStatus !== 'backlog'"
+      >
+        <div class="goal-item-icon">
+          <div [ngSwitch]="goal.goalStatus">
+            <span *ngSwitchCase="'started'">
+              <i class="fa-solid fa-stopwatch"></i>
+            </span>
+            <span *ngSwitchCase="'paused'">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </span>
+            <span *ngSwitchDefault>
+              <i class="fa-solid fa-clock"></i>
+            </span>
+          </div>
+        </div>
+        <div class="goal-duration">
+          {{ goal.timeRemaining | formatRemainingTime : goal.goalStatus : isGoalStarted() }}
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

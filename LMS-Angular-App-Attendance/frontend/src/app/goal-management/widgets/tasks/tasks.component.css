@@ -1,0 +1,34 @@
+h6 {
+  position: relative;
+}
+
+h6 .addGoalTask {
+    position: absolute;
+    right: .5rem;
+    font-size: 19pt;
+    cursor: pointer;
+}
+
+.taskCount {
+  position: relative;
+  top: -2px;
+  margin-left: 0.7rem;
+  border: 2px solid grey;
+}
+
+.taskCount .countContainer {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.taskCount .countContainer span {
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+.taskRemoval {
+  position: relative;
+  top: 2px;
+  cursor: pointer;
+}

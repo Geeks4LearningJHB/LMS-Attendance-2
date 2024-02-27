@@ -1,0 +1,14 @@
+.goal-list {
+  height: 70vh;
+  overflow: auto;
+  /* background-color: aquamarine; */
+}
+
+.goal-list::-webkit-scrollbar{
+  width: 3px;
+  border-radius: 50px;
+}
+
+.goal-list::-webkit-scrollbar-thumb {
+  background-color: #6f6e6e;
+}

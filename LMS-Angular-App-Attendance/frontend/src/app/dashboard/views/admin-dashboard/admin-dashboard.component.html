@@ -1,0 +1,118 @@
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-lg-8 col-xl-8">
+      <div class="row mb-3">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <!-- Total trainers -->
+          <app-widget>
+            <ng-container title>Total Trainers</ng-container>
+            <ng-container total>3</ng-container>
+            <ng-container icon>
+              <div
+                class="icon icon-shape bg-orange shadow text-center border-radius-md"
+              >
+                <i class="fa-solid fa-person-chalkboard"></i>
+              </div>
+            </ng-container>
+          </app-widget>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <!-- Total learners -->
+          <app-widget>
+            <ng-container title>Total Learners</ng-container>
+            <ng-container total>150</ng-container>
+            <ng-container icon>
+              <div
+                class="icon icon-shape bg-purple shadow text-center border-radius-md"
+              >
+                <i class="fa-solid fa-users"></i>
+              </div>
+            </ng-container>
+          </app-widget>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <!-- Total clients -->
+          <app-widget>
+            <ng-container title>Total Clients</ng-container>
+            <ng-container total>1</ng-container>
+            <ng-container icon>
+              <div
+                class="icon icon-shape bg-blue shadow text-center border-radius-md"
+              >
+                <i class="fa-solid fa-landmark"></i>
+              </div>
+            </ng-container>
+          </app-widget>
+        </div>
+        <!-- <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <app-widget></app-widget>
+        </div> -->
+      </div>
+      <div class="row mb-3">
+        <app-mini-table [ikmList]="ikmList"></app-mini-table>
+      </div>
+    </div>
+    <div class="col-lg-4 col-xl-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="card-header pb-0">
+            <h6>Upcoming events</h6>
+          </div>
+          <div class="p-2" style="border-radius: 5px">
+            <div class="card mb-3 rounded-1 shadow-sm notification-card">
+              <div class="vl"></div>
+              <div class="card-body pls-2">
+                <h6 class="card-title">Upcoming event</h6>
+                <p class="text-xs fw-bolder text-uppercase grey-table mb-2">
+                  Soft Skills Training Sessions | 3 hrs<br />
+                </p>
+                <p class="card-text mb-2 grey-table text-xs">
+                  <i class="fa-solid fa-calendar-day"></i>&nbsp;&nbsp; Today
+                </p>
+                <p class="card-text mb-2 grey-table text-xs">
+                  <i class="fa-solid fa-clock grey-table"></i>&nbsp;&nbsp; Today
+                  12 PM - 3 PM
+                </p>
+                <p class="card-text grey-table text-xs">
+                  <i class="fa-solid fa-chalkboard-user grey-table"></i
+                  >&nbsp;&nbsp; Mrs. M. Wilson
+                </p>
+              </div>
+            </div>
+            <div class="card mb-3 rounded-1 shadow-sm notification-card">
+              <div class="vl"></div>
+              <div class="card-body pls-2">
+                <h6 class="card-title">Upcoming event</h6>
+                <p class="text-xs fw-bolder text-uppercase grey-table mb-2">
+                  C# Workshop | 3 hrs<br />
+                </p>
+                <p class="card-text mb-2 grey-table text-xs">
+                  <i class="fa-solid fa-calendar-day"></i>&nbsp;&nbsp; 31 August
+                  2022
+                </p>
+                <p class="card-text mb-2 grey-table text-xs">
+                  <i class="fa-solid fa-clock grey-table"></i>&nbsp;&nbsp; 8 AM
+                  - 11 AM
+                </p>
+                <p class="card-text grey-table text-xs">
+                  <i class="fa-solid fa-chalkboard-user grey-table"></i
+                  >&nbsp;&nbsp; Mr. M. Shilenge
+                </p>
+              </div>
+            </div>
+            <!-- <div class="card mt-2 mb-2 rounded-1 shadow-sm" style="border-radius: 1rem !important;border: none;background-color: #efefef;">
+                <div class="card-body pls-2">
+                    <div class="vl" style="border-left: 6px solid green;border-radius: 5px;height: 35%;position: absolute;left: 5%;margin-left: 0px;top: 11%;"></div>
+                    <h4 class="card-title">Message | Project Simulation</h4>
+                    <h6 class="text-muted card-subtitle mb-2">Message from Moses Shilenge<br /></h6>
+                </div>
+                <div class="card-body" style="background-color: #dcdcdc;border-radius: 0px 0px 15px 15px;">
+                    <p class="card-text">&quot;Hi guys, <br />Please meet me on Friday for a sprint presentation&quot;</p>
+                </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

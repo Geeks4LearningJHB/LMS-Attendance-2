@@ -21,7 +21,6 @@ public class AttendanceRequestDto {
     private LocalDate date;
     private String logInLocation;
     private Status status;
-    private long leaveId;
     private long userId;
 
 }

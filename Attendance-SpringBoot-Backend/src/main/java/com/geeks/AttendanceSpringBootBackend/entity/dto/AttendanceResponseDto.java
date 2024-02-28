@@ -24,8 +24,8 @@ public class AttendanceResponseDto {
     private LocalDate date;
     private String logInLocation;
     private Status status;
-    private Leave leaveId;
-    private User userId;
+
+
 
 
 }

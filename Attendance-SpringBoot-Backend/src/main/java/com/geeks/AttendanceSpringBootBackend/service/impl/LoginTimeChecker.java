@@ -15,7 +15,7 @@ public class LoginTimeChecker {
 
 @Lazy
     public boolean isLate(LocalTime logInTime ){
-        if ((logInTime.isAfter(clockInTime))&&(logInTime.isBefore(deadlineTime))){
+        if ((logInTime.isAfter(clockInTime))){
             return true;
         }
         return false;

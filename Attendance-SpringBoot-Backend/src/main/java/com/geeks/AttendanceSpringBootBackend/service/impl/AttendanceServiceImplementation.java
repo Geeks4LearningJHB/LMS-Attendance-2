@@ -1,43 +1,44 @@
 package com.geeks.AttendanceSpringBootBackend.service.impl;
 
 import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
-import com.geeks.AttendanceSpringBootBackend.entity.Leave;
 import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceRequestDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.enums.Status;
+import com.geeks.AttendanceSpringBootBackend.exceptions.AttendanceExceptions;
 import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
 import com.geeks.AttendanceSpringBootBackend.repository.UserRepository;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
 import com.geeks.AttendanceSpringBootBackend.service.IpAdressInterface;
 import com.geeks.AttendanceSpringBootBackend.service.LeaveInterface;
+import com.sun.tools.javac.Main;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class AttendanceImplementation implements AttendanceInterface {
+public class AttendanceServiceImplementation implements AttendanceInterface {
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     @Autowired
     private AttendanceRepository attendanceRepository;
     @Autowired
-    UserRepository userRepository;
+    private  UserRepository userRepository;
     @Autowired
-    AttendanceDtoMapper attendanceDtoMapper;
+    private AttendanceMapperServiceImpl attendanceDtoMapper;
     @Autowired
-    LoginTimeChecker loginTimeChecker;
+    private LoginTimeChecker loginTimeChecker;
     @Autowired
-    LeaveInterface leaveInterface;
-    @Autowired
-    IpAdressInterface ipAdressInterface;
+    private IpAdressInterface ipAdressInterface;
 
 
     @Override
@@ -53,50 +54,48 @@ public class AttendanceImplementation implements AttendanceInterface {
 
     @Override
     public AttendanceResponseDto newAttendance(AttendanceRequestDto requestDto) {
-        LocalTime expectedLogOutTime ;
+
+        LocalTime expectedLogOutTime;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime currentTime = LocalTime.now();
+        String formattedTime = currentTime.format(formatter);
         //Mapping my attendanceRequest to attendance entity
         AttendanceRecord attendanceRecord =   attendanceDtoMapper.mapTOEntity(requestDto);
+        AttendanceRecord newAttendanceRecord;
+        String logInIp =   ipAdressInterface.getLocation();
+        logger.info(logInIp);
         //check if user exists
         User user= userRepository.findById(requestDto.getUserId())
                 .orElseThrow(()-> new IllegalStateException("User not found"));
         attendanceRecord.setUserId(user);
 
-      String logInIp =   ipAdressInterface.getLocation(attendanceRecord.getLogInLocation());
+        if (logInIp.equals("Office")){
 
-        //(re-visit) if user logs in  , in the office the onLeave method must not get executed
-
-            if (leaveInterface.isOnLeave(user.getUserId())) {
-                attendanceRecord.setStatus(Status.ON_LEAVE);
-
-                //check location
-            } else if (logInIp.equals("Office")) {
-                //Check log in time
-                if (loginTimeChecker.isLate(attendanceRecord.getLogInTime())) {
-                    attendanceRecord.setStatus(Status.LATE);
-                } else if (loginTimeChecker.isPresent(attendanceRecord.getLogInTime())) {
-                    attendanceRecord.setStatus(Status.PRESENT);
-                } else {
-                    attendanceRecord.setStatus(Status.ABSENT);
-                }
-            } else {
-                attendanceRecord.setStatus(Status.ABSENT);
-            }
-        //create log out time from the log in time
+            attendanceRecord.setLogInTime(LocalTime.parse(formattedTime , formatter ));
+            attendanceRecord.setDate(LocalDate.now());
+            attendanceRecord.setLogInLocation(logInIp);
             expectedLogOutTime = attendanceRecord.getLogInTime().plusHours(9);
-                     System.out.println(expectedLogOutTime);
-                if (attendanceRecord.getLogOutTime().isBefore(expectedLogOutTime)){
-                    long oweTime = Math.abs(ChronoUnit.MINUTES.between(attendanceRecord.getLogOutTime(), expectedLogOutTime));
-                    System.out.println("Yo owe us :" + "" + oweTime + " minutes");
-                }
 
+            if(loginTimeChecker.isPresent(attendanceRecord.getLogInTime()) ){
+                attendanceRecord.setStatus(Status.PRESENT);
+            }
+            else{
+                attendanceRecord.setStatus(Status.LATE);
+            }
+            newAttendanceRecord = attendanceRepository.save(attendanceRecord);
 
-        //save attendance and store to newAttendanceRecord
-        AttendanceRecord newAttendanceRecord = attendanceRepository.save(attendanceRecord);
-        //Converting the new record to a response
-        if (attendanceRecord != null){
-            return attendanceDtoMapper.mapToDto(newAttendanceRecord);
         }
-       return null;
+        else {
+            throw new AttendanceExceptions("User not attended");
+        }
+        //create log out time from the log in time
+        if (attendanceRecord.getLogOutTime().isBefore(expectedLogOutTime)){
+            long oweTime = Math.abs(ChronoUnit.MINUTES.between(attendanceRecord.getLogOutTime(), expectedLogOutTime));
+            logger.info(expectedLogOutTime);
+            System.out.println("Yo owe us :" + "" + oweTime + " minutes");
+        }
+
+        return attendanceDtoMapper.mapToDto(newAttendanceRecord);
     }
 
     //search record

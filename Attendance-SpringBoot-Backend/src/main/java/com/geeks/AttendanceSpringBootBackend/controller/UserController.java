@@ -3,7 +3,6 @@ package com.geeks.AttendanceSpringBootBackend.controller;
 
 import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.service.UserInterface;
-import com.geeks.AttendanceSpringBootBackend.service.impl.UserImplimentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

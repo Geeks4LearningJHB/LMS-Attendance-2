@@ -7,7 +7,7 @@ import com.geeks.AttendanceSpringBootBackend.service.AttendanceMapperInterface;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AttendanceDtoMapper implements AttendanceMapperInterface {
+public class AttendanceMapperServiceImpl implements AttendanceMapperInterface {
 
     //Converting my Attendance Entity to ResponseDTO
 
@@ -18,7 +18,6 @@ public class AttendanceDtoMapper implements AttendanceMapperInterface {
         dto.setStatus(attendanceRecord.getStatus());
         dto.setLogInTime(attendanceRecord.getLogInTime());
         dto.setDate(attendanceRecord.getDate());
-        dto.setUserId(attendanceRecord.getUserId());
         dto.setLogInLocation(attendanceRecord.getLogInLocation());
         dto.setLogOutTime(attendanceRecord.getLogOutTime());
 
@@ -38,6 +37,7 @@ public class AttendanceDtoMapper implements AttendanceMapperInterface {
         attendanceRecord.setLogInLocation(requestDto.getLogInLocation());
         attendanceRecord.setLogOutTime(requestDto.getLogOutTime());
         attendanceRecord.setStatus(requestDto.getStatus());
+
         return attendanceRecord;
     }
 

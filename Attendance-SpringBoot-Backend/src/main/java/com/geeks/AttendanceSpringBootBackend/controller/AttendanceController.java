@@ -1,6 +1,5 @@
 package com.geeks.AttendanceSpringBootBackend.controller;
 
-import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceRequestDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
@@ -15,32 +14,26 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/attendance")
-public class AttendanceRecController {
+public class AttendanceController {
 
     @Autowired
     private AttendanceInterface attendanceInterface;
     @Autowired
-    IpAdressInterface ipAdressInterface;
+    private IpAdressInterface ipAdressInterface;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<AttendanceResponseDto> addNewAttendance(@RequestBody AttendanceRequestDto attendanceRecord){
 
         System.out.println(attendanceRecord.toString());
         AttendanceResponseDto attendanceResponseDto =attendanceInterface.newAttendance(attendanceRecord);
         return ResponseEntity.status(HttpStatus.CREATED).body(attendanceResponseDto);
-
     }
-    @GetMapping
+    @GetMapping("/view-all")
     public List<AttendanceResponseDto> attendanceRecord(){
 
         return attendanceInterface.attendanceList();
     }
 
-    @PostMapping("/ip")
-    public String  testIp(@RequestBody String ip){
-
-        return ipAdressInterface.getLocation(ip);
-    }
 
     @GetMapping("/today/{date}")
 
@@ -49,4 +42,8 @@ public class AttendanceRecController {
         return attendanceInterface.deadlineChecker(date);
     }
 
+    @GetMapping("/test-ip")
+    public String getIp(){
+        return ipAdressInterface.getSystemIp();
+    }
 }

@@ -48,56 +48,41 @@
               </thead>
               <tbody>
                 <ng-container>
+                  <!-- Mock Data for Timesheet Table -->
                   <tr *ngFor="let attendance of attendances">
-                    <td
-                      class="align-middle text-xs ps-2"
-                      style="padding-left: 1.5rem !important;">
+                    <td class="align-middle text-xs ps-2" style="padding-left: 1.5rem !important;">
                       <div class="d-flex">
                         <div class="d-flex flex-column justify-content-center">
-                          <p class="text-secondary">
-                        </p>
-                          <h6>{{attendance.date | date : 'd MMMM y'}}</h6>
+                          <p class="text-secondary"></p>
+                          <h6>{{attendance.date| date : 'd MMMM y'}}</h6>
                         </div>
                       </div>
                     </td>
                     <td class="align-middle text-xs ps-2">
-                      <p class="font-weight-bold mb-0">{{attendance.checkInTime | date:'h:mm a' }} </p>
+                      <p class="font-weight-bold mb-0">{{attendance.checkInTime | date:'h:mm a'}}</p>
                     </td>
                     <td class="align-middle text-xs ps-2">
-                      <p class="font-weight-bold mb-0">
-
-                    {{attendance.checkOutTime | date: 'h:mm a'}}
-                  </p>
+                      <p class="font-weight-bold mb-0">{{attendance.checkOutTime | date: 'h:mm a'}}</p>
                     </td>
-                    <td></td>
+                    <td></td> <!-- You can provide break time data here if needed -->
                     <td class="align-middle text-xs ps-2">
-                      <p
-                        class="font-weight-bold mb-0"
-                        [class]="getStatus(attendance.status)">
-                    {{attendance.status}}
-                  </p>
+                      <p class="font-weight-bold mb-0" [class]="getStatus(attendance.status)">
+                        {{attendance.status}}
+                      </p>
                     </td>
                     <td class="align-middle dropdown">
-                      <button
-                        class="btn btn-link text-secondary mb-0 dropdown-toggle"
-                        type="button"
-                        id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i
-                          aria-hidden="true"
-                          class="fa fa-ellipsis-v text-xs"></i>
+                      <button class="btn btn-link text-secondary mb-0 dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i aria-hidden="true" class="fa fa-ellipsis-v text-xs"></i>
                       </button>
-
-                      <ul
-                        class="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton1">
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li>
-                            <a class="dropdown-item">View Goals</a>
-                         </li>
+                          <a class="dropdown-item">View Goals</a>
+                        </li>
                       </ul>
                     </td>
                   </tr>
+                  <!-- End of Mock Data -->
                 </ng-container>
               </tbody>
 

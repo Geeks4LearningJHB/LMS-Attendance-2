@@ -3,6 +3,9 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { AttendanceService } from 'src/app/attendance-register/services/attendance.service';
 import { Roles } from 'src/app/shared/global/roles';
+
+import { Router } from '@angular/router';
+
 import {
   AttendanceRegister,
   Dashboard,
@@ -40,7 +43,9 @@ export class SideNavComponent implements OnInit {
     private tokenService: TokenService,
     private attendanceService: AttendanceService,
     private formBuilder: UntypedFormBuilder,
-    private dataService : DataService
+    private dataService : DataService,
+
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -140,22 +145,51 @@ export class SideNavComponent implements OnInit {
         });
       });
   }
-  logout() {
-    console.log(this.holdingArray.value);
-    //clear the sessionStorage and reload
-    switch (this.user?.role) {
-      case Roles.Learner:
-        this.attendanceService
-          .updateAttendance(this.holdingArray.value)
-          .subscribe((_: any) => {
-            sessionStorage.clear();
-            window.location.reload();
-          });
-        break;
-      default:
-        sessionStorage.clear();
-        window.location.reload();
-        break;
-    }
+
+  // //LOGOUT CODE THAT EXISTED BEFORE
+  // logout() {
+
+ 
+
+  //   // console.log(this.holdingArray.value);
+  //   // //clear the sessionStorage and reload
+  //   // switch (this.user?.role) {
+  //   //   case Roles.Learner:
+  //   //     this.attendanceService
+  //   //       .updateAttendance(this.holdingArray.value)
+  //   //       .subscribe((_: any) => {
+  //   //         sessionStorage.clear();
+  //   //         window.location.reload();
+  //   //       });
+  //   //     break;
+  //   //   default:
+  //   //     sessionStorage.clear();
+  //   //     window.location.reload();
+  //   //     break;
+  //   // }
+
+
+  // }
+
+logout() {
+  console.log(this.holdingArray.value);
+
+  // clear the sessionStorage
+  sessionStorage.clear();
+
+  switch (this.user?.role) {
+    case Roles.Learner:
+      this.attendanceService
+        .updateAttendance(this.holdingArray.value)
+        .subscribe((_: any) => {
+          // Navigate to another page after updating attendance
+          this.router.navigateByUrl('/login');
+        });
+      break;
+    default:
+      // Navigate to another page for other roles
+      this.router.navigate(['/login']);
+      break;
   }
+}
 }

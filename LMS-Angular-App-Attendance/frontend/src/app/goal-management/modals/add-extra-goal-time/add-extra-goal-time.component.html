@@ -1,0 +1,38 @@
+<div class="card p-2">
+  <form [formGroup]="extraTimeFormGroup" (ngSubmit)="addExtraTime()">
+    <div class="card-header row m-0 p-2 border-bottom">
+      <div class="col p-0">
+        <strong>ADD MORE TIME</strong>
+      </div>
+      <div class="col p-0 text-end">
+        <i class="fa-solid fa-xmark" (click)="closeModal()"></i>
+      </div>
+    </div>
+    <div class="card-body">
+      <label 
+        for="#timeField"
+        [ngClass]="{
+            errorMessage:
+              isFormControlTouched('Time') && isFormControlInvalid('Time')
+          }"
+        >How much time do you want to add (hh:mm)
+        <sup class="text-danger">*</sup></label
+      >
+      <input
+        formControlName="Time"
+        id="timeField"
+        type="time"
+        class="form-control"
+        [ngClass]="{
+          errorBorder:
+            isFormControlTouched('Time') && isFormControlInvalid('Time')
+        }"
+      />
+    </div>
+    <div class="card-footer d-flex flex-row-reverse border-top p-1">
+      <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark">
+        ADD
+      </button>
+    </div>
+  </form>
+</div>

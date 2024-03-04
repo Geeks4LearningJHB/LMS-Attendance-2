@@ -1,0 +1,110 @@
+<app-total-present-absent-late-cards></app-total-present-absent-late-cards>
+<div class="card mb-4">
+  <div class="card-header pb-0">
+    <h6>Attendance</h6>
+  </div>
+  <div class="card-body px-0 pt-0 pb-2">
+    <div class="table-responsive p-0">
+      <table class="table align-items-center mb-0">
+
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+              Name
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Date
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Sponsor
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Login Time
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Logout Time
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Status
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let attendance of attendences">
+          <ng-container *ngFor="let usEr of users">
+            <tr *ngIf="attendance.userId == usEr.id">
+              <td class="align-middle text-xs ps-2" >
+                <div class="d-flex">
+                  <div>
+                    <!-- <img
+                      src="../assets/img/team-2.jpg"
+                      class="avatar avatar-sm me-3"
+                      alt="user1"
+                    /> -->
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <p class="text-secondary mb-0 text-xs">
+                      {{usEr.name}} {{usEr.surname}}
+                    </p>
+                  </div>
+                </div>
+              </td>
+              <td class="align-middle text-xs ps-2">
+                <p class="font-weight-bold fw-bold mb-0"> {{attendance.date | date}} </p>
+              </td>
+              <td class="align-middle text-xs ps-2">
+                <p class="font-weight-bold mb-0">
+                  {{usEr.client}}
+                </p>
+              </td>
+              <td class="align-middle text-xs ps-2">
+                <p class="font-weight-bold mb-0" *ngIf="attendance.clockin_Time != '0001-01-01T00:00:00'"> {{attendance.clockin_Time | date: 'hh:mm'}}</p>
+              </td>
+              <td class="align-middle text-xs ps-2">
+                <p class="font-weight-bold mb-0" *ngIf="attendance.clockout_Time != '0001-01-01T00:00:00'">
+                  {{attendance.clockout_Time | date: 'hh:mm'}}
+                </p>
+              </td>
+              <td class="align-middle text-xs ps-2">
+                <p class="font-weight-bold mb-0" [class]="getStatus(attendance.status)">{{attendance.status}}
+                </p>
+              </td>
+              <td class="align-middle dropdown">
+                <button class="btn btn-link text-secondary mb-0 dropdown-toggle" type="button" id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <i aria-hidden="true" class="fa fa-ellipsis-v text-xs"></i>
+                </button>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li>
+                    <a class="dropdown-item">
+                      &nbsp;&nbsp;View Attendance</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      &nbsp;&nbsp;View Profile</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      &nbsp;&nbsp;View Goals</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+
+      </table>
+      <!--Added Pagination-->
+      <!-- <nav aria-label="Page navigation example" style="Margin-top:20px; Margin-left:20px">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav> -->
+    </div>
+  </div>
+</div>

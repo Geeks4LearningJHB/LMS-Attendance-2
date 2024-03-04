@@ -1,0 +1,4 @@
+.border-grey {
+  border: 1px solid lightgrey;
+  box-shadow: none !important;
+}

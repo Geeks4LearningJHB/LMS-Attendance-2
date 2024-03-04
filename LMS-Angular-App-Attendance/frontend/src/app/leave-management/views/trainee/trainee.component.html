@@ -1,0 +1,144 @@
+<div class="container-fluid py-4">
+
+  <div class="row">
+    <div class="col-9">
+      <div class="row align-items-center mb-4">
+        <div class="col-8"></div>
+        <div class="col-4 text-end">
+          <a class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" (click)="openDialog()">
+            Request a leave</a>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-4" *ngFor="let leaveBalance of leaveBalances">
+          <app-leave-balance-card>
+            <ng-container title>{{ leaveBalance?.balanceType | removeUnderscore }}</ng-container>
+              <ng-container total>
+                <p [style.color]="getPrimaryColor(leaveBalance?.balanceType)">Remaining</p>
+                <br>
+                {{ leaveBalance?.remaining }}
+              </ng-container>
+              <ng-container chart>
+                <div class="chart-wrapper">
+                  {{ setData(leaveBalance?.used, leaveBalance?.remaining) }}
+                  <app-doughnut-chart [dataSet]="dataSet" [primaryColor]="getPrimaryColor(leaveBalance?.balanceType)">
+                  </app-doughnut-chart>
+              </div>
+              </ng-container>
+          </app-leave-balance-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card mb-4">
+            <div class="card-header pb-0">
+              <h6>Leave history</h6>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th
+                        class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7"
+                      >
+                        Leave Type
+                      </th>
+                      <th
+                        class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                      >
+                        Date
+                      </th>
+                      <th
+                        class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                      >
+                        Status
+                      </th>
+                      <th
+                        class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                      >
+                        Comments
+                      </th>
+                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+                        MILESTONE
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let application of leaveApplications">
+                      <td class="align-middle text-xs ps-2"  style="padding-left: 1.5rem !important;">
+                        <p class="font-weight-bold mb-0" >{{ application?.leaveType ? (application.leaveType | removeUnderscore) : 'Unknown'}}</p>
+                      </td>
+                      <td class="align-middle text-xs ps-2">
+                        <p class="font-weight-bold mb-0">{{ application?.startDate | date: 'dd MMM YYYY' }} - {{ application?.endDate  | date: 'dd MMM YYYY' }}</p>
+                      </td>
+                      <td class="align-middle text-xs ps-2">
+                        <p class="font-weight-bold mb-0">
+                          <i class="fa-solid" [class]="getStatusIcon(application?.status)"></i>
+                          {{ application?.status ? (application.status | removeUnderscore) : 'Unknown' }} </p>
+                      </td>
+                      <td class="align-middle text-xs ps-2">
+                        <p class="font-weight-bold mb-0">{{ application?.comments }} </p>
+                      </td>
+                      <td class="align-middle text-xs ps-2">
+                        <p class="text-secondary mb-0">
+                          {{ application?.milestone }}
+                        </p>
+                      </td>
+                      <td class="align-middle dropdown">
+                        <button
+                          class="btn btn-link text-secondary mb-0 dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton1"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <i
+                            aria-hidden="true"
+                            class="fa fa-ellipsis-v text-xs"
+                          ></i>
+                        </button>
+
+                        <ul
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton1"
+                        >
+                        <li>
+                          <a class="dropdown-item" >
+                            <i class="fa-solid fa-pencil text-xs"></i>&nbsp;&nbsp;Edit leave
+                          </a>
+                        </li>
+                          <li>
+                            <a class="dropdown-item" (click)="cancelApplication(application)">
+                              <i class="fa-solid fa-user-pen text-xs"></i
+                              >&nbsp;&nbsp;Cancel leave</a
+                            >
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!--Added Pagination-->
+                <!-- <nav aria-label="Page navigation example" style="Margin-top:20px; Margin-left:20px">
+                  <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                  </ul>
+                </nav> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <app-event-card></app-event-card>
+    </div>
+  </div>
+</div>

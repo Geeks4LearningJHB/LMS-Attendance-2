@@ -1,0 +1,46 @@
+<div class="card p-2">
+  <form [formGroup]="formGroup" (ngSubmit)="saveUserComment()">
+    <div class="card-header row m-0 p-2 border-bottom">
+      <div class="col p-0 text-start">
+        <strong>COMMENT</strong>
+      </div>
+      <div class="col p-0 text-end">
+        <i class="fa-solid fa-xmark" (click)="closeCommentDialog()"></i>
+      </div>
+    </div>
+    <div class="card-body">
+      <label *ngIf="commentType === 'archived'" for="#comment" class="form-control-label text-nowrap">
+        <span>Why are you archiving this goal?</span>
+        <sup class="text-danger">*</sup>
+      </label>
+      <label *ngIf="commentType === 'paused'" for="#comment" class="form-control-label text-nowrap">
+        <span>Why are you pausing this goal frequently?</span>
+        <sup class="text-danger">*</sup>
+      </label>
+      <textarea
+        id="comment"
+        rows="4"
+        class="form-control"
+        placeholder="Type your reason here..."
+        formControlName="comment"
+        [ngClass]="{
+          errorBorder:
+            isFormControlTouched('comment') && isFormControlInvalid('comment')
+        }"
+      ></textarea>
+      <label
+        *ngIf="
+          isFormControlTouched('comment') && isFormControlInvalid('comment')
+        "
+        [ngClass]="{
+          errorMessage:
+            isFormControlTouched('comment') && isFormControlInvalid('comment')
+        }"
+        >This field is required</label
+      >
+    </div>
+    <div class="card-footer d-flex flex-row-reverse">
+      <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark">Done</button>
+    </div>
+  </form>
+</div>

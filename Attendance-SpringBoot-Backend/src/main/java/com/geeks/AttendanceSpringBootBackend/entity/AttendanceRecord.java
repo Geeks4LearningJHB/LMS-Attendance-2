@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -20,7 +19,7 @@ public class AttendanceRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalTime logInTime;
-    private LocalTime logOutTime;
+    private LocalTime checkOutTime;
     private LocalDate date;
     private String logInLocation;
     private Status status;

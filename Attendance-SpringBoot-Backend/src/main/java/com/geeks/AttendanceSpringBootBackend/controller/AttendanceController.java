@@ -4,12 +4,14 @@ import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceRequestDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
 import com.geeks.AttendanceSpringBootBackend.service.IpAdressInterface;
+import com.geeks.AttendanceSpringBootBackend.service.impl.LogOutTimeImplimentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -23,6 +25,9 @@ public class AttendanceController {
 
     @PostMapping("/create")
     public ResponseEntity<AttendanceResponseDto> addNewAttendance(@RequestBody AttendanceRequestDto attendanceRecord){
+
+
+
 
         System.out.println(attendanceRecord.toString());
         AttendanceResponseDto attendanceResponseDto =attendanceInterface.newAttendance(attendanceRecord);
@@ -46,4 +51,14 @@ public class AttendanceController {
     public String getIp(){
         return ipAdressInterface.getSystemIp();
     }
+
+    @GetMapping("/logout-time")
+    public ResponseEntity<String> getLogOutTime(@PathVariable LocalTime localTime){
+        LogOutTimeImplimentation logOutTimeImplimentation = new LogOutTimeImplimentation();
+        String logOutTime = String.valueOf(logOutTimeImplimentation.checkOutTimeCreation(localTime));
+        return ResponseEntity.ok(logOutTime);
+
+    }
+
 }
+

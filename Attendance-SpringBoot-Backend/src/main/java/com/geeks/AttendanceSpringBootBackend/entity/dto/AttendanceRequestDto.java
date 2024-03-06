@@ -17,7 +17,7 @@ public class AttendanceRequestDto {
 
     private long id;
     private LocalTime logInTime;
-    private LocalTime logOutTime;
+    private LocalTime checkOutTime;
     private LocalDate date;
     private String logInLocation;
     private Status status;

@@ -6,10 +6,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 @SpringBootApplication
 public class AttendanceSpringBootBackendApplication {
 	public static void main(String[] args) {
+
 		SpringApplication.run(AttendanceSpringBootBackendApplication.class, args);
+
 	}
 
 }

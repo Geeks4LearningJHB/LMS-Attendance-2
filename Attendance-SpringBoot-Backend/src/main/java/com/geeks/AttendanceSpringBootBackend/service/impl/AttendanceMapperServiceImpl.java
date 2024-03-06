@@ -19,7 +19,7 @@ public class AttendanceMapperServiceImpl implements AttendanceMapperInterface {
         dto.setLogInTime(attendanceRecord.getLogInTime());
         dto.setDate(attendanceRecord.getDate());
         dto.setLogInLocation(attendanceRecord.getLogInLocation());
-        dto.setLogOutTime(attendanceRecord.getLogOutTime());
+        dto.setCheckOutTime(attendanceRecord.getCheckOutTime());
 
         return dto;
 
@@ -35,7 +35,7 @@ public class AttendanceMapperServiceImpl implements AttendanceMapperInterface {
         attendanceRecord.setLogInTime(requestDto.getLogInTime());
         attendanceRecord.setDate(requestDto.getDate());
         attendanceRecord.setLogInLocation(requestDto.getLogInLocation());
-        attendanceRecord.setLogOutTime(requestDto.getLogOutTime());
+        attendanceRecord.setCheckOutTime(requestDto.getCheckOutTime());
         attendanceRecord.setStatus(requestDto.getStatus());
 
         return attendanceRecord;

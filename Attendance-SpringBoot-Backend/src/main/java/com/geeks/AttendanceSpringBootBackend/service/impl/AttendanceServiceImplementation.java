@@ -10,15 +10,13 @@ import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
 import com.geeks.AttendanceSpringBootBackend.repository.UserRepository;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
 import com.geeks.AttendanceSpringBootBackend.service.IpAdressInterface;
-import com.geeks.AttendanceSpringBootBackend.service.LeaveInterface;
 import com.sun.tools.javac.Main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -39,7 +37,12 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     private LoginTimeChecker loginTimeChecker;
     @Autowired
     private IpAdressInterface ipAdressInterface;
+    @Autowired
+    private TimeFetcherApi timeFetcherApi;
 
+
+    @Autowired
+    private LogOutTimeImplimentation logOutTimeImplimentation;
 
     @Override
     public List<AttendanceResponseDto> attendanceList() {
@@ -55,10 +58,20 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     @Override
     public AttendanceResponseDto newAttendance(AttendanceRequestDto requestDto) {
 
-        LocalTime expectedLogOutTime;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        LocalTime currentTime = LocalTime.now();
-        String formattedTime = currentTime.format(formatter);
+        LocalTime expectedLogOutTime ;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+       String dateTime  =  timeFetcherApi.getCurrentTimeInSouthAfrica();
+       String time  = dateTime.substring(dateTime.lastIndexOf('/') + 1);
+       String date  = dateTime.substring(0, dateTime.lastIndexOf('/'));
+
+       LocalTime currentTime = LocalTime.parse(time);
+       LocalDate currentDate = LocalDate.parse(date , formatDate);
+       String formattedTime = currentTime.format(formatter);
+       logger.info("Date is  : " + currentDate);
+
+
+
         //Mapping my attendanceRequest to attendance entity
         AttendanceRecord attendanceRecord =   attendanceDtoMapper.mapTOEntity(requestDto);
         AttendanceRecord newAttendanceRecord;
@@ -71,10 +84,11 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
         if (logInIp.equals("Office")){
 
-            attendanceRecord.setLogInTime(LocalTime.parse(formattedTime , formatter ));
-            attendanceRecord.setDate(LocalDate.now());
+            attendanceRecord.setLogInTime(currentTime);
+            attendanceRecord.setDate(currentDate);
             attendanceRecord.setLogInLocation(logInIp);
-            expectedLogOutTime = attendanceRecord.getLogInTime().plusHours(9);
+            attendanceRecord.setCheckOutTime(logOutTimeImplimentation.checkOutTimeCreation(attendanceRecord.getLogInTime()));
+
 
             if(loginTimeChecker.isPresent(attendanceRecord.getLogInTime()) ){
                 attendanceRecord.setStatus(Status.PRESENT);
@@ -82,6 +96,8 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
             else{
                 attendanceRecord.setStatus(Status.LATE);
             }
+
+
             newAttendanceRecord = attendanceRepository.save(attendanceRecord);
 
         }
@@ -89,11 +105,13 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
             throw new AttendanceExceptions("User not attended");
         }
         //create log out time from the log in time
-        if (attendanceRecord.getLogOutTime().isBefore(expectedLogOutTime)){
-            long oweTime = Math.abs(ChronoUnit.MINUTES.between(attendanceRecord.getLogOutTime(), expectedLogOutTime));
-            logger.info(expectedLogOutTime);
-            System.out.println("Yo owe us :" + "" + oweTime + " minutes");
-        }
+//        if (attendanceRecord.getCheckOutTime().isBefore(expectedLogOutTime)){
+//            long oweTime = Math.abs(ChronoUnit.MINUTES.between(attendanceRecord.getCheckOutTime(), expectedLogOutTime));
+//            logger.info(expectedLogOutTime);
+//            logger.info("You owe us :" + " " + oweTime + " minutes");
+//
+//        }
+
 
         return attendanceDtoMapper.mapToDto(newAttendanceRecord);
     }

@@ -14,8 +14,8 @@ public interface LeaveInterface {
     Leave createLeave(Leave leave);
 
     List<Leave> usersOnLeave();
-   Leave onLeaveUser (long id);
-   boolean isOnLeave(long userId);
+    Leave onLeaveUser (long id);
+    boolean isOnLeave(long userId);
 
 
 }

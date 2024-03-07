@@ -56,7 +56,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     }
 
     @Override
-    public AttendanceResponseDto newAttendance(AttendanceRequestDto requestDto) {
+    public AttendanceResponseDto newAttendance(User user) {
 
         LocalTime expectedLogOutTime ;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -73,14 +73,16 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
 
         //Mapping my attendanceRequest to attendance entity
-        AttendanceRecord attendanceRecord =   attendanceDtoMapper.mapTOEntity(requestDto);
+      //  AttendanceRecord attendanceRecord =   attendanceDtoMapper.mapTOEntity(requestDto);
+        AttendanceRecord attendanceRecord = new AttendanceRecord();
+
         AttendanceRecord newAttendanceRecord;
         String logInIp =   ipAdressInterface.getLocation();
         logger.info(logInIp);
         //check if user exists
-        User user= userRepository.findById(requestDto.getUserId())
+        User logInUser= userRepository.findById(user.getUserId())
                 .orElseThrow(()-> new IllegalStateException("User not found"));
-        attendanceRecord.setUserId(user);
+        attendanceRecord.setUserId(logInUser);
 
         if (logInIp.equals("Office")){
 

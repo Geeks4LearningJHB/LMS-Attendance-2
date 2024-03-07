@@ -1,5 +1,6 @@
 package com.geeks.AttendanceSpringBootBackend.controller;
 
+import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceRequestDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
@@ -23,14 +24,10 @@ public class AttendanceController {
     @Autowired
     private IpAdressInterface ipAdressInterface;
 
-    @PostMapping("/create")
-    public ResponseEntity<AttendanceResponseDto> addNewAttendance(@RequestBody AttendanceRequestDto attendanceRecord){
+    @PostMapping("/new-attendance")
+    public ResponseEntity<AttendanceResponseDto> addNewAttendance(@RequestBody User user){
 
-
-
-
-        System.out.println(attendanceRecord.toString());
-        AttendanceResponseDto attendanceResponseDto =attendanceInterface.newAttendance(attendanceRecord);
+        AttendanceResponseDto attendanceResponseDto =attendanceInterface.newAttendance(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(attendanceResponseDto);
     }
     @GetMapping("/view-all")

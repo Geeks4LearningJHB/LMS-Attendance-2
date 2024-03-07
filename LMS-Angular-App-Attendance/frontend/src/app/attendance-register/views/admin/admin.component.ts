@@ -10,14 +10,15 @@ import { AttendanceService } from '../../services/attendance.service';
   styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
-  attendences: any[] = [];
+attendences: any[] = [];
   users: any;
   ids: any;
   testing: UntypedFormGroup = new UntypedFormGroup({});
   date: any;
   // testing data
-
+  
   constructor(
+    
     private formBuider: UntypedFormBuilder,
     private attendenceService: AttendanceService,
     private userService: UserService
@@ -29,6 +30,16 @@ export class AdminComponent implements OnInit {
       .toISOString()
       .slice(0, -1);
   }
+
+    user = [
+    { id: 1, name: 'Thembi', surname: 'Makuwa', client: 'FNB', date: '2024-03-07', clockin_Time: '07:00:35', clockout_Time: '17:00:00', status: 'Present' },
+    { id: 2, name: 'Fortune', surname: 'Mupisa', client: 'FNB',  date: '2024-03-07', clockin_Time: '09:00:09', clockout_Time: '18:00:00', status: 'Late' },
+    { id: 2, name: 'Bheki', surname: 'Dube', client: 'Riverside',  date: '2024-03-07', clockin_Time: '09:05:00', clockout_Time: '18:00:00', status: 'Late' },
+  { id: 2, name: 'Lethabo', surname: 'Mampa', client: 'Riverside',  date: '2024-03-07', clockin_Time: '06:45:00', clockout_Time: '18:00:00', status: 'Present' }
+    
+  ];
+
+
   getAttendences(skip: any, take: any) {
     this.attendenceService
       .getPagedAttendance(skip, take)
@@ -59,4 +70,6 @@ export class AdminComponent implements OnInit {
   getStatus(status: any): any {
     return status.toLowerCase();
   }
+
+  
 }

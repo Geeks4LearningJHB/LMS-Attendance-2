@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 
+import { Component } from '@angular/core';
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +26,13 @@ export class DataService {
         role: 'Admin',
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
       },
+       {
+        userId: 2,
+        name: 'trainer@geeks4learning.com',
+        surname: '',
+        role: 'Trainer',
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+      }
       // Add more mock users as needed
     ];
    

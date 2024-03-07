@@ -27,48 +27,22 @@
             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
               Status
             </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Action
+            </th>
             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"></th>
+            
           </tr>
         </thead>
-        <tbody *ngFor="let attendance of attendences">
-          <ng-container *ngFor="let usEr of users">
-            <tr *ngIf="attendance.userId == usEr.id">
-              <td class="align-middle text-xs ps-2" >
-                <div class="d-flex">
-                  <div>
-                    <!-- <img
-                      src="../assets/img/team-2.jpg"
-                      class="avatar avatar-sm me-3"
-                      alt="user1"
-                    /> -->
-                  </div>
-                  <div class="d-flex flex-column justify-content-center">
-                    <p class="text-secondary mb-0 text-xs">
-                      {{usEr.name}} {{usEr.surname}}
-                    </p>
-                  </div>
-                </div>
-              </td>
-              <td class="align-middle text-xs ps-2">
-                <p class="font-weight-bold fw-bold mb-0"> {{attendance.date | date}} </p>
-              </td>
-              <td class="align-middle text-xs ps-2">
-                <p class="font-weight-bold mb-0">
-                  {{usEr.client}}
-                </p>
-              </td>
-              <td class="align-middle text-xs ps-2">
-                <p class="font-weight-bold mb-0" *ngIf="attendance.clockin_Time != '0001-01-01T00:00:00'"> {{attendance.clockin_Time | date: 'hh:mm'}}</p>
-              </td>
-              <td class="align-middle text-xs ps-2">
-                <p class="font-weight-bold mb-0" *ngIf="attendance.clockout_Time != '0001-01-01T00:00:00'">
-                  {{attendance.clockout_Time | date: 'hh:mm'}}
-                </p>
-              </td>
-              <td class="align-middle text-xs ps-2">
-                <p class="font-weight-bold mb-0" [class]="getStatus(attendance.status)">{{attendance.status}}
-                </p>
-              </td>
+<tbody >
+          <ng-container *ngFor="let usEr of user">
+            <tr >
+              <td class="align-middle text-xs ps-2" >{{usEr.name}} {{usEr.surname}}</td>
+              <td class="align-middle text-xs ps-2"> {{usEr.date}}</td>
+              <td class="align-middle text-xs ps-2">{{usEr.client}}</td>
+              <td class="align-middle text-xs ps-2">{{usEr.clockin_Time}}</td>
+              <td class="align-middle text-xs ps-2">{{usEr.clockin_Time}}</td>
+              <td class="align-middle text-xs ps-2">{{usEr.status}}</td>
               <td class="align-middle dropdown">
                 <button class="btn btn-link text-secondary mb-0 dropdown-toggle" type="button" id="dropdownMenuButton1"
                   data-bs-toggle="dropdown" aria-expanded="false">
@@ -78,33 +52,36 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                   <li>
                     <a class="dropdown-item">
-                      &nbsp;&nbsp;View Attendance</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item">
                       &nbsp;&nbsp;View Profile</a>
                   </li>
                   <li>
                     <a class="dropdown-item">
                       &nbsp;&nbsp;View Goals</a>
                   </li>
+                    <li>
+                      <a class="dropdown-item" >
+                        &nbsp;&nbsp;View Rewards</a>
+                    </li>
+                  <li>
+                    <a class="dropdown-item"  href="#">
+                      &nbsp;&nbsp;View Attendance</a>
+                  </li>
                 </ul>
               </td>
             </tr>
           </ng-container>
         </tbody>
-
       </table>
-      <!--Added Pagination-->
-      <!-- <nav aria-label="Page navigation example" style="Margin-top:20px; Margin-left:20px">
+      
+      <!-- Added Pagination-->
+      <nav aria-label="Page navigation example" style="Margin-top:20px; Margin-left:20px">
           <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
+<button >Previous</button>         
             <li class="page-item"><a class="page-link" href="#">2</a></li>
             <li class="page-item"><a class="page-link" href="#">3</a></li>
             <li class="page-item"><a class="page-link" href="#">Next</a></li>
           </ul>
-        </nav> -->
+        </nav>
     </div>
   </div>
 </div>

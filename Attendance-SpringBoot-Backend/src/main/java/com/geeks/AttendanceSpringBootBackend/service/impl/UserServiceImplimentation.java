@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -23,6 +24,11 @@ public class UserServiceImplimentation implements UserInterface {
     @Override
     public List<User> viewUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
 

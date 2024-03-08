@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -22,18 +21,9 @@ public class UserController {
         return userInterface.addNewUser(user);
     }
 
-    @GetMapping("/all-users")
+    @GetMapping
     public List<User> allUsers(){
         return userInterface.viewUsers();
-    }
-
-    @GetMapping("/user")
-    public Optional<User> userByEmail(@RequestParam String email){
-        System.out.println(email);
-        Optional<User> user = userInterface.findUserByEmail(email);
-       String name =  user.get().getUsername();
-        System.out.println(name);
-        return user;
     }
 
 }

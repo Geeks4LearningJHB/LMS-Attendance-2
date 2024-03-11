@@ -18,6 +18,8 @@ import { environment } from '../environments/environment';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 import { APP_SERVICE_CONFIG, APP_CONFIG } from './shared/app-config/app-config.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {MatTableModule} from '@angular/material/table';
+
 
 
 @NgModule({
@@ -32,6 +34,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     UserManagementModule,
     MasterLayoutModule,
+    MatTableModule,
     BrowserAnimationsModule, // required animations module
     AttendanceRegisterModule,
     ToastrModule.forRoot({

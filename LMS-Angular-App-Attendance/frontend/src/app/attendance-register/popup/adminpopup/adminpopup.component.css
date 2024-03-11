@@ -1,0 +1,56 @@
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 16px;
+    background-color: #fff;
+    /* Background color */
+    border: 1px solid #ddd;
+    /* Border color */
+    border-radius: 8px;
+    /* Border radius */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Box shadow */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.download-button,
+.done-button {
+    margin: 10px;
+    /* Adjust the margin between buttons as needed */
+}
+
+.download-button {
+    background-color: #012245;
+    /* LMS primary color */
+    color: #fff;
+    /* Text color */
+    border: 1px solid #012245;
+    /* Border color */
+}
+
+.done-button {
+    background-color: #044613;
+    /* LMS success color */
+    color: #fff;
+    /* Text color */
+    border: 1px solid #044613;
+    /* Border color */
+}

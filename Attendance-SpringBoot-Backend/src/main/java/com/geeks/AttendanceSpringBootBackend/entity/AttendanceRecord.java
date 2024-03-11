@@ -13,6 +13,7 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//@Table(name = "attendance_record", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "date"}))
 public class AttendanceRecord {
 
     @Id
@@ -20,6 +21,7 @@ public class AttendanceRecord {
     private long id;
     private LocalTime logInTime;
     private LocalTime checkOutTime;
+
     private LocalDate date;
     private String logInLocation;
     private Status status;

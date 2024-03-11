@@ -7,6 +7,7 @@ import { AttendanceRegisterComponent } from './attendance-register.component';
 import { TotalPresentAbsentLateCardsComponent } from './total-present-absent-late-cards/total-present-absent-late-cards.component';
 import { AdminComponent } from './views/admin/admin.component';
 import { TraineeComponent } from './views/trainee/trainee.component';
+import { AdminpopupComponent } from './popup/adminpopup/adminpopup.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { TraineeComponent } from './views/trainee/trainee.component';
     TotalPresentAbsentLateCardsComponent,
     AdminComponent,
     TraineeComponent,
+    AdminpopupComponent,
   ],
   imports: [
     CommonModule,

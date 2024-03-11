@@ -56,31 +56,32 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     }
 
     @Override
-    public AttendanceResponseDto newAttendance(AttendanceRequestDto requestDto) {
+    public AttendanceResponseDto newAttendance(User user) {
 
         LocalTime expectedLogOutTime ;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-       String dateTime  =  timeFetcherApi.getCurrentTimeInSouthAfrica();
-       String time  = dateTime.substring(dateTime.lastIndexOf('/') + 1);
-       String date  = dateTime.substring(0, dateTime.lastIndexOf('/'));
+        String dateTime  =  timeFetcherApi.getCurrentTimeInSouthAfrica();
+        String time  = dateTime.substring(dateTime.lastIndexOf('/') + 1);
+        String date  = dateTime.substring(0, dateTime.lastIndexOf('/'));
 
-       LocalTime currentTime = LocalTime.parse(time);
-       LocalDate currentDate = LocalDate.parse(date , formatDate);
-       String formattedTime = currentTime.format(formatter);
-       logger.info("Date is  : " + currentDate);
+        LocalTime currentTime = LocalTime.parse(time);
+        LocalDate currentDate = LocalDate.parse(date , formatDate);
+        String formattedTime = currentTime.format(formatter);
 
 
 
         //Mapping my attendanceRequest to attendance entity
-        AttendanceRecord attendanceRecord =   attendanceDtoMapper.mapTOEntity(requestDto);
+        //  AttendanceRecord attendanceRecord =   attendanceDtoMapper.mapTOEntity(requestDto);
+        AttendanceRecord attendanceRecord = new AttendanceRecord();
+
         AttendanceRecord newAttendanceRecord;
         String logInIp =   ipAdressInterface.getLocation();
-        logger.info(logInIp);
+
         //check if user exists
-        User user= userRepository.findById(requestDto.getUserId())
+        User logInUser= userRepository.findById(user.getUserId())
                 .orElseThrow(()-> new IllegalStateException("User not found"));
-        attendanceRecord.setUserId(user);
+        attendanceRecord.setUserId(logInUser);
 
         if (logInIp.equals("Office")){
 
@@ -96,22 +97,11 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
             else{
                 attendanceRecord.setStatus(Status.LATE);
             }
-
-
             newAttendanceRecord = attendanceRepository.save(attendanceRecord);
-
         }
         else {
             throw new AttendanceExceptions("User not attended");
         }
-        //create log out time from the log in time
-//        if (attendanceRecord.getCheckOutTime().isBefore(expectedLogOutTime)){
-//            long oweTime = Math.abs(ChronoUnit.MINUTES.between(attendanceRecord.getCheckOutTime(), expectedLogOutTime));
-//            logger.info(expectedLogOutTime);
-//            logger.info("You owe us :" + " " + oweTime + " minutes");
-//
-//        }
-
 
         return attendanceDtoMapper.mapToDto(newAttendanceRecord);
     }

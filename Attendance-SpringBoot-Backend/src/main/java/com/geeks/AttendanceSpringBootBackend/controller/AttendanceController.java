@@ -1,8 +1,11 @@
 package com.geeks.AttendanceSpringBootBackend.controller;
 
+import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
 import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceRequestDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
+import com.geeks.AttendanceSpringBootBackend.exceptions.AttendanceExceptions;
+import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
 import com.geeks.AttendanceSpringBootBackend.service.IpAdressInterface;
 import com.geeks.AttendanceSpringBootBackend.service.impl.LogOutTimeImplimentation;
@@ -23,6 +26,8 @@ public class AttendanceController {
     private AttendanceInterface attendanceInterface;
     @Autowired
     private IpAdressInterface ipAdressInterface;
+    @Autowired
+    AttendanceRepository attendanceRepository;
 
     @PostMapping("/create")
     public ResponseEntity<AttendanceResponseDto> addNewAttendance(@RequestBody User user){
@@ -37,11 +42,11 @@ public class AttendanceController {
     }
 
 
-    @GetMapping("/today/{date}")
+    @GetMapping("/today")
 
-    public AttendanceResponseDto[] attendancesForToday (@PathVariable LocalDate date){
+    public AttendanceRecord attendancesForToday (long  id , LocalDate date){
 
-        return attendanceInterface.deadlineChecker(date);
+        return attendanceRepository.findByUserIdUserIdAndDate(id , date);
     }
 
     @GetMapping("/test-ip")

@@ -46,7 +46,6 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
     @Override
     public List<AttendanceResponseDto> attendanceList() {
-
         List<AttendanceResponseDto> attendanceRecords = attendanceRepository.findAll()
                 .stream()
                 .map(attendanceDtoMapper::mapToDto)
@@ -61,49 +60,60 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         LocalTime expectedLogOutTime ;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        //get time and date from the APi and break it into date and time
         String dateTime  =  timeFetcherApi.getCurrentTimeInSouthAfrica();
         String time  = dateTime.substring(dateTime.lastIndexOf('/') + 1);
         String date  = dateTime.substring(0, dateTime.lastIndexOf('/'));
 
-        LocalTime currentTime = LocalTime.parse(time);
+        //format date and time to the localDate pattern
+        LocalTime currentTime = LocalTime.parse(time , formatter);
+
         LocalDate currentDate = LocalDate.parse(date , formatDate);
-        String formattedTime = currentTime.format(formatter);
 
-
-
-        //Mapping my attendanceRequest to attendance entity
-        //  AttendanceRecord attendanceRecord =   attendanceDtoMapper.mapTOEntity(requestDto);
         AttendanceRecord attendanceRecord = new AttendanceRecord();
-
         AttendanceRecord newAttendanceRecord;
+
         String logInIp =   ipAdressInterface.getLocation();
+        List<User> users = userRepository.findAll();
+        LocalDate testingDate = LocalDate.now().plusDays(1);
+
+        AttendanceRecord currentDateAttendance = attendanceRepository
+               .findByUserIdUserIdAndDate(user.getUserId() , testingDate);
 
         //check if user exists
         User logInUser= userRepository.findById(user.getUserId())
                 .orElseThrow(()-> new IllegalStateException("User not found"));
         attendanceRecord.setUserId(logInUser);
 
-        if (logInIp.equals("Office")){
+        //check if the user has attendance record for that day
+        if (currentDateAttendance == null){
 
-            attendanceRecord.setLogInTime(currentTime);
-            attendanceRecord.setDate(currentDate);
-            attendanceRecord.setLogInLocation(logInIp);
-            attendanceRecord.setCheckOutTime(logOutTimeImplimentation.checkOutTimeCreation(attendanceRecord.getLogInTime()));
+            if (logInIp.equals("Office")){
+                attendanceRecord.setLogInTime(currentTime);
+                attendanceRecord.setDate(testingDate);
+                logger.info("testing date:" + attendanceRecord.getDate());
+                attendanceRecord.setLogInLocation(logInIp);
+                attendanceRecord.setCheckOutTime(logOutTimeImplimentation.checkOutTimeCreation(attendanceRecord.getLogInTime()));
 
 
-            if(loginTimeChecker.isPresent(attendanceRecord.getLogInTime()) ){
-                attendanceRecord.setStatus(Status.PRESENT);
+                if(loginTimeChecker.isPresent(attendanceRecord.getLogInTime()) ){
+                    attendanceRecord.setStatus(Status.PRESENT);
+                }
+                else{
+                    attendanceRecord.setStatus(Status.LATE);
+                }
+                //save the atendance and return it
+                newAttendanceRecord = attendanceRepository.save(attendanceRecord);
+                return attendanceDtoMapper.mapToDto(newAttendanceRecord);
+
             }
-            else{
-                attendanceRecord.setStatus(Status.LATE);
+            else {
+                throw new AttendanceExceptions("User not in the Office");
             }
-            newAttendanceRecord = attendanceRepository.save(attendanceRecord);
-        }
-        else {
-            throw new AttendanceExceptions("User not attended");
+        }else {
+            throw new AttendanceExceptions("Attendance already exists for :" + logInUser.getUsername());
         }
 
-        return attendanceDtoMapper.mapToDto(newAttendanceRecord);
     }
 
     //search record
@@ -146,12 +156,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     public void deleteAttendanceRecord(long id) {
         attendanceRepository.deleteById(id);
     }
-    @Override
-    public AttendanceResponseDto[] deadlineChecker(LocalDate systemDate){
-        List<AttendanceResponseDto> allAttendancesForToday = attendanceRepository.findAttendanceByDate(systemDate);
-        AttendanceResponseDto[] arr = new AttendanceResponseDto[allAttendancesForToday.size()];
-        return allAttendancesForToday.toArray(arr);
-    }
+
 
 
 }

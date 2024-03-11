@@ -41,15 +41,12 @@ attendences: any[] = [];
     
   ];
 
-<<<<<<< HEAD
  
   openModal(): void {
     this.dialog.open(AdminpopupComponent, {
       width: '800px',
     });
   }
-=======
->>>>>>> 535bbd010d017a42579195ec419fd89692d4d8c6
 
   getAttendences(skip: any, take: any) {
     this.attendenceService

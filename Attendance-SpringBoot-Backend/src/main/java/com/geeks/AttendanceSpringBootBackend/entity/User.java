@@ -1,6 +1,7 @@
 package com.geeks.AttendanceSpringBootBackend.entity;
 
 
+import com.geeks.AttendanceSpringBootBackend.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,9 @@ public class User {
     @Column(name = "email")
     private String email;
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
     private List<AttendanceRecord> attendanceRecords = new ArrayList<>();

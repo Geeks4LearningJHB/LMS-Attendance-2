@@ -25,7 +25,5 @@ public class AttendanceResponseDto {
     private String logInLocation;
     private Status status;
 
-
-
-
 }
+

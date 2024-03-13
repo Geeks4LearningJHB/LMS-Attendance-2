@@ -13,7 +13,6 @@ import java.util.List;
 public interface AttendanceRepository extends JpaRepository<AttendanceRecord, Long> {
    List <AttendanceResponseDto> findAttendanceByDate(LocalDate date);
   // AttendanceRecord findByUserIdAndDate(long userId , LocalDate currentDate);
-
    AttendanceRecord findByDate(LocalDate date);
    AttendanceRecord findByUserIdUserIdAndDate(long id , LocalDate date);
 

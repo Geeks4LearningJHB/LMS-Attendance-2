@@ -6,6 +6,9 @@ import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceMapperInterface;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class AttendanceMapperServiceImpl implements AttendanceMapperInterface {
 
@@ -20,7 +23,9 @@ public class AttendanceMapperServiceImpl implements AttendanceMapperInterface {
         dto.setDate(attendanceRecord.getDate());
         dto.setLogInLocation(attendanceRecord.getLogInLocation());
         dto.setCheckOutTime(attendanceRecord.getCheckOutTime());
-
+        dto.setName(attendanceRecord.getUserId().getUserName());
+        dto.setSurname(attendanceRecord.getUserId().getUserSurname());
+        dto.setSponsor(attendanceRecord.getUserId().getSponsor());
         return dto;
 
     }
@@ -41,6 +46,11 @@ public class AttendanceMapperServiceImpl implements AttendanceMapperInterface {
         return attendanceRecord;
     }
 
+    public List<AttendanceResponseDto> mapToResponseDtoList(List<AttendanceRecord> attendanceRecords) {
+        return attendanceRecords.stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
 
 
 }

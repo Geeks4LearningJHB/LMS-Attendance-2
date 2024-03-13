@@ -19,6 +19,10 @@ public interface AttendanceInterface {
      AttendanceResponseDto updateAttendanceRecord(long id, AttendanceRequestDto requestDTO);
      List<AttendanceResponseDto> getAllAttendanceRecords();
      void deleteAttendanceRecord(long id);
+     List<AttendanceResponseDto> getAllUserAttendances(long userId);
+
+     List<AttendanceResponseDto> getTodayAttendance(LocalDate date);
+
 
 
 }

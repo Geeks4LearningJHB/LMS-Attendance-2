@@ -20,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/attendance")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class AttendanceController {
 
     @Autowired
@@ -41,26 +42,28 @@ public class AttendanceController {
         return attendanceInterface.attendanceList();
     }
 
-
-    @GetMapping("/today")
-
-    public AttendanceRecord attendancesForToday (long  id , LocalDate date){
-
-        return attendanceRepository.findByUserIdUserIdAndDate(id , date);
+    @GetMapping("/view-by-attendance-id/{id}")
+    public AttendanceResponseDto attendanceById(@PathVariable long userId){
+        return attendanceInterface.getAttendanceRecordById(userId);
+    }
+    @GetMapping("/view-by-user-id/{userId}")
+    public List<AttendanceResponseDto> attendanceByUserId(@PathVariable long userId){
+        return attendanceInterface.getAllUserAttendances(userId);
     }
 
-    @GetMapping("/test-ip")
-    public String getIp(){
-        return ipAdressInterface.getSystemIp();
+    @GetMapping("/today-attendance/{date}")
+    public List<AttendanceResponseDto> todayAttendance(@PathVariable LocalDate date){
+        return attendanceInterface.getTodayAttendance(date);
     }
 
-    @GetMapping("/logout-time")
-    public ResponseEntity<String> getLogOutTime(@PathVariable LocalTime localTime){
-        LogOutTimeImplimentation logOutTimeImplimentation = new LogOutTimeImplimentation();
-        String logOutTime = String.valueOf(logOutTimeImplimentation.checkOutTimeCreation(localTime));
-        return ResponseEntity.ok(logOutTime);
+   @DeleteMapping("delete/{id}")
+   public String todayAttendance(@PathVariable long id){
+        attendanceInterface.deleteAttendanceRecord(id);
+        return "DELETED!!!!!";
+   }
 
-    }
+
+
 
 }
 

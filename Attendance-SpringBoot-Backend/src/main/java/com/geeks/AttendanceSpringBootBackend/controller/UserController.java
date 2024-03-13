@@ -2,6 +2,7 @@ package com.geeks.AttendanceSpringBootBackend.controller;
 
 
 import com.geeks.AttendanceSpringBootBackend.entity.User;
+import com.geeks.AttendanceSpringBootBackend.entity.dto.UserResponseDTO;
 import com.geeks.AttendanceSpringBootBackend.service.UserInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> allUsers(){
+    public List<UserResponseDTO> allUsers(){
         return userInterface.viewUsers();
     }
 

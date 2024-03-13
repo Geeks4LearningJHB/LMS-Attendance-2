@@ -78,7 +78,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         LocalDate testingDate = LocalDate.now().plusDays(1);
 
         AttendanceRecord currentDateAttendance = attendanceRepository
-               .findByUserIdUserIdAndDate(user.getUserId() , testingDate);
+               .findByUserIdUserIdAndDate(user.getUserId() , currentDate);
 
         //check if user exists
         User logInUser= userRepository.findById(user.getUserId())
@@ -90,7 +90,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
             if (logInIp.equals("Office")){
                 attendanceRecord.setLogInTime(currentTime);
-                attendanceRecord.setDate(testingDate);
+                attendanceRecord.setDate(currentDate);
                 logger.info("testing date:" + attendanceRecord.getDate());
                 attendanceRecord.setLogInLocation(logInIp);
                 attendanceRecord.setCheckOutTime(logOutTimeImplimentation.checkOutTimeCreation(attendanceRecord.getLogInTime()));
@@ -111,7 +111,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
                 throw new AttendanceExceptions("User not in the Office");
             }
         }else {
-            throw new AttendanceExceptions("Attendance already exists for :" + logInUser.getUsername());
+            throw new AttendanceExceptions("Attendance already exists for :" + logInUser.getUserName());
         }
 
     }
@@ -157,6 +157,22 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         attendanceRepository.deleteById(id);
     }
 
+    @Override
+    public List<AttendanceResponseDto> getAllUserAttendances(long userId) {
+
+         List<AttendanceRecord> attendanceRecords  =  attendanceRepository.findByUserIdUserId(userId);
+         return attendanceDtoMapper.mapToResponseDtoList(attendanceRecords);
+
+    }
+
+    @Override
+    public List<AttendanceResponseDto> getTodayAttendance(LocalDate date) {
+
+        List<AttendanceRecord> attendanceRecords  =  attendanceRepository.findAttendanceByDate(date);
+        return attendanceDtoMapper.mapToResponseDtoList(attendanceRecords);
+
+
+    }
 
 
 }

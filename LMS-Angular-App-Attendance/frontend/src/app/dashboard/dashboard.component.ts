@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
     const role = sessionStorage.getItem(constants.role);
     this.determinRole(role);
   }
-
+  
   determinRole(role: string | null) {
     switch (role) {
       case Roles.Super_Admin:

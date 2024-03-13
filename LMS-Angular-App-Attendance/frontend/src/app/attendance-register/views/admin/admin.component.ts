@@ -27,57 +27,60 @@ attendences: any[] = [];
   ) {}
 
   ngOnInit() {
-    this.getAttendences(0, 10);
-    this.date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-      .toISOString()
-      .slice(0, -1);
-  }
-
-    user = [
-    { id: 1, name: 'Thembi', surname: 'Makuwa', client: 'FNB', date: '2024-03-07', clockin_Time: '07:00:35', clockout_Time: '17:00:00', status: 'Present' },
-    { id: 2, name: 'Fortune', surname: 'Mupisa', client: 'FNB',  date: '2024-03-07', clockin_Time: '09:00:09', clockout_Time: '18:00:00', status: 'Late' },
-    { id: 2, name: 'Bheki', surname: 'Dube', client: 'Riverside',  date: '2024-03-07', clockin_Time: '09:05:00', clockout_Time: '18:00:00', status: 'Late' },
-  { id: 2, name: 'Lethabo', surname: 'Mampa', client: 'Riverside',  date: '2024-03-07', clockin_Time: '06:45:00', clockout_Time: '18:00:00', status: 'Present' }
+    const currentDate = new Date();
     
-  ];
 
+    const date = currentDate.toISOString().split('T')[0];
+    const convertedDate = new Date(date);
+    this.getAllAttendances(date);
+    console.log(convertedDate)
+   
+  }
  
   openModal(): void {
     this.dialog.open(AdminpopupComponent, {
       width: '800px',
     });
   }
+  
+getAllAttendances(date : String){
+  this.attendenceService.getAttendances(date).subscribe(respose=>{
+  this.attendences = respose
+ console.log(this.attendences)
+  })
+}
+  // getAttendences(skip: any, take: any) {
+  //   this.attendenceService
+  //     .getPagedAttendance(skip, take)
+  //     .subscribe((res: any) => {
+  //       this.attendences = res;
+  //       console.log(res)
+  //       console.log("Get Attendances method");
+        
+  //     });
+  //   this.userService.getPagedUsers(skip, take).subscribe((res: any) => {
+  //     res.forEach((element: any) => {
+  //       if (element.role == 'Learner') {
+  //         this.ids = element.id;
+  //         this.testing = this.formBuider.group({
+  //           userId: [element.id],
+  //           date: [this.date],
+  //           status: ['Absent'],
+  //         });
+  //         this.attendenceService
+  //           .captureDetails(this.testing.value)
+  //           .subscribe((_) => {});
+  //         console.log(this.testing.value);
+  //         console.log(this.ids);
+  //       }
+  //     });
+  //     this.users = res;
+  //   });
+  // }
 
-  getAttendences(skip: any, take: any) {
-    this.attendenceService
-      .getPagedAttendance(skip, take)
-      .subscribe((res: any) => {
-        this.attendences = res;
-        console.log(this.attendences, 'attendances');
-      });
-    this.userService.getPagedUsers(skip, take).subscribe((res: any) => {
-      res.forEach((element: any) => {
-        if (element.role == 'Learner') {
-          this.ids = element.id;
-          this.testing = this.formBuider.group({
-            userId: [element.id],
-            date: [this.date],
-            status: ['Absent'],
-          });
-          this.attendenceService
-            .captureDetails(this.testing.value)
-            .subscribe((_) => {});
-          console.log(this.testing.value);
-          console.log(this.ids);
-        }
-      });
-      this.users = res;
-    });
-  }
-
-  getStatus(status: any): any {
-    return status.toLowerCase();
-  }
+  // getStatus(status: any): any {
+  //   return status.toLowerCase();
+  // }
 
   
 }

@@ -20,7 +20,7 @@ export class TraineeComponent implements OnInit {
   modalDialog: MdbModalRef<CaptureGoalsComponent> | null = null;
   modalRef: any;
   date: any;
-  userId: any | null;
+  userId: number = 1;
   holdingArray: UntypedFormGroup = new UntypedFormGroup({});
   attendances!: AttendanceModel[];
   id!: string;
@@ -44,13 +44,9 @@ export class TraineeComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     // this.startTimer();
-    let date: any = sessionStorage.getItem('date');
-    let loginTime: any = sessionStorage.getItem(constants.time);
-    this.loginTime = loginTime;
-
-    this.date = date;
-    this.buildData();
-    this.getTotalHoursWorked();
+    const userId = this.userId
+    this.getAttendance(userId)
+    this.getTotalHoursWorked()
     // this.sendDetails()
   }
   sendDetails() {
@@ -63,8 +59,7 @@ export class TraineeComponent implements OnInit {
   }
   buildData() {
     let user: any = this.tokenService.getDecodeToken();
-    this.userId = user.id;
-    console.log(this.userId);
+   console.log(this.userId)
     this.holdingArray = this.formBuilder.group({
       userId: [this.userId],
       date: [this.date],
@@ -75,20 +70,21 @@ export class TraineeComponent implements OnInit {
     console.log(this.holdingArray.value);
     this.getAttendance(this.userId);
   }
-  getAttendance(userId: any) {
+  
+  getAttendance(userId: number) {
     this.attendanceService
       .getAttendancesByUserId(userId)
       .subscribe((attendance: AttendanceModel[]) => {
-        console.log(attendance);
         this.attendances = attendance;
-        console.log('I am results');
         console.log(attendance);
         this.attendances.forEach((attendance: AttendanceModel) => {
-          this.id = attendance.id;
+          this.id = attendance.id
+          this.statu$ = attendance.status
+          this.loginTime = attendance.logInTime;
         });
       });
   }
-
+  
   getTotalHoursWorked() {
     const todayAttendance: AttendanceModel[] = this.attendances.filter(
       (attendance) => attendance.date === new Date()

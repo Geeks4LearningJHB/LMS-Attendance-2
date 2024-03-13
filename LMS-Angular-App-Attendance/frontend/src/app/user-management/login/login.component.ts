@@ -84,6 +84,7 @@ export class LoginComponent implements OnInit {
             constants.time,
             "date",
             "times"
+            
           ],
           [
             loggedInUser?.token,
@@ -94,7 +95,7 @@ export class LoginComponent implements OnInit {
             this.captureGoalsTime
           ]
         )
-
+     
        
         console.log("I am sessionStorage : " + sessionStorage)
         this.router.navigate(['/leave']);

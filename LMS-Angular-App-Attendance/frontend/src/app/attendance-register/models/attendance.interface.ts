@@ -1,3 +1,5 @@
+import { Time } from "@angular/common";
+
 export type AttendanceStatus = 'Present' | 'Absent' | 'Late' | 'Leave';
 
 export type HoursType = 'Month' | 'Today' | 'Week';
@@ -6,8 +8,8 @@ export interface AttendanceModel {
   id: string;
   date: Date;
   status: AttendanceStatus;
-  checkOutTime: Date;
-  checkInTime: Date;
+  checkOutTime: Time;
+  logInTime: Time;
 }
 
 // case AttendanceStatus.Present:

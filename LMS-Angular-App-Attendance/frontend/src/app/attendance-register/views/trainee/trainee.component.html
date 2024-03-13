@@ -59,12 +59,12 @@
                       </div>
                     </td>
                     <td class="align-middle text-xs ps-2">
-                      <p class="font-weight-bold mb-0">{{attendance.checkInTime | date:'h:mm a'}}</p>
+                      <p class="font-weight-bold mb-0">{{attendance.logInTime}}</p>
                     </td>
                     <td class="align-middle text-xs ps-2">
-                      <p class="font-weight-bold mb-0">{{attendance.checkOutTime | date: 'h:mm a'}}</p>
+                      <p class="font-weight-bold mb-0">{{attendance.checkOutTime}}</p>
                     </td>
-                    <td></td> <!-- You can provide break time data here if needed -->
+                    <td>--</td> <!-- You can provide break time data here if needed -->
                     <td class="align-middle text-xs ps-2">
                       <p class="font-weight-bold mb-0" [class]="getStatus(attendance.status)">
                         {{attendance.status}}
@@ -77,12 +77,12 @@
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li>
-                          <a class="dropdown-item">View Goals</a>
+                          <a class="dropdown-item">Request Half Day</a>
                         </li>
                       </ul>
                     </td>
                   </tr>
-                  <!-- End of Mock Data -->
+            
                 </ng-container>
               </tbody>
 

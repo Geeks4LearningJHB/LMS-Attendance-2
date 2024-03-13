@@ -12,6 +12,7 @@ export class AttendanceService {
   TODAY_HOURS = 8;
   MONTH_HOURS = 160;
   WEEK_HOURS = 40;
+ 
 
   constructor(
     @Inject(APP_SERVICE_CONFIG) private config: AppConfig,
@@ -21,18 +22,23 @@ export class AttendanceService {
   updateAttendanceGoals(value: any) {
     return this.http.put(`${this.config.apiUrl}/Attendance`, value);
   }
+
+  getAttendances(date: String){
+    return this.http.get<any>(`${this.config.apiUrl}/attendance/today-attendance/${date}`)
+  }
+
   getPagedAttendance(skip: any, take: any) {
     return this.http.get(
-      `${this.config.apiUrl}/Attendance/pages?skip=${skip}&take=${take}`
+      `${this.config.apiUrl}/attendance/view-all/pages?skip=${skip}&take=${take}`
     );
   }
   updateAttendance(logoutTime: any): Observable<any> {
     return this.http.put(`${this.config.apiUrl}/Attendance`, logoutTime);
   }
 
-  getAttendancesByUserId(value: string): Observable<AttendanceModel[]> {
+  getAttendancesByUserId(userId: number): Observable<AttendanceModel[]> {
     return this.http.get<AttendanceModel[]>(
-      `${this.config.apiUrl}/Attendance/${value}`
+      `${this.config.apiUrl}/attendance/view-by-user-id/${userId}`
     );
   }
 

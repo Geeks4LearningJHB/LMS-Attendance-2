@@ -13,7 +13,7 @@ export class UserService {
   constructor(@Inject(APP_SERVICE_CONFIG) private config:AppConfig,private http: HttpClient) { }
 
   authenticate(value: any): Observable<any> {
-    return this.http.post(`${this.config.apiUrl}/user/login`, value);
+    return this.http.post(`${this.config.apiUrl}/login`, value);
   }
 
   getAllUsers(): Observable<any>  {
@@ -33,7 +33,7 @@ export class UserService {
   }
 
   getPagedUsers(skip: number, take: number) {
-    return this.http.get(`${this.config.apiUrl}/user?skip=${skip}&take=${take}`);
+    return this.http.get(`${this.config.apiUrl}/users?skip=${skip}&take=${take}`);
   }
 
   deleteUser(id: any) {

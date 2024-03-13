@@ -14,7 +14,9 @@ export class TokenService {
 	get sessionToken() : string | null { return sessionStorage.getItem(constants.token) };
 
 	getDecodeToken = () : any | undefined => this.sessionToken ? jwt_decode(this.sessionToken) : undefined;
-
+    
+	;
+	
 	getExpiryTime() : number | undefined | null {
 		this.decodedToken = this.getDecodeToken();
 		return this.decodedToken?.exp;

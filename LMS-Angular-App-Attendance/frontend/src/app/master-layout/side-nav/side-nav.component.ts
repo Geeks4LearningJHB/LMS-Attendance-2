@@ -130,7 +130,7 @@ export class SideNavComponent implements OnInit {
     this.userId = user.id;
     this.getAttendance(this.userId);
   }
-  getAttendance(userId: string) {
+  getAttendance(userId: number) {
     this.attendanceService
       .getAttendancesByUserId(userId)
       .subscribe((res: any) => {

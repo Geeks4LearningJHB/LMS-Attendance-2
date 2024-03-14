@@ -174,5 +174,24 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
     }
 
+    @Override
+    public AttendanceResponseDto updateLogOutTime(long id , LocalTime logOutTime) {
+        Optional<AttendanceRecord> attendanceRecordOptional = attendanceRepository.findById(id);
+        if (attendanceRecordOptional.isPresent()) {
+            AttendanceRecord attendanceRecord = attendanceRecordOptional.get();
+            if (attendanceRecord.getLogOutTime() != null) {
+                throw new AttendanceExceptions("Log out time already set");
+            }
+            attendanceRecord.setLogOutTime(logOutTime);
+            attendanceRepository.save(attendanceRecord);
+            AttendanceRecord updatedAttendanceRecord = attendanceRepository.save(attendanceRecord);
+            return attendanceDtoMapper.mapToDto(updatedAttendanceRecord);
+        }
+        else{
+            throw  new AttendanceExceptions("Attendance not found");
+        }
+
+    }
+
 
 }

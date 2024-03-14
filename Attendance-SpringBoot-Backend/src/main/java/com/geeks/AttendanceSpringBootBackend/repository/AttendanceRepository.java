@@ -18,4 +18,6 @@ public interface AttendanceRepository extends JpaRepository<AttendanceRecord, Lo
    List<AttendanceRecord> findByUserIdUserId(long userId);
 
 
+
+
 }

@@ -28,7 +28,7 @@ public class AttendanceController {
     @Autowired
     private IpAdressInterface ipAdressInterface;
     @Autowired
-    AttendanceRepository attendanceRepository;
+    private AttendanceRepository attendanceRepository;
 
     @PostMapping("/create")
     public ResponseEntity<AttendanceResponseDto> addNewAttendance(@RequestBody User user){
@@ -64,12 +64,15 @@ public class AttendanceController {
         return "DELETED!!!!!";
    }
 
-    @PutMapping("/update/{id}/{status}")
+    @PutMapping("/update/status/{id}/{status}")
     public void UpdateAttendance(@PathVariable long id,@PathVariable String status){
         attendanceInterface.updateAttendanceRecord(id, status );
     }
 
-
+    @PutMapping("/update/logOut/{id}/{logOutTime}")
+    public void UpdateLogOutTime(@PathVariable long id,@PathVariable LocalTime logOutTime){
+        attendanceInterface.updateLogOutTime(id, logOutTime );
+    }
 
 }
 

@@ -7,6 +7,7 @@ import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public interface AttendanceInterface {
      List<AttendanceResponseDto> getAllUserAttendances(long userId);
 
      List<AttendanceResponseDto> getTodayAttendance(LocalDate date);
+     AttendanceResponseDto updateLogOutTime(long id ,LocalTime logOutTime);
 
 
 

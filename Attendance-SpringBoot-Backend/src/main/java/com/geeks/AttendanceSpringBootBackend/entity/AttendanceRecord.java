@@ -21,10 +21,10 @@ public class AttendanceRecord {
     private long id;
     private LocalTime logInTime;
     private LocalTime checkOutTime;
-
     private LocalDate date;
     private String logInLocation;
     private Status status;
+    private LocalTime logOutTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

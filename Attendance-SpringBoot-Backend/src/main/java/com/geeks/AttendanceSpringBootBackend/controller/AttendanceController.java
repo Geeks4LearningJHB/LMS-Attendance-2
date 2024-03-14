@@ -58,10 +58,16 @@ public class AttendanceController {
 
    @DeleteMapping("delete/{id}")
    public String todayAttendance(@PathVariable long id){
+
         attendanceInterface.deleteAttendanceRecord(id);
+
         return "DELETED!!!!!";
    }
 
+    @PutMapping("/update/{id}/{status}")
+    public void UpdateAttendance(@PathVariable long id,@PathVariable String status){
+        attendanceInterface.updateAttendanceRecord(id, status );
+    }
 
 
 

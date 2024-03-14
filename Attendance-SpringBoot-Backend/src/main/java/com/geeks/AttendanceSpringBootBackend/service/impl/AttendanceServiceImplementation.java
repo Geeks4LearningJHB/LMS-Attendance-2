@@ -129,22 +129,22 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         }
     }
 
+    //Update method     @Override
     @Override
-    //Update method
-    public AttendanceResponseDto updateAttendanceRecord(long id, AttendanceRequestDto requestDTO) {
+    public AttendanceResponseDto updateAttendanceRecord(long id, String status) {
         Optional<AttendanceRecord> attendanceRecordOptional = attendanceRepository.findById(id);
         if (attendanceRecordOptional.isPresent()) {
             AttendanceRecord attendanceRecord = attendanceRecordOptional.get();
-            // Assuming userId cannot be updated
-            attendanceRecord = attendanceDtoMapper.mapTOEntity(requestDTO);
-
-            AttendanceRecord updatedRecord = attendanceRepository.save(attendanceRecord);
-            return attendanceDtoMapper.mapToDto(updatedRecord);
-        } else {
-            // handle not found scenario
-            return null;
+            attendanceRecord.setStatus(Status.valueOf(status));
+            attendanceRepository.save(attendanceRecord);
+            AttendanceRecord updatedAttendanceRecord = attendanceRepository.save(attendanceRecord);
+            return attendanceDtoMapper.mapToDto(updatedAttendanceRecord);
         }
-    }
+            else{
+
+                throw new AttendanceExceptions("Attendance not found");
+            }
+        }
 
     @Override
     public List<AttendanceResponseDto> getAllAttendanceRecords() {

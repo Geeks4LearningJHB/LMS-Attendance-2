@@ -16,7 +16,7 @@ public interface AttendanceInterface {
      List<AttendanceResponseDto> attendanceList();
      AttendanceResponseDto newAttendance (User user);
      AttendanceResponseDto getAttendanceRecordById(long id);
-     AttendanceResponseDto updateAttendanceRecord(long id, AttendanceRequestDto requestDTO);
+     AttendanceResponseDto updateAttendanceRecord(long id, String status);
      List<AttendanceResponseDto> getAllAttendanceRecords();
      void deleteAttendanceRecord(long id);
      List<AttendanceResponseDto> getAllUserAttendances(long userId);

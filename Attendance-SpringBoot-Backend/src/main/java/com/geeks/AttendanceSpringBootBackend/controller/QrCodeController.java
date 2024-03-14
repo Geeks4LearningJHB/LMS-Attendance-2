@@ -8,9 +8,12 @@ import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
 import com.geeks.AttendanceSpringBootBackend.service.impl.QrCodeService;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.WriterException;
+import com.sun.tools.javac.Main;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.MissingRequestValueException;
@@ -32,42 +35,34 @@ public class QrCodeController {
     @Autowired
     private AttendanceInterface attendanceInterface;
 
-
+    private static final Logger logger = LogManager.getLogger(Main.class);
     @PostMapping(path = "/generate/{attendanceId}", produces = MediaType.IMAGE_JPEG_VALUE)
     public void generateQrForAttendance(@PathVariable long attendanceId, HttpServletResponse response) throws
             MissingRequestValueException, WriterException, IOException {
 
         AttendanceResponseDto attendanceRecord = attendanceInterface.getAttendanceRecordById(attendanceId);
-
         if(attendanceRecord == null || attendanceRecord.getDate() == null || attendanceRecord.getLogInTime() == null ||
                 attendanceRecord.getLogInLocation() == null) {
             throw new MissingRequestValueException("Attendance record data is incomplete");
         }
-
         String qrString = generateQrStringFromAttendanceRecord(attendanceRecord);
         qrCodeService.generateQr(qrString, response.getOutputStream());
 
         response.getOutputStream().flush();
     }
-
     @PostMapping("/decode")
     public DecodedQrResponseDto decodeQr(@RequestParam("qrCode") MultipartFile qrCode) throws IOException, NotFoundException {
         String qrCodeString =  qrCodeService.decodeQr(qrCode.getBytes());
-//        if (attendanceRecord .getId() == attendanceId ){
-//            LocalTime time = extractScanTimeFromQrString(qrString);
-//            attendanceInterface.updateLogOutTime(attendanceId,time);
-//        }
         return new DecodedQrResponseDto(qrCodeString);
     }
     private String generateQrStringFromAttendanceRecord(AttendanceResponseDto attendanceRecord) {
         // Concatenating fields to form QR string
       LocalTime scanTime = LocalTime.now();
-
-        return  " Date:" + attendanceRecord.getDate() +
-                ", LogInTime:" + attendanceRecord.getLogInTime() +
-                ", LogInLocation:" + attendanceRecord.getLogInLocation() +
-                ", Scan Time: " + scanTime;
-
+      String updateUrl = "http://localhost:8080/attendance/view-by-attendance-id/";
+      if (attendanceRecord.isScanned()){
+          return attendanceRecord.getName() + "Already scanned Thanks!";
+      }
+      return updateUrl + attendanceRecord.getId();
     }
     private LocalTime extractScanTimeFromQrString(String qrString) {
         int startIndex = qrString.indexOf("Scan Time: ") + "Scan Time: ".length();

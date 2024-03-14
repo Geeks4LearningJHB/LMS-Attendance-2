@@ -23,7 +23,7 @@ public class IpAddressServiceImplementation implements IpAdressInterface {
     private String officeRangeStart;
 
     @Value("${office.range.end}")
-    private String officeRangeEnd ;
+    private String officeRangeEnd  ;
     String systemPublicIp = null;
 
     @Override

@@ -24,7 +24,5 @@ public interface AttendanceInterface {
 
      List<AttendanceResponseDto> getTodayAttendance(LocalDate date);
      AttendanceResponseDto updateLogOutTime(long id ,LocalTime logOutTime);
-
-
-
+     AttendanceResponseDto scannedQr(long attendanceId);
 }

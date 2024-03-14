@@ -27,7 +27,7 @@ public class AttendanceMapperServiceImpl implements AttendanceMapperInterface {
         dto.setSurname(attendanceRecord.getUserId().getUserSurname());
         dto.setSponsor(attendanceRecord.getUserId().getSponsor());
         dto.setLogOutTime(attendanceRecord.getLogOutTime());
-
+        dto.setScanned(attendanceRecord.isScanned());
         return dto;
 
     }

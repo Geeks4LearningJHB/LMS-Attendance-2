@@ -25,6 +25,8 @@ public class AttendanceRecord {
     private String logInLocation;
     private Status status;
     private LocalTime logOutTime;
+    @Column(nullable = false)
+    private boolean scanned = false;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

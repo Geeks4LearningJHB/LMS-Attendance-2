@@ -1,4 +1,5 @@
 package com.geeks.AttendanceSpringBootBackend.service.impl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -9,11 +10,13 @@ import java.util.List;
 
 @Component
 public class LoginTimeChecker {
-    LocalTime deadlineTime = LocalTime.of(9, 00); //If the user doesnt' log in before 09h00 then will return as absent
-    LocalTime clockInTime = LocalTime.of(7 , 30);
+    @Value("${office.deadline-time}")
+    private LocalTime deadlineTime;
+    @Value("${office.clock-in-time}")
+    private LocalTime clockInTime;
 
 
-@Lazy
+    @Lazy
     public boolean isLate(LocalTime logInTime ){
         if ((logInTime.isAfter(clockInTime))){
             return true;

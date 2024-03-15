@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -46,18 +47,33 @@ public class AttendanceController {
         return attendanceInterface.attendanceList();
     }
 
-    //am using this method for a very different logic do not change
+    //DO NOT TOUCH !!!
+    @GetMapping("/scan-by-attendance-id/{attendanceId}")
+    public String updateLogOutTime(@PathVariable long attendanceId){
+        AttendanceResponseDto attendanceRecord = attendanceInterface.getAttendanceRecordById(attendanceId);
+        if (attendanceRecord == null) {
+            return "Attendance doesn't exist";
+        }
+        // Set scanned to true and update the record in our database
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime time = LocalTime.now();
+        String currentTime = formatter.format(time);
+
+        LocalTime formattedTime = LocalTime.parse(currentTime , formatter);
+        attendanceInterface.scannedQr(attendanceRecord.getId());
+
+        attendanceInterface.updateLogOutTime(attendanceRecord.getId() , formattedTime);
+        return "You just scanned your QR Thank You ";
+
+    }
+
     @GetMapping("/view-by-attendance-id/{attendanceId}")
     public ResponseEntity<AttendanceResponseDto> attendanceById(@PathVariable long attendanceId){
         AttendanceResponseDto attendanceRecord = attendanceInterface.getAttendanceRecordById(attendanceId);
         if (attendanceRecord == null) {
             return ResponseEntity.notFound().build();
         }
-        // Set scanned to true and update the record in the database
-        attendanceInterface.scannedQr(attendanceRecord.getId());
-        attendanceInterface.updateLogOutTime(attendanceRecord.getId() , LocalTime.now());
         return ResponseEntity.ok(attendanceRecord);
-
     }
     @GetMapping("/view-by-user-id/{userId}")
     public List<AttendanceResponseDto> attendanceByUserId(@PathVariable long userId){

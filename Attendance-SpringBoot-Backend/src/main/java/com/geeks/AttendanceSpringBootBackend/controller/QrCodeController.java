@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @AllArgsConstructor
@@ -47,7 +48,6 @@ public class QrCodeController {
         }
         String qrString = generateQrStringFromAttendanceRecord(attendanceRecord);
         qrCodeService.generateQr(qrString, response.getOutputStream());
-
         response.getOutputStream().flush();
     }
     @PostMapping("/decode")
@@ -57,23 +57,11 @@ public class QrCodeController {
     }
     private String generateQrStringFromAttendanceRecord(AttendanceResponseDto attendanceRecord) {
         // Concatenating fields to form QR string
-      LocalTime scanTime = LocalTime.now();
-      String updateUrl = "http://localhost:8080/attendance/view-by-attendance-id/";
+      String updateUrl = "http://localhost:8080/attendance/scan-by-attendance-id/";
       if (attendanceRecord.isScanned()){
           return attendanceRecord.getName() + "Already scanned Thanks!";
       }
       return updateUrl + attendanceRecord.getId();
-    }
-    private LocalTime extractScanTimeFromQrString(String qrString) {
-        int startIndex = qrString.indexOf("Scan Time: ") + "Scan Time: ".length();
-        String scanTimeStr = qrString.substring(startIndex);
-
-        // Assuming the scan time is in HH:mm:ss format
-        int hour = Integer.parseInt(scanTimeStr.substring(0, 2));
-        int minute = Integer.parseInt(scanTimeStr.substring(3, 5));
-        int second = Integer.parseInt(scanTimeStr.substring(6, 8));
-
-        return LocalTime.of(hour, minute, second);
     }
 
 }

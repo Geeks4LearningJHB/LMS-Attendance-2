@@ -18,6 +18,7 @@ public class AttendanceMapperServiceImpl implements AttendanceMapperInterface {
 
         AttendanceResponseDto dto = new AttendanceResponseDto();
         dto.setId(attendanceRecord.getId());
+        dto.setUserId(attendanceRecord.getUserId().getUserId());
         dto.setStatus(attendanceRecord.getStatus());
         dto.setLogInTime(attendanceRecord.getLogInTime());
         dto.setDate(attendanceRecord.getDate());

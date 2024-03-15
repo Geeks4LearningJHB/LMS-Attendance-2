@@ -23,6 +23,7 @@ public class AttendanceResponseDto {
     private LocalTime checkOutTime;
     private LocalDate date;
     private String logInLocation;
+    private long userId;
     private Status status;
     private String name;
     private String surname;

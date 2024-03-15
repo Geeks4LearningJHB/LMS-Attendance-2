@@ -10,6 +10,8 @@ export interface AttendanceModel {
   status: AttendanceStatus;
   checkOutTime: Time;
   logInTime: Time;
+  logOutTime: Time;
+
 }
 
 // case AttendanceStatus.Present:

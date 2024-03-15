@@ -22,7 +22,7 @@
               Login Time
             </th>
             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
-              Logout Time
+              Check out 
             </th>
             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
               Status
@@ -42,7 +42,11 @@
               <td class="align-middle text-xs ps-2">{{attendedUsers.sponsor}}</td>
               <td class="align-middle text-xs ps-2">{{attendedUsers.logInTime}}</td>
               <td class="align-middle text-xs ps-2">{{attendedUsers.checkOutTime}}</td>
-              <td class="align-middle text-xs ps-2">{{attendedUsers.status}}</td>
+            
+            
+              <td class="align-middle text-xs ps-2 " > <p class="font-weight-bold mb-0" [class]="getStatus(attendedUsers.status)">
+                {{attendedUsers.status}}
+              </p></td>
               <td class="align-middle dropdown">
                 <button class="btn btn-link text-secondary mb-0 dropdown-toggle" type="button" id="dropdownMenuButton1"
                   data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,7 +63,7 @@
                       &nbsp;&nbsp;View Goals</a>
                   </li>
                   <li>
-                    <a class="dropdown-item"  (click)="openModal()">
+                    <a class="dropdown-item" (click)="getAttendanceById(attendedUsers.userId)"  (click)="openModal()">
                       &nbsp;&nbsp;View Attendance</a>
                   </li>
                 </ul>

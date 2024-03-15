@@ -8,35 +8,25 @@
                 <th>Date</th>
                 <th>Day</th>
                 <th>Status</th>
+                <th>Log Out Time</th>
             </tr>
         </thead>
         <tbody>
+            <ng-container *ngFor="let attendances of data">
             <tr>
-                <td>2024-03-01</td>
-                <td>Monday</td>
-                <td>Present</td>
+                <td>{{attendances.date}}</td>
+                <td>{{attendances.date | date:'EEEE'}}</td>
+                <td>{{attendances.status}}</td>
+                  <td class="align-middle text-xs ps-2">
+                <ng-container *ngIf="attendances.logOutTime; else elseBlock">
+                  {{ attendances.logOutTime }}
+                </ng-container>
+                <ng-template #elseBlock>
+                  - - - -
+                </ng-template>
+              </td>
             </tr>
-            <tr>
-                <td>2024-03-02</td>
-                <td>Tuesday</td>
-                <td>Present</td>
-            </tr>
-            <tr>
-                <td>2024-03-03</td>
-                <td>Wednesday</td>
-                <td>Absent</td>
-            </tr>
-            <tr>
-                <td>2024-03-04</td>
-                <td>Thursday</td>
-                <td>Leave</td>
-            </tr>
-            <tr>
-                <td>2024-03-05</td>
-                <td>Friday</td>
-                <td>Present</td>
-            </tr>
-            <!-- Add more rows for each day of the month -->
+        </ng-container>
         </tbody>
     </table>
 </div>

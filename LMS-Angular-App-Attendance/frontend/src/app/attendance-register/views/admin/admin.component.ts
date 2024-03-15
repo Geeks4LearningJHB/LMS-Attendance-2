@@ -5,6 +5,7 @@ import { UserService } from 'src/app/user-management/services/user.service';
 import { AttendanceService } from '../../services/attendance.service';
 import { AdminpopupComponent } from '../../popup/adminpopup/adminpopup.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AttendanceModel } from '../../models/attendance.interface';
 
 @Component({
   selector: 'app-admin',
@@ -16,6 +17,10 @@ attendences: any[] = [];
   users: any;
   ids: any;
   testing: UntypedFormGroup = new UntypedFormGroup({});
+  userId!: number;
+  id!: string;
+  loginTime: any;
+  statu$: any;
   date: any;
   // testing data
   
@@ -28,8 +33,6 @@ attendences: any[] = [];
 
   ngOnInit() {
     const currentDate = new Date();
-    
-
     const date = currentDate.toISOString().split('T')[0];
     const convertedDate = new Date(date);
     this.getAllAttendances(date);
@@ -42,7 +45,17 @@ attendences: any[] = [];
       width: '800px',
     });
   }
-  
+  getAttendanceById(userId: number) {
+    this.attendenceService
+      .getAttendancesByUserId(userId)
+      .subscribe((attendance: AttendanceModel[]) => {
+        const dialogRef = this.dialog.open(AdminpopupComponent, {
+          width: '800px',
+          data: attendance
+        });
+      });
+      console.log("Fetching attendance data for user with ID:", userId);
+  }
 getAllAttendances(date : String){
   this.attendenceService.getAttendances(date).subscribe(respose=>{
   this.attendences = respose
@@ -82,5 +95,15 @@ getAllAttendances(date : String){
   //   return status.toLowerCase();
   // }
 
-  
+
+
+
+
+
+
+
+
+  getStatus(status: string): any {
+    return status.toLowerCase();
+  }
 }

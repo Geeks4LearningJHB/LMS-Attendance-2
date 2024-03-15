@@ -23,4 +23,5 @@ public class AttendanceRequestDto {
     private Status status;
     private long userId;
 
+
 }

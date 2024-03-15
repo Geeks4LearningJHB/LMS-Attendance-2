@@ -2,7 +2,6 @@ package com.geeks.AttendanceSpringBootBackend.service.impl;
 
 import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
 import com.geeks.AttendanceSpringBootBackend.entity.User;
-import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceRequestDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.enums.Status;
 import com.geeks.AttendanceSpringBootBackend.exceptions.AttendanceExceptions;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -172,6 +170,42 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         return attendanceDtoMapper.mapToResponseDtoList(attendanceRecords);
 
 
+    }
+
+    @Override
+    public AttendanceResponseDto updateLogOutTime(long id , LocalTime logOutTime) {
+        Optional<AttendanceRecord> attendanceRecordOptional = attendanceRepository.findById(id);
+        if (attendanceRecordOptional.isPresent()) {
+            AttendanceRecord attendanceRecord = attendanceRecordOptional.get();
+            if (attendanceRecord.getLogOutTime() != null) {
+                throw new AttendanceExceptions("Log out time already set");
+            }
+            attendanceRecord.setLogOutTime(logOutTime);
+            attendanceRepository.save(attendanceRecord);
+            AttendanceRecord updatedAttendanceRecord = attendanceRepository.save(attendanceRecord);
+            return attendanceDtoMapper.mapToDto(updatedAttendanceRecord);
+        }
+        else{
+            throw  new AttendanceExceptions("Attendance not found");
+        }
+
+    }
+    @Override
+    public AttendanceResponseDto scannedQr(long attendanceId){
+        Optional<AttendanceRecord> attendanceRecordOptional = attendanceRepository.findById(attendanceId);
+        if (attendanceRecordOptional.isPresent()) {
+            AttendanceRecord attendanceRecord = attendanceRecordOptional.get();
+            if (attendanceRecord.isScanned()){
+                throw new AttendanceExceptions("Already scanned");
+            }
+            attendanceRecord.setScanned(true);
+            attendanceRepository.save(attendanceRecord);
+            AttendanceRecord updatedAttendanceRecord = attendanceRepository.save(attendanceRecord);
+            return attendanceDtoMapper.mapToDto(updatedAttendanceRecord);
+        }
+        else{
+            throw  new AttendanceExceptions("Attendance not found");
+        }
     }
 
 

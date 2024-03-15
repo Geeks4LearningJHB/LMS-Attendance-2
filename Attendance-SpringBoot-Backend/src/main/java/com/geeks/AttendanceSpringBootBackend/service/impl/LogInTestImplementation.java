@@ -17,13 +17,14 @@ public class LogInTestImplementation {
     public Optional<User> logInTester(String email , String password){
 
         Optional<User> validUser = userRepository.findByEmail(email);
-
+        System.out.println(validUser);
         if (validUser.isPresent()){
             String userPassword = validUser.get().getPassword();
             String  userEmail = validUser.get().getEmail();
 
             if (userEmail.equals(email) && userPassword.equals(password)){
                 User user = validUser.get();
+
                 attendanceInterface.newAttendance(user);
             }
             else {

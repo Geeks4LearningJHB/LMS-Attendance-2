@@ -54,3 +54,12 @@ th {
     border: 1px solid #044613;
     /* Border color */
 }
+
+.red-text {
+    color: red;
+  }
+  
+  .blue-text {
+    color: blue;
+  }
+  

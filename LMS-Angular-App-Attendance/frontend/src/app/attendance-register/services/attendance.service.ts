@@ -62,4 +62,11 @@ export class AttendanceService {
   captureDetails(value: any): Observable<any> {
     return this.http.post(`${this.config.apiUrl}/Attendance`, value);
   }
+
+  unexpectedLogOutTime(attendanceId: any): Observable<boolean> {
+    return this.http.get<boolean>(`${this.config.apiUrl}/attendance/log-out-flag/${attendanceId}`)
+  }
+
+
+
 }

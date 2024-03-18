@@ -18,12 +18,17 @@
                 <td>{{attendances.date | date:'EEEE'}}</td>
                 <td>{{attendances.status}}</td>
                   <td class="align-middle text-xs ps-2">
-                <ng-container *ngIf="attendances.logOutTime; else elseBlock">
-                  {{ attendances.logOutTime }}
-                </ng-container>
-                <ng-template #elseBlock>
-                  - - - -
-                </ng-template>
+                    <ng-container *ngIf="attendances.logOutTime !== null; else elseBlock">
+                        <div [ngClass]="{
+                          'red-text': !unexpectedLogOut,
+                          'blue-text': unexpectedLogOut
+                        }">
+                          {{ attendances.logOutTime }}
+                        </div>
+                      </ng-container>
+                      <ng-template #elseBlock>
+                        - - -
+                      </ng-template>
               </td>
             </tr>
         </ng-container>
@@ -38,7 +43,8 @@
     </nav>
 
     <div mat-dialog-action>
-        <button class="download-button" style="width: 100px;"  href="#">Download</button>
-        <button class="done-button" style="width: 100px;"   href="#">Done</button>
-    </div>
+        <button class="download-button" style="width: 100px;" href="#">Download</button>
+        <button class="done-button" style="width: 100px;" (click)="onDoneClick()">Done</button>
+      </div>
+      
 </div>

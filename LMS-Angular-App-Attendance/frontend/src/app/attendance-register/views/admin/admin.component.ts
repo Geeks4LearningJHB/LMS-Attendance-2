@@ -4,7 +4,7 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { UserService } from 'src/app/user-management/services/user.service';
 import { AttendanceService } from '../../services/attendance.service';
 import { AdminpopupComponent } from '../../popup/adminpopup/adminpopup.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AttendanceModel } from '../../models/attendance.interface';
 
 @Component({
@@ -22,6 +22,7 @@ attendences: any[] = [];
   loginTime: any;
   statu$: any;
   date: any;
+  
   // testing data
   
   constructor(
@@ -41,10 +42,12 @@ attendences: any[] = [];
   }
  
   openModal(): void {
-    this.dialog.open(AdminpopupComponent, {
-      width: '800px',
-    });
+    this.dialog.open
   }
+  closeModal() {
+    this.dialog.closeAll; 
+  }
+
   getAttendanceById(userId: number) {
     this.attendenceService
       .getAttendancesByUserId(userId)
@@ -62,6 +65,9 @@ getAllAttendances(date : String){
  console.log(this.attendences)
   })
 }
+
+
+
   // getAttendences(skip: any, take: any) {
   //   this.attendenceService
   //     .getPagedAttendance(skip, take)

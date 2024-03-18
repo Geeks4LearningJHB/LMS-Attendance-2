@@ -1,16 +1,13 @@
 package com.geeks.AttendanceSpringBootBackend.controller;
 
-import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
 import com.geeks.AttendanceSpringBootBackend.entity.User;
-import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceRequestDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
-import com.geeks.AttendanceSpringBootBackend.exceptions.AttendanceExceptions;
 import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
 import com.geeks.AttendanceSpringBootBackend.service.IpAdressInterface;
-import com.geeks.AttendanceSpringBootBackend.service.impl.LogOutTimeImplimentation;
+import com.geeks.AttendanceSpringBootBackend.service.impl.CheckOutTimeImplimentation;
+import com.geeks.AttendanceSpringBootBackend.service.impl.TimeFetcherApi;
 import com.sun.tools.javac.Main;
-import org.apache.coyote.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +31,10 @@ public class AttendanceController {
     private IpAdressInterface ipAdressInterface;
     @Autowired
     private AttendanceRepository attendanceRepository;
+    @Autowired
+    TimeFetcherApi timeFetcherApi;
+    @Autowired
+    CheckOutTimeImplimentation checkOutTimeImplimentation;
 
     @PostMapping("/create")
     public ResponseEntity<AttendanceResponseDto> addNewAttendance(@RequestBody User user){
@@ -46,7 +47,6 @@ public class AttendanceController {
 
         return attendanceInterface.attendanceList();
     }
-
     //DO NOT TOUCH !!!
     @GetMapping("/scan-by-attendance-id/{attendanceId}")
     public String updateLogOutTime(@PathVariable long attendanceId){
@@ -54,12 +54,10 @@ public class AttendanceController {
         if (attendanceRecord == null) {
             return "Attendance doesn't exist";
         }
-        // Set scanned to true and update the record in our database
+        String southAfricanTime = timeFetcherApi.getCurrentTimeInSouthAfrica();
+        //Set scanned to true and update the record in our database
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime time = LocalTime.now();
-        String currentTime = formatter.format(time);
-
-        LocalTime formattedTime = LocalTime.parse(currentTime , formatter);
+        LocalTime formattedTime = LocalTime.parse(southAfricanTime , formatter);
         attendanceInterface.scannedQr(attendanceRecord.getId());
 
         attendanceInterface.updateLogOutTime(attendanceRecord.getId() , formattedTime);
@@ -108,6 +106,11 @@ public class AttendanceController {
     @GetMapping("/scanLink/{id}")
     public void scanLink(@PathVariable long id){
        attendanceInterface.scannedQr(id);
+    }
+
+    @GetMapping("log-out-flag/{id}")
+    public boolean logOutFlag(@PathVariable long id){
+       return checkOutTimeImplimentation.logOutBeforeExpected(id);
     }
 
 

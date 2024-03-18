@@ -40,7 +40,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
 
     @Autowired
-    private LogOutTimeImplimentation logOutTimeImplimentation;
+    private CheckOutTimeImplimentation logOutTimeImplimentation;
 
     @Override
     public List<AttendanceResponseDto> attendanceList() {
@@ -58,14 +58,12 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         LocalTime expectedLogOutTime ;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        //get time and date from the APi and break it into date and time
-        String dateTime  =  timeFetcherApi.getCurrentTimeInSouthAfrica();
-        String time  = dateTime.substring(dateTime.lastIndexOf('/') + 1);
-        String date  = dateTime.substring(0, dateTime.lastIndexOf('/'));
+        String date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
+        String time  = timeFetcherApi.getCurrentTimeInSouthAfrica();
+
 
         //format date and time to the localDate pattern
         LocalTime currentTime = LocalTime.parse(time , formatter);
-
         LocalDate currentDate = LocalDate.parse(date , formatDate);
 
         AttendanceRecord attendanceRecord = new AttendanceRecord();
@@ -74,6 +72,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         String logInIp =   ipAdressInterface.getLocation();
         List<User> users = userRepository.findAll();
         LocalDate testingDate = LocalDate.now().plusDays(1);
+        LocalTime testingTime = LocalTime.of(8 , 35);
 
         AttendanceRecord currentDateAttendance = attendanceRepository
                .findByUserIdUserIdAndDate(user.getUserId() , currentDate);
@@ -87,13 +86,11 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         if (currentDateAttendance == null){
 
             if (logInIp.equals("Office")){
-                attendanceRecord.setLogInTime(currentTime);
+                attendanceRecord.setLogInTime(testingTime);
                 attendanceRecord.setDate(currentDate);
-                logger.info("testing date:" + attendanceRecord.getDate());
                 attendanceRecord.setLogInLocation(logInIp);
+                logger.info("Log in time : " + attendanceRecord.getLogInTime());
                 attendanceRecord.setCheckOutTime(logOutTimeImplimentation.checkOutTimeCreation(attendanceRecord.getLogInTime()));
-
-
                 if(loginTimeChecker.isPresent(attendanceRecord.getLogInTime()) ){
                     attendanceRecord.setStatus(Status.PRESENT);
                 }
@@ -207,6 +204,8 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
             throw  new AttendanceExceptions("Attendance not found");
         }
     }
+
+
 
 
 }

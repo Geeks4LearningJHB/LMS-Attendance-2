@@ -1,13 +1,21 @@
 package com.geeks.AttendanceSpringBootBackend.service.impl;
 
+import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
+import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
+import com.geeks.AttendanceSpringBootBackend.exceptions.AttendanceExceptions;
+import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
+import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
+import java.util.Optional;
 
 @Component
-public class LogOutTimeImplimentation {
-
+public class CheckOutTimeImplimentation {
+@Autowired
+    AttendanceRepository attendanceRepository;
     @Value("${office.normal-clock-in-time}")
     private String normalClockInTimeStr;
 
@@ -19,6 +27,8 @@ public class LogOutTimeImplimentation {
 
     @Value("${office.max-check-out-time}")
     private String maxCheckOutTimeStr;
+    @Autowired
+    private TimeFetcherApi timeFetcherApi;
 
     public LocalTime checkOutTimeCreation(LocalTime clockInTime) {
         LocalTime normalClockInTime = LocalTime.parse(normalClockInTimeStr);
@@ -36,10 +46,28 @@ public class LogOutTimeImplimentation {
         } else if (clockInTime.isAfter(lateClockInTime)) {
             checkOutTime = maxCheckOutTime;
         } else {
-            checkOutTime = normalLogoutTime.plusHours(currentTime.getHour() - clockInTime.getHour())
-                    .plusMinutes(currentTime.getMinute() - clockInTime.getMinute());
+            checkOutTime = normalLogoutTime;
         }
 
         return checkOutTime;
     }
+
+    public boolean logOutBeforeExpected(long id){
+
+        Optional<AttendanceRecord> attendanceRecord = attendanceRepository.findById(id);
+
+
+        if (attendanceRecord.isPresent()) {
+            AttendanceRecord userAtendanceRecord= attendanceRecord.get();
+            if (userAtendanceRecord.getLogOutTime().isAfter(userAtendanceRecord.getCheckOutTime())
+                    || userAtendanceRecord.getCheckOutTime().equals(userAtendanceRecord.getLogOutTime())) {
+                //true         ||  false
+
+                return true;
+            }
+            return false;
+        }
+       throw new AttendanceExceptions("Attendance not found ");
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.geeks.AttendanceSpringBootBackend.controller;
 
+import com.geeks.AttendanceSpringBootBackend.service.impl.TimeFetcherApi;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -12,37 +14,24 @@ import java.time.format.DateTimeFormatter;
 @RestController
 public class TimeController {
 
+    @Autowired
+    TimeFetcherApi timeFetcherApi;
+
     @GetMapping("/current-time")
     public String getCurrentTimeInSouthAfrica() {
 
-        String apiUrl = "https://www.timeapi.io/api/Time/current/zone?timeZone=africa/johannesburg";
-        RestTemplate restTemplate = new RestTemplate();
-        String jsonResponse = restTemplate.getForObject(apiUrl, String.class);
+        String time = timeFetcherApi.getCurrentTimeInSouthAfrica();
+        String date = timeFetcherApi.getCurrentDateInSouthAfrica();
+//    }else{
+//        return "Why did you change your time Boss!!";
+//    }
+//
+//} catch (Exception e) {
+//        e.printStackTrace();
+//        return "Error fetching time.";
+//        }
+//        }
 
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            JsonNode root = mapper.readTree(jsonResponse);
-            String time = root.get("time").asText();
-            String date = root.get("date").asText();
-
-            String dateTime = date+ "/" + time;
-            String time1  =  dateTime.substring(dateTime.lastIndexOf('/') + 1);
-            LocalTime localTime = LocalTime.now();
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-           String formmatted  =  localTime.format(formatter);
-
-            System.out.println(formmatted);
-            if (time1.equals(formmatted)){
-                return time1;
-            }else{
-                return "Why did you change your time Boss!!";
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error fetching time.";
-        }
+        return time + date;
     }
 }
-

@@ -13,11 +13,11 @@ export class UserService {
   constructor(@Inject(APP_SERVICE_CONFIG) private config:AppConfig,private http: HttpClient) { }
 
   authenticate(value: any): Observable<any> {
-    return this.http.post(`${this.config.apiUrl}/login`, value);
+    return this.http.post(`${this.config.apiUrl}/user/login`, value);
   }
 
   getAllUsers(): Observable<any>  {
-    return this.http.get(`${this.config.apiUrl}/user`);
+    return this.http.get(`${this.config.apiUrl}/users`);
   }
 
   getUserById(id: any): Observable<any>  {
@@ -43,5 +43,8 @@ export class UserService {
   getUsersByRole(role: Roles) {
     return this.http.get(`${this.config.apiUrl}/user/role/${role}`);
   }
+   
+  
+
 
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Component } from '@angular/core';
+import { UserService } from '../user-management/services/user.service';
 
 
 @Injectable({
@@ -9,33 +10,41 @@ import { Component } from '@angular/core';
 export class DataService {
   
   private loggesinUser! : User; 
-  constructor() { }
+  constructor(private userService : UserService) { }
+  users:any[] = []
 
- private users = [
-      {
-        userId: 1,
-        name: 'learner@geeks4learning.com',
-        surname: '',
-        role: 'Learner',
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-      },
-      {
-        userId: 2,
-        name: 'admin@geeks4learning.com',
-        surname: '',
-        role: 'Admin',
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-      },
-       {
-        userId: 2,
-        name: 'trainer@geeks4learning.com',
-        surname: '',
-        role: 'Trainer',
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-      }
-      // Add more mock users as needed
-    ];
+
+
+//  private users = [
+//       {
+//         userId: 1,
+//         name: 'learner@geeks4learning.com',
+//         surname: '',
+//         role: 'Learner',
+//         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+//       },
+//       {
+//         userId: 2,
+//         name: 'admin@geeks4learning.com',
+//         surname: '',
+//         role: 'Admin',
+//         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+//       },
+//        {
+//         userId: 2,
+//         name: 'trainer@geeks4learning.com',
+//         surname: '',
+//         role: 'Trainer',
+//         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+//       }
+//       // Add more mock users as needed
+//     ];
+    
+    
    
+
+
+
     setLoggedIn(username : string)
     {
      const dummy = this.getUserByUsername(username);
@@ -61,7 +70,13 @@ export class DataService {
     }
 
     getUsers() {
-      return this.users;
+       this
+       .userService
+       .getAllUsers().subscribe(response=>{
+        this.users = response
+        console.log(this.users)
+      }
+     );
     }
   
     getUserById(userId: number) {

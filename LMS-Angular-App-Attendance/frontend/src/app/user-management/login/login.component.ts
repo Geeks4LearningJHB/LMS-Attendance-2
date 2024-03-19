@@ -20,6 +20,14 @@ export class LoginComponent implements OnInit {
   holdingArray: UntypedFormGroup = new UntypedFormGroup({});
 
   constructor(private userService: UserService, private router: Router, private dataService : DataService) { }
+   
+
+
+
+
+
+
+
 
   getFormControl(control: String): AbstractControl {
     return this.loginForm.controls[`${control}`];
@@ -34,7 +42,9 @@ export class LoginComponent implements OnInit {
     this.loginForm = new UntypedFormGroup({
       Email: new UntypedFormControl(null, [Validators.required, Validators.email]),
       Password: new UntypedFormControl(null, Validators.required),
-    });
+    }
+  
+    );
 
     // Clearing errors when making username changes
     this.getFormControl('Email').valueChanges.subscribe(() => {
@@ -73,6 +83,7 @@ export class LoginComponent implements OnInit {
    this.captureGoalsTime = new Date(Date.now()).getMinutes() + 1;
    this.dataService.setLoggedIn(email);
    const loggedInUser = this.dataService.getUserByUsername(email);
+   console.log(this.dataService.getUsers())
 
     // making a backend call
     try {
@@ -104,4 +115,5 @@ export class LoginComponent implements OnInit {
         console.log(error);
       }
   }
+  
 }

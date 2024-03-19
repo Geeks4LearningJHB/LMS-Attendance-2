@@ -29,9 +29,10 @@ public class User {
     private String email;
     private String password;
     private Sponsor sponsor;
+    private String role;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-    private List<AttendanceRecord> attendanceRecords = new ArrayList<>();
+//    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+//    private List<AttendanceRecord> attendanceRecords = new ArrayList<>();
 
 
 }

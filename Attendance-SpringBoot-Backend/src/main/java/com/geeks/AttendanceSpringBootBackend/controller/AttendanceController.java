@@ -22,7 +22,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/attendance")
-@CrossOrigin(origins = "http://localhost:4200/")
 public class AttendanceController {
     private static final Logger logger = LogManager.getLogger(Main.class);
     @Autowired
@@ -110,6 +109,7 @@ public class AttendanceController {
 
     @GetMapping("log-out-flag/{id}")
     public boolean logOutFlag(@PathVariable long id){
+        logger.info("Triggrered/n : "+ id);
        return checkOutTimeImplimentation.logOutBeforeExpected(id);
     }
 

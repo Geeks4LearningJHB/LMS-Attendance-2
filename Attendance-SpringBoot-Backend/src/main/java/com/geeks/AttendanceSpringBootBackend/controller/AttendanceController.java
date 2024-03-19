@@ -37,17 +37,21 @@ public class AttendanceController {
     }
     @GetMapping("/view-all")
     public List<AttendanceResponseDto> attendanceRecord(){
-
         return attendanceInterface.attendanceList();
     }
 
 
     @GetMapping("/today")
-
-    public AttendanceRecord attendancesForToday (long  id , LocalDate date){
-
-        return attendanceRepository.findByUserIdUserIdAndDate(id , date);
+    public ResponseEntity<AttendanceRecord> attendancesForToday(@RequestParam long id, @RequestParam String date) {
+        LocalDate localDate = LocalDate.parse(date); // Parse the date string to LocalDate
+        List<AttendanceRecord> attendanceRecords = attendanceRepository.findByUserIdUserIdAndDate(id, localDate);
+        if (!attendanceRecords.isEmpty()) {
+            return ResponseEntity.ok(attendanceRecords.get(0)); // Assuming only one record is expected
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
 
     @GetMapping("/test-ip")
     public String getIp(){

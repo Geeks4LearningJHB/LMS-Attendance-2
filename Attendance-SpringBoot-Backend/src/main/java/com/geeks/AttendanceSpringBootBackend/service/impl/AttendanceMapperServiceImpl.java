@@ -41,6 +41,4 @@ public class AttendanceMapperServiceImpl implements AttendanceMapperInterface {
         return attendanceRecord;
     }
 
-
-
 }

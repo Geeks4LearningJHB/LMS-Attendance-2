@@ -77,8 +77,8 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         List<User> users = userRepository.findAll();
         LocalDate testingDate = LocalDate.now().plusDays(1);
 
-        AttendanceRecord currentDateAttendance = attendanceRepository
-               .findByUserIdUserIdAndDate(user.getUserId() , testingDate);
+        AttendanceRecord currentDateAttendance = new AttendanceRecord();
+        attendanceRepository.findByUserIdUserIdAndDate(user.getUserId() , testingDate);
 
         //check if user exists
         User logInUser= userRepository.findById(user.getUserId())
@@ -86,7 +86,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         attendanceRecord.setUserId(logInUser);
 
         //check if the user has attendance record for that day
-        if (currentDateAttendance == null){
+//        if (currentDateAttendance == null){
 
             if (logInIp.equals("Office")){
                 attendanceRecord.setLogInTime(currentTime);
@@ -110,9 +110,9 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
             else {
                 throw new AttendanceExceptions("User not in the Office");
             }
-        }else {
-            throw new AttendanceExceptions("Attendance already exists for :" + logInUser.getUsername());
-        }
+//        }else {
+//            throw new AttendanceExceptions("Attendance already exists for :" + logInUser.getUsername());
+//        }
 
     }
 
@@ -129,20 +129,20 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         }
     }
 
+    //Update method     @Override
     @Override
-    //Update method
-    public AttendanceResponseDto updateAttendanceRecord(long id, AttendanceRequestDto requestDTO) {
+    public AttendanceResponseDto updateAttendanceRecord(long id, String status) {
         Optional<AttendanceRecord> attendanceRecordOptional = attendanceRepository.findById(id);
         if (attendanceRecordOptional.isPresent()) {
             AttendanceRecord attendanceRecord = attendanceRecordOptional.get();
-            // Assuming userId cannot be updated
-            attendanceRecord = attendanceDtoMapper.mapTOEntity(requestDTO);
+            attendanceRecord.setStatus(Status.valueOf(status));
+            attendanceRepository.save(attendanceRecord);
+            AttendanceRecord updatedAttendanceRecord = attendanceRepository.save(attendanceRecord);
+            return attendanceDtoMapper.mapToDto(updatedAttendanceRecord);
+        }
+        else{
 
-            AttendanceRecord updatedRecord = attendanceRepository.save(attendanceRecord);
-            return attendanceDtoMapper.mapToDto(updatedRecord);
-        } else {
-            // handle not found scenario
-            return null;
+            throw new AttendanceExceptions("Attendance not found");
         }
     }
 
@@ -156,7 +156,5 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     public void deleteAttendanceRecord(long id) {
         attendanceRepository.deleteById(id);
     }
-
-
 
 }

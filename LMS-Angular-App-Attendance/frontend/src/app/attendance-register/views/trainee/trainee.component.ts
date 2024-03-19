@@ -20,10 +20,10 @@ export class TraineeComponent implements OnInit {
   modalDialog: MdbModalRef<CaptureGoalsComponent> | null = null;
   modalRef: any;
   date: any;
-  userId: number = 1;
+  userId!: number;
   holdingArray: UntypedFormGroup = new UntypedFormGroup({});
   attendances!: AttendanceModel[];
-  id!: string;
+  id: string | null = null;
   loginTime: any;
   statu$: any = 'Present';
   testTime: any;
@@ -45,8 +45,13 @@ export class TraineeComponent implements OnInit {
   ngOnInit(): void {
     // this.startTimer();
     const userId = this.userId
-    this.getAttendance(userId)
+    this.id = sessionStorage.getItem('userId')
+    if(this.id){
+      this.getAttendance(this.id)
+    }
+   console.log("user id: " + this.id)
     this.getTotalHoursWorked()
+
     // this.sendDetails()
   }
   sendDetails() {
@@ -68,10 +73,11 @@ export class TraineeComponent implements OnInit {
     });
     console.log('I am here');
     console.log(this.holdingArray.value);
-    this.getAttendance(this.userId);
+    this.getAttendance(this.id);
   }
   
-  getAttendance(userId: number) {
+  getAttendance(userId: string | null) {
+    console.log(userId)
     this.attendanceService
       .getAttendancesByUserId(userId)
       .subscribe((attendance: AttendanceModel[]) => {

@@ -42,9 +42,6 @@ export class DataService {
     
     
    
-
-
-
     setLoggedIn(username : string)
     {
      const dummy = this.getUserByUsername(username);
@@ -59,6 +56,7 @@ export class DataService {
           };
 
          this.loggesinUser = newUser;
+         console.log(this.loggesinUser)
          }
 
          return this.loggesinUser;
@@ -66,6 +64,7 @@ export class DataService {
     }
 
     getLoggedIn(){
+      
       return this.loggesinUser;
     }
 
@@ -84,6 +83,7 @@ export class DataService {
     }
 
     getUserByUsername(name: String) {
+     
         return this.users.find((user) => user.name === name);
       }
 

@@ -22,13 +22,6 @@ export class LoginComponent implements OnInit {
   constructor(private userService: UserService, private router: Router, private dataService : DataService) { }
    
 
-
-
-
-
-
-
-
   getFormControl(control: String): AbstractControl {
     return this.loginForm.controls[`${control}`];
   }
@@ -56,6 +49,8 @@ export class LoginComponent implements OnInit {
       this.clearFormControlErrors();
     })
   }
+  
+
 
   get currentDateTime(): string {
     let tzoffset = Math.abs(new Date().getTimezoneOffset() * 60000);
@@ -69,6 +64,7 @@ export class LoginComponent implements OnInit {
   isTouched(key: string): boolean { return this.getFormControl(key).touched; }
 
   login(): void {
+
     // display the error message
     this.loginForm.markAllAsTouched();
 
@@ -80,40 +76,53 @@ export class LoginComponent implements OnInit {
 // Now you can access individual form control values like this
    const email = formData.Email;
    const password = formData.Password;
+   const request = { email: email, password: password}
    this.captureGoalsTime = new Date(Date.now()).getMinutes() + 1;
    this.dataService.setLoggedIn(email);
    const loggedInUser = this.dataService.getUserByUsername(email);
-   console.log(this.dataService.getUsers())
+   console.log(request)
 
     // making a backend call
-    try {
+    this.userService
+      .authenticate(request)
+      .subscribe((response: any) => {
+        console.log("Login successful",response);
+        const userId = response.userId;
         setSessionStoragePairs(
           [
             constants.token,
+            "userId",
             constants.username,
             constants.role,
             constants.time,
             "date",
             "times"
-            
           ],
           [
-            loggedInUser?.token,
-            `${loggedInUser?.name} ${loggedInUser?.surname}`,
-            loggedInUser?.role,
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTIzNDU2Nzg5MCIsInVzZXJuYW1lIjoiZXhhbXBsZV91c2VyIiwiaWF0IjoxNjQ1NTI4NzU2LCJleHAiOjE2NDU1Mjg4MTZ9.VbZBtNnG4xOvWJzC9d4Z4R9BG48g6QezbXK7A9ARX18",
+           
+             userId,
+            `${response?.userName}`,
+            response?.role,
             this.currentDateTime,
             this.currentDateTime,
             this.captureGoalsTime
           ]
         )
-     
-       
-        console.log("I am sessionStorage : " + sessionStorage)
-        this.router.navigate(['/leave']);
-      }catch(error){
 
-        console.log(error);
-      }
+        // route to the master layout
+        console.log("I am sessionStorage : " + JSON.stringify(sessionStorage))
+        this.router.navigate(['/dashboard']);
+      },
+        error => {
+          console.log("Errrrrrr: ", error);
+          this.getFormControl('Email').setErrors({ isUserNameOrPasswordIncorrect: true });
+          this.getFormControl('Password').setErrors({ isUserNameOrPasswordIncorrect: true });
+          this.loginForm.updateValueAndValidity();
+          this.serverErrorMessage = error?.message;
+        });
   }
-  
+
+
+
 }

@@ -36,7 +36,7 @@ export class AttendanceService {
     return this.http.put(`${this.config.apiUrl}/Attendance`, logoutTime);
   }
 
-  getAttendancesByUserId(userId: number): Observable<AttendanceModel[]> {
+  getAttendancesByUserId(userId: string | null): Observable<AttendanceModel[]> {
     return this.http.get<AttendanceModel[]>(
       `${this.config.apiUrl}/attendance/view-by-user-id/${userId}`
     );

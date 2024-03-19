@@ -20,6 +20,7 @@ import { TokenService } from 'src/app/user-management/login/services/token.servi
 import { UserService } from 'src/app/user-management/services/user.service';
 import { NavItem } from '../models/nav-item';
 import { DataService, User } from 'src/app/mockData/data.service';
+import { constants } from 'src/app/shared/global/global.constants';
 
 @Component({
   selector: 'app-side-nav',
@@ -61,19 +62,18 @@ export class SideNavComponent implements OnInit {
   }
 
   getUserDetails(userId: string | null) {
-      console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-      if(this.dataService.getLoggedIn)
-      {
-        this.user = this.dataService.getLoggedIn();
-        console.log(this.user);
-        this.navItems = this.getNavItems(this.user);
-      }   
-  
+    // this.userService.getUserById(userId).subscribe((response: any) => {
+    //   this.user = response;
+    //   this.navItems = this.getNavItems(this.user);
+    // });
+    const role = sessionStorage.getItem(constants.role);
+    if(role) {
+      this.navItems = this.getNavItems(role);
+    }
   }
 
-  getNavItems(user: any) {
-    console.log(" role " + user.role);
-    switch (user?.role) {
+  getNavItems(role: any) {
+    switch (role) {
       case Roles.Super_Admin:
         return [
           Dashboard,
@@ -130,7 +130,7 @@ export class SideNavComponent implements OnInit {
     this.userId = user.id;
     this.getAttendance(this.userId);
   }
-  getAttendance(userId: number) {
+  getAttendance(userId: string) {
     this.attendanceService
       .getAttendancesByUserId(userId)
       .subscribe((res: any) => {

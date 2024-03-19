@@ -12,7 +12,7 @@ export class UserService {
 
   constructor(@Inject(APP_SERVICE_CONFIG) private config:AppConfig,private http: HttpClient) { }
 
-  authenticate(value: any): Observable<any> {
+  authenticate(value: any , ): Observable<any> {
     return this.http.post(`${this.config.apiUrl}/user/login`, value);
   }
 

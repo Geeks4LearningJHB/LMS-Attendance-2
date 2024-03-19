@@ -15,7 +15,6 @@ import { AttendanceModel } from '../../models/attendance.interface';
 export class AdminComponent implements OnInit {
 attendences: any[] = [];
   users: any;
-  ids: any;
   testing: UntypedFormGroup = new UntypedFormGroup({});
   userId!: number;
   id!: string;
@@ -48,7 +47,7 @@ attendences: any[] = [];
     this.dialog.closeAll; 
   }
 
-  getAttendanceById(userId: number) {
+  getAttendanceById(userId: string) {
     this.attendenceService
       .getAttendancesByUserId(userId)
       .subscribe((attendance: AttendanceModel[]) => {

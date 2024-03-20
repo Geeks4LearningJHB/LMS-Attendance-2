@@ -6,6 +6,8 @@ import { AttendanceService } from '../../services/attendance.service';
 import { AdminpopupComponent } from '../../popup/adminpopup/adminpopup.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AttendanceModel } from '../../models/attendance.interface';
+import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
+import { ViewAttendancesComponent } from '../../modal/view-attendances/view-attendances.component';
 
 @Component({
   selector: 'app-admin',
@@ -46,6 +48,24 @@ attendences: any[] = [];
   closeModal() {
     this.dialog.closeAll; 
   }
+
+ updateStatus(attendanceId : string){
+  this.attendenceService.updateAttendance(attendanceId)
+  .subscribe()
+ }
+ getOneAttendanceById(attendanceId: string) {
+  this.attendenceService
+  .getUserAttendanceById(attendanceId)
+    .subscribe((attendance: AttendanceModel[]) => {
+      const dialogRef = this.dialog.open(ViewAttendancesComponent, {
+        width: '800px',
+        data: attendance
+      });
+    });
+    console.log("Fetching attendance data for attendance with ID:", attendanceId);
+}
+
+
 
   getAttendanceById(userId: string) {
     this.attendenceService

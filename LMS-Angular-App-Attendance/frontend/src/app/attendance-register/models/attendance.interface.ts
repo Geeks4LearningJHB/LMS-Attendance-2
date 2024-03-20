@@ -1,6 +1,7 @@
 import { Time } from "@angular/common";
 
 export type AttendanceStatus = 'Present' | 'Absent' | 'Late' | 'Leave';
+export type Sponsor = 'Fnb' | 'Absa' | 'Reverside';
 
 export type HoursType = 'Month' | 'Today' | 'Week';
 
@@ -11,6 +12,9 @@ export interface AttendanceModel {
   checkOutTime: Time;
   logInTime: Time;
   logOutTime: Time;
+  name: string;
+  surname: string;
+  sponsor: Sponsor;
 
 }
 

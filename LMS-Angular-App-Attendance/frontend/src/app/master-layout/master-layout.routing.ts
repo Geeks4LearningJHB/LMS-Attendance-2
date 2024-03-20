@@ -14,6 +14,7 @@ import { AttendanceRegisterComponent } from '../attendance-register/attendance-r
 import { AttendanceRegisterModule } from '../attendance-register/attendance-register.module';
 import { GoalManagementComponent } from '../goal-management/goal-management.component';
 import { GoalManagementModule } from '../goal-management/goal-management.module';
+import { ViewAttendancesComponent } from '../attendance-register/modal/view-attendances/view-attendances.component';
 
 
 const routes: Routes = [
@@ -42,7 +43,6 @@ const routes: Routes = [
         path: 'attendance-register',
         component: AttendanceRegisterComponent,
       }
-      
     ],
   },
 ];

@@ -59,8 +59,8 @@
                       &nbsp;&nbsp;View Profile</a>
                   </li>
                   <li>
-                    <a class="dropdown-item">
-                      &nbsp;&nbsp;View Goals</a>
+                    <a class="dropdown-item" (click)="getOneAttendanceById(attendedUsers.id)" (click)="openModal()">
+                      &nbsp;&nbsp;Update</a>
                   </li>
                   <li>
                     <a class="dropdown-item" (click)="getAttendanceById(attendedUsers.userId)"  (click)="openModal()">

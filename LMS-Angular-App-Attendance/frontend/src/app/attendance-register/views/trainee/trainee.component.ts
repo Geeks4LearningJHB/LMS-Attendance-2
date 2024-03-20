@@ -82,11 +82,11 @@ export class TraineeComponent implements OnInit {
       .getAttendancesByUserId(userId)
       .subscribe((attendance: AttendanceModel[]) => {
         this.attendances = attendance;
-        console.log(attendance);
         this.attendances.forEach((attendance: AttendanceModel) => {
           this.id = attendance.id
           this.statu$ = attendance.status
           this.loginTime = attendance.logInTime;
+        
         });
       });
   }

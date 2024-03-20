@@ -42,6 +42,15 @@ export class AttendanceService {
     );
   }
 
+  getUserAttendanceById(attendanceId: string | null): Observable<AttendanceModel[]> {
+    return this.http.get<AttendanceModel[]>(
+      `${this.config.apiUrl}/attendance/view-by-attendance-id/${attendanceId}`
+    );
+  }
+
+
+
+
   getHoursWorked(period: HoursType, count: number): number {
     switch (period) {
       case 'Month':

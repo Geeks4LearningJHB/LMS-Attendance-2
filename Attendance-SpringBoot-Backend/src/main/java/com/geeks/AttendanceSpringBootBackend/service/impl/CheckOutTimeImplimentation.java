@@ -56,7 +56,6 @@ public class CheckOutTimeImplimentation {
 
         Optional<AttendanceRecord> attendanceRecord = attendanceRepository.findById(id);
 
-
         if (attendanceRecord.isPresent()) {
             AttendanceRecord userAtendanceRecord= attendanceRecord.get();
             if (userAtendanceRecord.getLogOutTime().isAfter(userAtendanceRecord.getCheckOutTime())

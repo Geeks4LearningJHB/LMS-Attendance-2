@@ -13,6 +13,7 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//@Table(name = "attendance_record", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "date"}))
 public class AttendanceRecord {
 
     @Id

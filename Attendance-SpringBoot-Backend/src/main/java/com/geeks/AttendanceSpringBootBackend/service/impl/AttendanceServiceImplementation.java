@@ -68,9 +68,8 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
         AttendanceRecord attendanceRecord = new AttendanceRecord();
         AttendanceRecord newAttendanceRecord;
-        AttendanceResponseDto mappedAttendance = null;
 
-                String logInIp =   ipAdressInterface.getLocation();
+        String logInIp =   ipAdressInterface.getLocation();
         List<User> users = userRepository.findAll();
         LocalDate testingDate = LocalDate.now().plusDays(1);
         LocalTime testingTime = LocalTime.of(8 , 35);
@@ -84,10 +83,10 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         attendanceRecord.setUserId(logInUser);
 
         //check if the user has attendance record for that day
-        if (currentDateAttendance == null && !logInUser.getRole().equals("Admin") ){
+        if (currentDateAttendance == null){
 
             if (logInIp.equals("Office")){
-                attendanceRecord.setLogInTime(currentTime);
+                attendanceRecord.setLogInTime(testingTime);
                 attendanceRecord.setDate(currentDate);
                 attendanceRecord.setLogInLocation(logInIp);
                 logger.info("Log in time : " + attendanceRecord.getLogInTime());
@@ -100,14 +99,14 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
                 }
                 //save the atendance and return it
                 newAttendanceRecord = attendanceRepository.save(attendanceRecord);
-                mappedAttendance=     attendanceDtoMapper.mapToDto(newAttendanceRecord);
-                return mappedAttendance;
+                return attendanceDtoMapper.mapToDto(newAttendanceRecord);
+
             }
             else {
                 throw new AttendanceExceptions("User not in the Office");
             }
         }else {
-            return mappedAttendance;
+            throw new AttendanceExceptions("Attendance already exists for :" + logInUser.getUserName());
         }
 
     }

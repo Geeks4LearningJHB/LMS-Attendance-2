@@ -1,0 +1,174 @@
+<div class="container-fluid  py-4">
+  <div class="row align-items-center mb-2">
+    <div class="col-8"></div>
+    <div class="col-4 text-end">
+      <a
+        class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase"
+        (click)="createNewGoal()">
+        CREATE GOALS
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Timesheet</h6>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    DATE
+                  </th>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+                    <i class="fa-solid fa-clock"></i>
+                    CHECKIN
+                  </th>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+                    <i class="fa-solid fa-clock"></i>
+                    CHECKOUT
+                  </th>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+                    <i class="fa-solid fa-clock"></i>
+                    BREAK TIME
+                  </th>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+                    <i class="fa-solid fa-clock"></i>
+                    STATUS
+                  </th>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+                    <i class="fa-solid fa-circle-exclamation-check"></i>
+                    ACTION
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container>
+                  <!-- Mock Data for Timesheet Table -->
+                  <tr *ngFor="let attendance of attendances">
+                    <td class="align-middle text-xs ps-2" style="padding-left: 1.5rem !important;">
+                      <div class="d-flex">
+                        <div class="d-flex flex-column justify-content-center">
+                          <p class="text-secondary"></p>
+                          <h6>{{attendance.date| date : 'd MMMM y'}}</h6>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="align-middle text-xs ps-2">
+                      <p class="font-weight-bold mb-0">{{attendance.logInTime}}</p>
+                    </td>
+                    <td class="align-middle text-xs ps-2">
+                      <p class="font-weight-bold mb-0">{{attendance.checkOutTime}}</p>
+                    </td>
+                    <td>--</td> <!-- You can provide break time data here if needed -->
+                    <td class="align-middle text-xs ps-2">
+                      <p class="font-weight-bold mb-0" [class]="getStatus(attendance.status)">
+                        {{attendance.status}}
+                      </p>
+                    </td>
+                    <td class="align-middle dropdown">
+                      <button class="btn btn-link text-secondary mb-0 dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i aria-hidden="true" class="fa fa-ellipsis-v text-xs"></i>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                          <a class="dropdown-item">Request Half Day</a>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+            
+                </ng-container>
+              </tbody>
+
+            </table>
+            <!-- Added Pagination -->
+            <div class="d-flex">
+              <div class="ml-auto p-2 align-right">
+                <ngb-pagination
+                  [collectionSize]="70"
+                  [(page)]="page"
+                  [disabled]="isDisabled"></ngb-pagination>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Statitics -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Statistics</h6>
+        </div>
+        <div>
+          <div
+            class="align-middle text-xs ps-2"
+            style="padding-left: 1.5rem !important;">
+            <div class="d-flex justify-content-between">
+              <span>Today</span>
+              <span>78|140 Hours</span>
+            </div>
+            <p>
+              <ngb-progressbar
+                type="warning"
+                [value]="75">
+              </ngb-progressbar>
+            </p>
+          </div>
+          <div
+            class="align-middle text-xs ps-2"
+            style="padding-left: 1.5rem !important;">
+            <div class="d-flex justify-content-between">
+              <span>This Week</span>
+              <span>78|140 Hours</span>
+            </div>
+            <p>
+            <ngb-progressbar
+                type="primary"
+                [value]="65">
+              </ngb-progressbar>
+          </p>
+          </div>
+
+          <div
+            class="align-middle text-xs ps-2"
+            style="padding-left: 1.5rem !important;">
+            <div class="d-flex justify-content-between">
+              <span>This Month</span>
+              <span>78|140 Hours</span>
+            </div>
+            <p>
+            <ngb-progressbar
+                type="danger"
+                [value]="55">
+              </ngb-progressbar>
+          </p>
+          </div>
+          <div
+            class="align-middle text-xs ps-2"
+            style="padding-left: 1.5rem !important;">
+            <div class="d-flex justify-content-between">
+              <span>Remaining</span>
+              <span>78|140 Hours</span>
+            </div>
+            <p>
+            <ngb-progressbar
+                type="dark"
+                [value]="25">
+              </ngb-progressbar>
+          </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

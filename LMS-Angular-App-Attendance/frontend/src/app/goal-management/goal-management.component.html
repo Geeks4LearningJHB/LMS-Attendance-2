@@ -1,0 +1,68 @@
+<div class="goal-management-controls">
+  <button mat-raised-button (click)="addNewGoal()">
+    <i class="fa-solid fa-plus"></i>
+    <span>ADD NEW GOAL</span>
+  </button>
+</div>
+
+<div class="goal-management-kanban">
+  <app-goal-column-headers
+    [backlogCount]="getGoalTypeObjectList().backlog.length"
+    [startedCount]="getGoalTypeObjectList().started.length"
+    [pausedCount]="getGoalTypeObjectList().paused.length"
+    [completedCount]="getGoalTypeObjectList().completed.length"
+    [archivedCount]="getGoalTypeObjectList().archived.length"
+  ></app-goal-column-headers>
+
+  <div class="goal-kanban-content row m-0" cdkDropListGroup>
+    <div class="backlog-content col">
+      <app-goal-column-list
+        [listID]="goalStates.backlog"
+        [goalsList]="getGoalTypeObjectList().backlog"
+        [onDropRef]="onDropGoal"
+        [connectedIDList]="[goalStates.started, goalStates.archived]"
+      >
+      </app-goal-column-list>
+    </div>
+    <div class="started-content col">
+      <app-goal-column-list
+        [listID]="goalStates.started"
+        [goalsList]="getGoalTypeObjectList().started"
+        [onDropRef]="onDropGoal"
+        [connectedIDList]="[
+          goalStates.paused,
+          goalStates.completed,
+          goalStates.archived
+        ]"
+      >
+      </app-goal-column-list>
+    </div>
+    <div class="paused-content col">
+      <app-goal-column-list
+        [listID]="goalStates.paused"
+        [goalsList]="getGoalTypeObjectList().paused"
+        [onDropRef]="onDropGoal"
+        [connectedIDList]="[goalStates.started, goalStates.archived]"
+      >
+      </app-goal-column-list>
+    </div>
+    <div class="completed-content col">
+      <app-goal-column-list
+        [listID]="goalStates.completed"
+        [goalsList]="getGoalTypeObjectList().completed"
+        [onDropRef]="onDropGoal"
+        [connectedIDList]="[]"
+      >
+      </app-goal-column-list>
+    </div>
+    <div class="archived-content col">
+      <app-goal-column-list
+        [listID]="goalStates.archived"
+        [goalsList]="getGoalTypeObjectList().archived"
+        [onDropRef]="onDropGoal"
+        [connectedIDList]="[goalStates.backlog, goalStates.started]"
+      >
+      </app-goal-column-list>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<app-total-present-absent-late-cards></app-total-present-absent-late-cards>
+<div class="card mb-4">
+  <div class="card-header pb-0">
+    <h6>Attendance</h6>
+  </div>
+  <div class="card-body px-0 pt-0 pb-2">
+    <div class="table-responsive p-0">
+      <table class="table align-items-center mb-0">
+
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+              Name
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Date
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Sponsor
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Login Time
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Check out 
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Status
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              Action
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"></th>
+            
+          </tr>
+        </thead>
+<tbody >
+          <ng-container *ngFor="let attendedUsers of attendences">
+            <tr >
+              <td class="align-middle text-xs ps-2" >{{attendedUsers.name}} {{attendedUsers.surname}}</td>
+              <td class="align-middle text-xs ps-2"> {{attendedUsers.date}}</td>
+              <td class="align-middle text-xs ps-2">{{attendedUsers.sponsor}}</td>
+              <td class="align-middle text-xs ps-2">{{attendedUsers.logInTime}}</td>
+              <td class="align-middle text-xs ps-2">{{attendedUsers.checkOutTime}}</td>
+            
+            
+              <td class="align-middle text-xs ps-2 " > <p class="font-weight-bold mb-0" [class]="getStatus(attendedUsers.status)">
+                {{attendedUsers.status}}
+              </p></td>
+              <td class="align-middle dropdown">
+                <button class="btn btn-link text-secondary mb-0 dropdown-toggle" type="button" id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <i aria-hidden="true" class="fa fa-ellipsis-v text-xs"></i>
+                </button>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li>
+                    <a class="dropdown-item">
+                      &nbsp;&nbsp;View Profile</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="getOneAttendanceById(attendedUsers.id)" (click)="openModal()">
+                      &nbsp;&nbsp;Update</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="getAttendanceById(attendedUsers.userId)"  (click)="openModal()">
+                      &nbsp;&nbsp;View Attendance</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+
+      <!-- Added Pagination-->
+      <nav aria-label="Page navigation example" style="Margin-top:20px; Margin-left:20px">
+          <ul class="pagination">
+<button >Previous</button>         
+            <li class="page-item"><a class="page-link"  (click)="openModal()">2</a></li>
+            <li class="page-item"><a class="page-link" (click)="openModal()">3</a></li>
+            <li class="page-item"><a class="page-link" (click)="openModal()">Next</a></li>
+          </ul>
+        </nav>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,105 @@
+<div class="container">
+  <form
+    class="form-horizontal"
+    role="form"
+    [formGroup]="loginForm"
+    (submit)="login()"
+  >
+    <div class="logo">
+      <img width="292px" src="../../assets/download.png" alt="" />
+    </div>
+
+    <h6 class="m-3">Enter your credentials to access your account</h6>
+    <div class="form-group m-3">
+      <label
+        for="inputEmail4"
+        class="form-label"
+        [ngClass]="{
+          'validation-error-text': isTouched('Email') && !isValid('Email')
+        }"
+        >Email Address <span class="validation-error-text">*</span></label
+      >
+      <input
+        type="email"
+        class="form-control"
+        id="inputEmail4"
+        autocomplete="on"
+        formControlName="Email"
+        [ngClass]="{
+          'red-border': isTouched('Email') && !isValid('Email')
+        }"
+      />
+      <div
+        class="validation-error-text"
+        *ngIf="isTouched('Email') && !isValid('Email')"
+      >
+        <div *ngIf="getFormControl('Email').hasError('required')">
+          Please enter your email.
+        </div>
+      </div>
+
+      <div
+        class="validation-error-text"
+        *ngIf="isTouched('Email') && !isValid('Email')"
+      >
+        <div *ngIf="getFormControl('Email').hasError('email')">
+          Email not valid.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group m-3">
+      <label
+        for="inputPassword4"
+        class="form-label"
+        [ngClass]="{
+          'validation-error-text': isTouched('Password') && !isValid('Password')
+        }"
+        >Password <span class="validation-error-text">*</span></label
+      >
+      <input
+        type="password"
+        class="form-control"
+        autocomplete="on"
+        id="inputPassword4"
+        formControlName="Password"
+        [ngClass]="{
+          'red-border': isTouched('Password') && !isValid('Password')
+        }"
+      />
+      <div
+        class="validation-error-text"
+        *ngIf="isTouched('Password') && !isValid('Password')"
+      >
+        <div *ngIf="getFormControl('Password').hasError('required')">
+          Please enter your password.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group m-3">
+      <div class="validation-error-text mt-3 mb-3" *ngIf="isFormInvalid">
+        <div
+          *ngIf="
+            getFormControl('Email').hasError('isUserNameOrPasswordIncorrect') ||
+            getFormControl('Password').hasError('isUserNameOrPasswordIncorrect')
+          "
+        >
+          {{ serverErrorMessage }}
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="submit m-3"
+      class="btn btn-primary btn-block btn btn-sm bg-2 gradient-primary mb-0 btn-dark"
+    >
+      Log in
+    </button>
+    <a class="forgot" href="forgot-password.html"
+      >Forgot your email or password?</a
+    >
+  </form>
+  <app-social-media></app-social-media>
+</div>
+<app-footer></app-footer>

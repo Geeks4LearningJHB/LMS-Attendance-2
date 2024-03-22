@@ -1,0 +1,21 @@
+<mat-card
+  (dblclick)="viewGoal()"
+  *ngIf="getActiveGoalPopupState() == 'open'"
+  [ngClass]="activeGoalStatus"
+  #tooltip="matTooltip"
+  matTooltip="Double click to view goal"
+  matTooltipPosition="before"
+  cdkDrag
+>
+  <mat-card-header>
+    <mat-card-title>
+      {{ activeGoal().title }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <b>{{ remainingTime }}</b>
+  </mat-card-content>
+  <mat-card-actions>
+    <button (click)="viewGoal()" mat-raised-button>View Goal</button>
+  </mat-card-actions>
+</mat-card>

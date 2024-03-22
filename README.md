@@ -1,3 +1,5 @@
+
+# LOGIN 
 # LMS-Attendance-2
 
 This repository contains the codebase for the Attendance Management System of our Learning Management System (LMS).
@@ -51,5 +53,4 @@ Contributions to the LMS-Attendance-2 project are welcome! To contribute, follow
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
 

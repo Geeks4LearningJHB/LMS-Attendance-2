@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "filleupload-d41e8"
+  },
+  "targets": {
+    "filleupload-d41e8": {
+      "hosting": {
+        "G4L.UserManagement.UI": [
+          "filleupload-d41e8"
+        ]
+      }
+    }
+  }
+}

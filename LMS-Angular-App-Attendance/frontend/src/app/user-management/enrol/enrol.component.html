@@ -1,0 +1,747 @@
+<div class="container-fluid m-0 p-0">
+  <div class="card m-0 p-0">
+    <div class="card-header">
+      <div class="row align-items-center">
+        <div class="col-8">
+          <div *ngIf="user; else showAdd">
+            <h6 class="mb-0">Update user information</h6>
+          </div>
+
+          <ng-template #showAdd>
+            <h6 class="mb-0">Add new user</h6>
+          </ng-template>
+        </div>
+        <div class="col-4 text-end">
+          <a (click)="close()" class="cursor-pointer">
+            <i class="fa-solid fa-xmark"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="formModel" autocomplete="off" (submit)="addUser()">
+        <h6 class="heading-small text-muted mb-4">User information</h6>
+        <div>
+          <div class="row mb-3">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-first-name"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['Name'].invalid &&
+                      formModel.controls['Name'].touched
+                  }"
+                  >First Name<span class="red-text">*</span></label
+                >
+                <input
+                  type="text"
+                  id="input-first-name"
+                  class="form-control"
+                  placeholder="First name"
+                  formControlName="Name"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['Name'].invalid &&
+                      formModel.controls['Name'].touched
+                  }"
+                />
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['Name'].invalid &&
+                    formModel.controls['Name'].touched
+                  "
+                >
+                  <div *ngIf="formModel.controls['Name'].errors.required">
+                    Please enter your first name.
+                  </div>
+                  <div
+                    *ngIf="
+                      formModel.controls['Name'].errors.invalidName &&
+                      !formModel.controls['Name'].errors.required
+                    "
+                  >
+                    Please enter a valid first name.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-last-name"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['Surname'].invalid &&
+                      formModel.controls['Surname'].touched
+                  }"
+                  >Last Name<span class="red-text">*</span></label
+                >
+                <input
+                  type="text"
+                  id="input-last-name"
+                  class="form-control"
+                  placeholder="Last name"
+                  formControlName="Surname"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['Surname'].invalid &&
+                      formModel.controls['Surname'].touched
+                  }"
+                />
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['Surname'].invalid &&
+                    formModel.controls['Surname'].touched
+                  "
+                >
+                  <div *ngIf="formModel.controls['Surname'].errors.required">
+                    Please enter a last name.
+                  </div>
+                  <div
+                    *ngIf="
+                      formModel.controls['Surname'].errors.invalidName &&
+                      !formModel.controls['Surname'].errors.required
+                    "
+                  >
+                    Please enter a valid last name.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-role"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['Role'].invalid &&
+                      formModel.controls['Role'].touched
+                  }"
+                  >Role<span class="red-text">*</span></label
+                >
+                <select
+                  type="text"
+                  id="input-role"
+                  class="form-select"
+                  formControlName="Role"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['Role'].invalid &&
+                      formModel.controls['Role'].touched
+                  }"
+                >
+                  <option
+                    *ngFor="let role of keys(roles)"
+                    [ngValue]="role"
+                    [disabled]="isAllowed(role) || isDefault(role)"
+                  >
+                    {{ role | removeUnderscore }}
+                  </option>
+                </select>
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['Role'].invalid &&
+                    formModel.controls['Role'].touched
+                  "
+                >
+                  <div *ngIf="formModel.controls['Role'].errors.required">
+                    Please select a Role
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-last-name"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['IdNumber'].invalid &&
+                      formModel.controls['IdNumber'].touched
+                  }"
+                  >ID number<span class="red-text">*</span></label
+                >
+                <input
+                  type="text"
+                  id="input-name"
+                  class="form-control"
+                  placeholder="0000000000000"
+                  formControlName="IdNumber"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['IdNumber'].invalid &&
+                      formModel.controls['IdNumber'].touched
+                  }"
+                />
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['IdNumber'].invalid &&
+                    formModel.controls['IdNumber'].touched
+                  "
+                >
+                  <div *ngIf="formModel.controls['IdNumber'].errors.required">
+                    Please enter an Id number.
+                  </div>
+                  <div
+                    *ngIf="
+                      formModel.controls['IdNumber'].errors.invalidIdLength
+                    "
+                  >
+                    Please enter an Id number with 13 digits.
+                  </div>
+                  <div
+                    *ngIf="formModel.controls['IdNumber'].errors.invalidIdDate"
+                  >
+                    The first 6 digits of your Id number are invalid.
+                  </div>
+                  <div
+                    *ngIf="
+                      formModel.controls['IdNumber'].errors.invalidIdNumber
+                    "
+                  >
+                    Please enter a valid Id number.
+                  </div>
+                  <div
+                    *ngIf="
+                      formModel.controls['IdNumber'].errors[
+                        'duplicateIdNumberError'
+                      ]
+                    "
+                  >
+                    {{ serverErrorMessage }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="horizontal dark my-4" />
+        <!-- Contact information -->
+        <h6 class="heading-small text-muted mb-4">Contact information</h6>
+        <div>
+          <div class="row mb-3">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-email"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['Email'].invalid &&
+                      formModel.controls['Email'].touched
+                  }"
+                  >Email address<span class="red-text">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="input-email"
+                  class="form-control"
+                  placeholder="email@domain.com"
+                  formControlName="Email"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['Email'].invalid &&
+                      formModel.controls['Email'].touched
+                  }"
+                />
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['Email'].invalid &&
+                    formModel.controls['Email'].touched
+                  "
+                >
+                  <div *ngIf="formModel.controls['Email'].errors.required">
+                    Please enter your email.
+                  </div>
+                  <div *ngIf="formModel.controls['Email'].errors.invalidEmail">
+                    Please enter a valid email.
+                  </div>
+                  <div
+                    *ngIf="
+                      formModel.controls['Email'].errors['duplicateEmailError']
+                    "
+                  >
+                    {{ serverErrorMessage }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-phone"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['Phone'].invalid &&
+                      formModel.controls['Phone'].touched
+                  }"
+                  >Phone Number<span class="red-text">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="input-phone"
+                  class="form-control"
+                  placeholder="+27 00000000"
+                  formControlName="Phone"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['Phone'].invalid &&
+                      formModel.controls['Phone'].touched
+                  }"
+                />
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['Phone'].invalid &&
+                    formModel.controls['Phone'].touched
+                  "
+                >
+                  <div *ngIf="formModel.controls['Phone'].errors.required">
+                    Please enter your phone.
+                  </div>
+                  <div *ngIf="formModel.controls['Phone'].errors.invalidPhone">
+                    Please enter a valid phone number.
+                  </div>
+                  <div
+                    *ngIf="
+                      formModel.controls['Phone'].errors['minLength'] ||
+                      formModel.controls['Phone'].errors['maxLength']
+                    "
+                  >
+                    Please enter a number with 10 or 11 digits.
+                  </div>
+                  <div
+                    *ngIf="
+                      formModel.controls['Phone'].errors[
+                        'duplicatePhoneNumberError'
+                      ]
+                    "
+                  >
+                    {{ serverErrorMessage }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="horizontal dark my-4" />
+        <!-- Trainers focus -->
+        <div *ngIf="isTrainer()">
+          <h6 class="heading-small text-muted mb-4">Learnership information</h6>
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-career"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['Career'].invalid &&
+                      formModel.controls['Career'].touched
+                  }"
+                  >Stream/Career<span class="red-text">*</span></label
+                >
+                <select
+                  id="input-career"
+                  class="form-select"
+                  formControlName="Career"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['Career'].invalid &&
+                      formModel.controls['Career'].touched
+                  }"
+                >
+                  <option
+                    *ngFor="let stream of keys(streams)"
+                    [ngValue]="stream"
+                    [disabled]="isDefault(stream)"
+                  >
+                    {{ stream | removeUnderscore }}
+                  </option>
+                </select>
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['Career'].invalid &&
+                    formModel.controls['Career'].touched
+                  "
+                >
+                  <div *ngIf="formModel.controls['Career'].errors.required">
+                    Please select your prefered career.
+                  </div>
+                  <div
+                    *ngIf="formModel.controls['Career'].errors.invalidStream"
+                  >
+                    Please select a valid career/stream.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <!-- <div class="form-group">
+
+                <label class="form-control-label" for="input-client" [ngClass]="{
+                            'red-text':
+                              formModel.controls['Clients'].invalid &&
+                              formModel.controls['Clients'].touched
+                          }">Clients<span class="red-text">*</span></label>
+
+                <mat-select formControlName="Clients" multiple #mySelect>
+                  <mat-select-trigger>
+                    {{formModel.controls['Clients'].value?.[0] || ''}}
+                    <span *ngIf="(formModel.controls['Clients'].value?.length || 0) > 1"
+                      class="example-additional-selection">
+                      (+{{(formModel.controls['Clients'].value?.length || 0) - 1}}
+                      {{formModel.controls['Clients'].value?.length === 2 ? 'other' : 'others'}})
+                    </span>
+                  </mat-select-trigger>
+                  <mat-option *ngFor="let sponsor of sponsors" [value]="sponsor">{{ sponsor?.registeredName }}
+                  </mat-option>
+                </mat-select>
+
+                <div class="red-text" *ngIf="
+                            formModel.controls['Clients'].invalid &&
+                            formModel.controls['Clients'].touched
+                          ">
+                  <div *ngIf="formModel.controls['Clients'].errors.required">
+                    Please enter the client responsible for the learner.
+                  </div>
+                </div>
+              </div> -->
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-clients"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['Clients'].invalid &&
+                      formModel.controls['Clients'].touched
+                  }"
+                  >Clients<span class="red-text">*</span></label
+                >
+
+                <mat-form-field appearance="fill">
+                  <!-- <mat-select formControlName="Clients" multiple>
+                    <mat-select-trigger>
+                      {{formModel.controls['Clients'].value?.[0] || ''}}
+                      <span *ngIf="(formModel.controls['Clients'].value?.length || 0) > 1"
+                        class="example-additional-selection">
+                        (+{{(formModel.controls['Clients'].value?.length || 0) - 1}}
+                        {{formModel.controls['Clients'].value?.length === 2 ? 'other' : 'others'}})
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let sponsor of sponsors" [value]="sponsor?.id">{{sponsor?.registeredName}}
+                    </mat-option>
+                  </mat-select> -->
+
+                  <mat-select formControlName="Clients" multiple>
+                    <mat-option
+                      *ngFor="let sponsor of sponsors"
+                      [value]="sponsor?.id"
+                      >{{ sponsor?.registeredName }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['Clients'].invalid &&
+                    formModel.controls['Clients'].touched
+                  "
+                >
+                  <div *ngIf="formModel.controls['Clients'].errors.required">
+                    Please select your prefered clients.
+                  </div>
+                  <div
+                    *ngIf="formModel.controls['Clients'].errors.invalidStream"
+                  >
+                    Please select a valid clients.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-learnershipStartDate"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['LearnershipStartDate'].invalid &&
+                      formModel.controls['LearnershipStartDate'].touched
+                  }"
+                  >Learnership Start Date<span class="red-text">*</span></label
+                >
+                <input
+                  type="date"
+                  id="input-learnershipStartDate"
+                  class="form-control"
+                  [placeholder]="user?.learnershipStartDate"
+                  formControlName="LearnershipStartDate"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['LearnershipStartDate'].invalid &&
+                      formModel.controls['LearnershipStartDate'].touched
+                  }"
+                />
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['LearnershipStartDate'].invalid &&
+                    formModel.controls['LearnershipStartDate'].touched
+                  "
+                >
+                  <div
+                    *ngIf="
+                      formModel.controls['LearnershipStartDate'].errors.required
+                    "
+                  >
+                    Please enter the Learnership Start Date.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Learnership details -->
+        <div *ngIf="isLearner()">
+          <h6 class="heading-small text-muted mb-4">Learnership information</h6>
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-career"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['Career'].invalid &&
+                      formModel.controls['Career'].touched
+                  }"
+                  >Stream/Career<span class="red-text">*</span></label
+                >
+                <select
+                  id="input-career"
+                  class="form-select"
+                  formControlName="Career"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['Career'].invalid &&
+                      formModel.controls['Career'].touched
+                  }"
+                >
+                  <option
+                    *ngFor="let stream of keys(streams)"
+                    [ngValue]="stream"
+                    [disabled]="isDefault(stream)"
+                  >
+                    {{ stream | removeUnderscore }}
+                  </option>
+                </select>
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['Career'].invalid &&
+                    formModel.controls['Career'].touched
+                  "
+                >
+                  <div *ngIf="formModel.controls['Career'].errors.required">
+                    Please select your prefered career.
+                  </div>
+                  <div
+                    *ngIf="formModel.controls['Career'].errors.invalidStream"
+                  >
+                    Please select a valid career/stream.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-sponsor"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['SponsorId'].invalid &&
+                      formModel.controls['SponsorId'].touched
+                  }"
+                  >Sponsor<span class="red-text">*</span></label
+                >
+                <select
+                  id="input-sponsor"
+                  class="form-select"
+                  formControlName="SponsorId"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['SponsorId'].invalid &&
+                      formModel.controls['SponsorId'].touched
+                  }"
+                >
+                  <option
+                    *ngFor="let sponsor of sponsors"
+                    [ngValue]="sponsor?.id"
+                    class="dropdown-item"
+                  >
+                    {{ sponsor?.registeredName }}
+                  </option>
+                </select>
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['SponsorId'].invalid &&
+                    formModel.controls['SponsorId'].touched
+                  "
+                >
+                  <div *ngIf="formModel.controls['SponsorId'].errors.required">
+                    Please select your preferred sponsor.
+                  </div>
+                  <div
+                    *ngIf="formModel.controls['SponsorId'].errors.invalidStream"
+                  >
+                    Please select a valid sponsor.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-learnershipStartDate"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['LearnershipStartDate'].invalid &&
+                      formModel.controls['LearnershipStartDate'].touched
+                  }"
+                  >Learnership Start Date<span class="red-text">*</span></label
+                >
+                <input
+                  type="date"
+                  id="input-learnershipStartDate"
+                  class="form-control"
+                  [placeholder]="user?.learnershipStartDate"
+                  formControlName="LearnershipStartDate"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['LearnershipStartDate'].invalid &&
+                      formModel.controls['LearnershipStartDate'].touched
+                  }"
+                />
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['LearnershipStartDate'].invalid &&
+                    formModel.controls['LearnershipStartDate'].touched
+                  "
+                >
+                  <div
+                    *ngIf="
+                      formModel.controls['LearnershipStartDate'].errors.required
+                    "
+                  >
+                    Please enter the Learnership Start Date.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="horizontal dark my-4" />
+        <div *ngIf="isLearner()">
+          <h6 class="heading-small text-muted mb-4">Clock in information</h6>
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label
+                  class="form-control-label"
+                  for="input-clockintime"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['ClockInTime'].invalid &&
+                      formModel.controls['ClockInTime'].touched
+                  }"
+                  >Clock in time<span class="red-text">*</span></label
+                >
+                <select
+                  id="input-clockintime"
+                  class="form-select"
+                  formControlName="ClockInTime"
+                  [ngClass]="{
+                    'red-border':
+                      formModel.controls['ClockInTime'].invalid &&
+                      formModel.controls['ClockInTime'].touched
+                  }"
+                >
+                <option *ngFor="let clockintimeKey of keys(clockInTime)" [ngValue]="clockintimeKey">
+                  {{ clockintimeKey| removeUnderscore }}
+                </option>
+                
+                </select>
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['ClockInTime'].invalid &&
+                    formModel.controls['ClockInTime'].touched
+                  "
+                >
+                  <div
+                    *ngIf="formModel.controls['ClockInTime'].errors.required"
+                  >
+                    Please select prefered clock in time.
+                  </div>
+                  <div
+                    *ngIf="
+                      formModel.controls['ClockInTime'].errors.invalidStream
+                    "
+                  >
+                    Please select a valid clock in time.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="row mt-3">
+          <div class="col-8"></div>
+          <div class="col-4 text-end">
+            <div *ngIf="user; else addNewUser">
+              <a
+                (click)="updateUser()"
+                class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark"
+              >
+                <i class="fa-solid fa-user-pen"></i>&nbsp;&nbsp;UPDATE USER</a
+              >
+            </div>
+
+            <ng-template #addNewUser>
+              <a
+                (click)="addUser()"
+                class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark"
+              >
+                <i class="fas fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;ADD
+                NEW USER</a
+              >
+            </ng-template>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

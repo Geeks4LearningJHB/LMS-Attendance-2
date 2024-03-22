@@ -1,0 +1,47 @@
+<div class="goal-column-headers row">
+  <div class="backlog col">
+    <h6>
+      <span>{{ "Backlog" | uppercase }}</span>
+      <app-circular-number
+        [activeClass]="'backlog'"
+        [goalCount]="backlogCount"
+      ></app-circular-number>
+    </h6>
+  </div>
+  <div class="started col">
+    <h6>
+      <span>{{ "In Progress" | uppercase }}</span>
+      <app-circular-number
+        [activeClass]="'started'"
+        [goalCount]="startedCount"
+      ></app-circular-number>
+    </h6>
+  </div>
+  <div class="paused col">
+    <h6>
+      <span>{{ "Paused" | uppercase }}</span>
+      <app-circular-number
+        [activeClass]="'paused'"
+        [goalCount]="pausedCount"
+      ></app-circular-number>
+    </h6>
+  </div>
+  <div class="completed col">
+    <h6>
+      <span>{{ "Completed" | uppercase }}</span>
+      <app-circular-number
+        [activeClass]="'completed'"
+        [goalCount]="completedCount"
+      ></app-circular-number>
+    </h6>
+  </div>
+  <div class="archived col">
+    <h6>
+      <span>{{ "Archived" | uppercase }}</span>
+      <app-circular-number
+        [activeClass]="'archived'"
+        [goalCount]="archivedCount"
+      ></app-circular-number>
+    </h6>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+.goal-column-headers {
+  margin: 0;
+  padding: .5rem;
+}
+
+.goal-column-headers h6 {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}

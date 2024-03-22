@@ -1,0 +1,63 @@
+<!-- TASKS -->
+<div>
+  <h6 class="heading-small text-muted d-flex ml-0 mr-0 mt-3 mb-2">
+    <span>{{
+      viewType === "create" ? ("Tasks" | titlecase) : ("Tasks" | uppercase)
+    }}</span>
+    <app-content class="taskCount rounded-circle">
+      <div class="countContainer d-flex w-100 h-100">
+        <span class="text-dark">{{ goalObject.tasks?.length }}</span>
+      </div>
+    </app-content>
+    <i
+      *ngIf="viewType === 'view' && goalStatus !== 'completed'"
+      class="fa-solid fa-circle-plus addGoalTask"
+      (click)="addMoreTasks()"
+    ></i>
+  </h6>
+
+  <div
+    cdkDropList
+    [cdkDropListData]="goalObject.tasks"
+    (cdkDropListDropped)="onDropTask($event)"
+    class="p-2"
+  >
+    <div
+      *ngFor="let task of goalObject?.tasks; let pos = index"
+      class="form-check"
+    >
+      <div class="d-flex text-nowrap" cdkDrag>
+        <div class="d-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [ngStyle]="{
+              'pointer-events':
+                viewType === 'view' && goalStatus === 'started' ? 'all' : 'none'
+            }"
+            [id]="pos"
+            [checked]="task.complete"
+            (click)="toggleTaskForCompletion($event)"
+          />
+          <label
+            [ngStyle]="{
+              'pointer-events':
+                viewType === 'view' && goalStatus === 'started' ? 'all' : 'none'
+            }"
+            class="form-check-label ml-2"
+            [for]="pos"
+            [id]="pos"
+            >{{ task.title }}</label
+          >
+          &nbsp;
+          <i
+            *ngIf="goalStatus !== 'completed'"
+            class="fa-solid fa-times text-danger taskRemoval"
+            [id]="pos"
+            (click)="removeTask($event)"
+          ></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

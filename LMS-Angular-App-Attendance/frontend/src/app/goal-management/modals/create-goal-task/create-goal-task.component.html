@@ -1,0 +1,38 @@
+<div class="card p-2">
+  <div class="card-header row m-0 p-2 border-bottom">
+    <div class="col text-start">
+      <h5 class="m-0">CREATE A TASK</h5>
+    </div>
+    <div class="col text-end">
+      <i class="fa-solid fa-times" (click)="closeAddTaskModal()"></i>
+    </div>
+  </div>
+  <form [formGroup]="taskFormGroup" (ngSubmit)="addNewTask()">
+    <div class="card-body d-block">
+      <label for="task"
+        >What is your task<sup class="text-danger">*</sup></label
+      >
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Enter your task name here..."
+        formControlName="Task"
+        [ngClass]="{
+          errorBorder:
+            isFormControlTouched('Task') && isFormControlInvalid('Task')
+        }"
+      />
+      <label
+        *ngIf="isFormControlTouched('Task') && isFormControlInvalid('Task')"
+        [ngClass]="{
+          errorMessage:
+            isFormControlTouched('Task') && isFormControlInvalid('Task')
+        }"
+        >This field is required</label
+      >
+    </div>
+    <div class="card-footer d-flex justify-content-end">
+      <button mat-raised-button color="primary">Done</button>
+    </div>
+  </form>
+</div>

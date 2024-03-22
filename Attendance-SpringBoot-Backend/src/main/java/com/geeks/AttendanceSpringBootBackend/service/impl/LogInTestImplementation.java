@@ -1,6 +1,8 @@
 package com.geeks.AttendanceSpringBootBackend.service.impl;
 
+import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
 import com.geeks.AttendanceSpringBootBackend.entity.User;
+import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.LogInRequestDTO;
 import com.geeks.AttendanceSpringBootBackend.repository.UserRepository;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
@@ -24,6 +26,7 @@ public class LogInTestImplementation {
 
         Optional<User> validUser = userRepository.findByEmail(logInRequest.getEmail());
         System.out.println(validUser);
+        AttendanceResponseDto attendanceRecord;
         if (validUser.isPresent()){
             String userPassword = validUser.get().getPassword();
             String  userEmail = validUser.get().getEmail();
@@ -32,8 +35,10 @@ public class LogInTestImplementation {
                 User user = validUser.get();
                 logger.info(logInRequest);
                 if (!user.getRole().equals("Admin")){
-                    attendanceInterface.newAttendance(user);
+                    attendanceRecord = attendanceInterface.newAttendance(user);
+
                 }
+
                 return validUser;
             }
             else {
@@ -47,4 +52,13 @@ public class LogInTestImplementation {
         }
 
     }
+
+    public boolean checkRemotely(long attendanceId){
+
+        return attendanceId == 0;
+    }
+
+
+
+
 }

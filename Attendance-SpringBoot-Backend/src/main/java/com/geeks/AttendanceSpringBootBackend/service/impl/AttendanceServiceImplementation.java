@@ -51,7 +51,6 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
         return attendanceRecords;
     }
-
     @Override
     public AttendanceResponseDto newAttendance(User user) {
 
@@ -61,7 +60,6 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         String date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
         String time  = timeFetcherApi.getCurrentTimeInSouthAfrica();
 
-
         //format date and time to the localDate pattern
         LocalTime currentTime = LocalTime.parse(time , formatter);
         LocalDate currentDate = LocalDate.parse(date , formatDate);
@@ -69,8 +67,9 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         AttendanceRecord attendanceRecord = new AttendanceRecord();
         AttendanceRecord newAttendanceRecord;
         AttendanceResponseDto mappedAttendance = null;
+//        String logInIp =  "41.140.81.0";
+        String logInIp =   ipAdressInterface.getLocation();
 
-                String logInIp =   ipAdressInterface.getLocation();
         List<User> users = userRepository.findAll();
         LocalDate testingDate = LocalDate.now().plusDays(1);
         LocalTime testingTime = LocalTime.of(8 , 35);
@@ -78,19 +77,16 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         AttendanceRecord currentDateAttendance = attendanceRepository
                .findByUserIdUserIdAndDate(user.getUserId() , currentDate);
 
-        //check if user exists
-        User logInUser= userRepository.findById(user.getUserId())
-                .orElseThrow(()-> new IllegalStateException("User not found"));
-        attendanceRecord.setUserId(logInUser);
+        //User exists if our system gets to this line
+        attendanceRecord.setUserId(user);
 
         //check if the user has attendance record for that day
-        if (currentDateAttendance == null && !logInUser.getRole().equals("Admin") ){
+        if (currentDateAttendance == null && !user.getRole().equals("Admin") ){
 
             if (logInIp.equals("Office")){
                 attendanceRecord.setLogInTime(currentTime);
                 attendanceRecord.setDate(currentDate);
                 attendanceRecord.setLogInLocation(logInIp);
-                logger.info("Log in time : " + attendanceRecord.getLogInTime());
                 attendanceRecord.setCheckOutTime(logOutTimeImplimentation.checkOutTimeCreation(attendanceRecord.getLogInTime()));
                 if(loginTimeChecker.isPresent(attendanceRecord.getLogInTime()) ){
                     attendanceRecord.setStatus(Status.PRESENT);
@@ -104,7 +100,18 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
                 return mappedAttendance;
             }
             else {
-                throw new AttendanceExceptions("User not in the Office");
+
+                AttendanceRecord attendanceRecord1 = new AttendanceRecord();
+                attendanceRecord1.setUserId(user);
+                attendanceRecord1.setLogInTime(currentTime);
+                attendanceRecord1.setDate(currentDate);
+                attendanceRecord1.setLogInLocation(logInIp);
+                logger.info("ATTENDANCE : " + attendanceRecord1.toString());
+               // attendanceRecord1.setCheckOutTime(logOutTimeImplimentation.checkOutTimeCreation(attendanceRecord.getLogInTime()));
+                AttendanceResponseDto noneSavedAttendance;
+                noneSavedAttendance = attendanceDtoMapper.mapToDto(attendanceRecord1);
+                return noneSavedAttendance;
+
             }
         }else {
             return mappedAttendance;

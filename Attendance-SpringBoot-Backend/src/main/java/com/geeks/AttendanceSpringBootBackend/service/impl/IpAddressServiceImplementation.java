@@ -26,6 +26,7 @@ public class IpAddressServiceImplementation implements IpAdressInterface {
     private String officeRangeEnd  ;
     String systemPublicIp = null;
 
+
     @Override
     public String getSystemIp(){
 

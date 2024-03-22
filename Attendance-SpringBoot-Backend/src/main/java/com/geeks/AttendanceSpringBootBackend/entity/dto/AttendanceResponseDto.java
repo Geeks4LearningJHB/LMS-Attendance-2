@@ -28,6 +28,7 @@ public class AttendanceResponseDto {
     private String name;
     private String surname;
     private Sponsor sponsor;
+    private String role;
     private LocalTime logOutTime;
     private boolean scanned;
 

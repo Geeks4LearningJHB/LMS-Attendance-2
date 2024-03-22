@@ -48,7 +48,9 @@ public class LogInTestController {
         return logInTestImplementation.logInTester(logInRequestDTO);
     }
 
-
-
+    @GetMapping("user/check-remotely")
+    public boolean checkRemotely(@PathVariable long attendanceId){
+        return logInTestImplementation.checkRemotely(attendanceId);
+    }
 
 }

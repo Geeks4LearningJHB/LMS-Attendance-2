@@ -11,16 +11,22 @@ import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
 @Service
 public class QrCodeService {
 
-    public void generateQr(String data, OutputStream outputStream) throws WriterException, IOException {
+    public byte[] generateQr(String data) throws WriterException, IOException {
         BitMatrix bitMatrix = new QRCodeWriter().encode(data, BarcodeFormat.QR_CODE, 200, 200);
-        MatrixToImageWriter.writeToStream(bitMatrix, "jpeg", outputStream );
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MatrixToImageWriter.writeToStream(bitMatrix, "jpeg", outputStream);
+        return outputStream.toByteArray();
     }
+
+
+
     public String decodeQr(byte[] data) throws IOException, NotFoundException {
         Result result = new MultiFormatReader()
                 .decode(new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(

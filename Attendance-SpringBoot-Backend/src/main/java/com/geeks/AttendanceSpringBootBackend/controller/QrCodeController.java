@@ -15,7 +15,10 @@ import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,18 +40,26 @@ public class QrCodeController {
     private AttendanceInterface attendanceInterface;
 
     private static final Logger logger = LogManager.getLogger(Main.class);
-    @PostMapping(path = "/generate/{attendanceId}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public void generateQrForAttendance(@PathVariable long attendanceId, HttpServletResponse response) throws
+    @GetMapping(path = "/generate/{attendanceId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> generateQrForAttendance(@PathVariable long attendanceId, HttpServletResponse response) throws
             MissingRequestValueException, WriterException, IOException {
-
+    logger.info("QR METHOD TRIGGERED");
         AttendanceResponseDto attendanceRecord = attendanceInterface.getAttendanceRecordById(attendanceId);
         if(attendanceRecord == null || attendanceRecord.getDate() == null || attendanceRecord.getLogInTime() == null ||
                 attendanceRecord.getLogInLocation() == null) {
             throw new MissingRequestValueException("Attendance record data is incomplete");
         }
         String qrString = generateQrStringFromAttendanceRecord(attendanceRecord);
-        qrCodeService.generateQr(qrString, response.getOutputStream());
+        qrCodeService.generateQr(qrString);
         response.getOutputStream().flush();
+
+        byte[] qrImageBytes = qrCodeService.generateQr(qrString) ;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        headers.setContentLength(qrImageBytes.length);
+
+        return new ResponseEntity<>(qrImageBytes, headers, HttpStatus.OK);
     }
     @PostMapping("/decode")
     public DecodedQrResponseDto decodeQr(@RequestParam("qrCode") MultipartFile qrCode) throws IOException, NotFoundException {

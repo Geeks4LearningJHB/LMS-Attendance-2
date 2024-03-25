@@ -64,9 +64,6 @@ attendences: any[] = [];
     });
     console.log("Fetching attendance data for attendance with ID:", attendanceId);
 }
-
-
-
   getAttendanceById(userId: string) {
     this.attendenceService
       .getAttendancesByUserId(userId)

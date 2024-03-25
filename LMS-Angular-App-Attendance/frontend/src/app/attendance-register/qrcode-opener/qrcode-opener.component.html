@@ -37,8 +37,11 @@
                                 </button>
                             </div>
                         </div>
-                        <p>Scan the QR code below!</p><img src="../../../assets/images/qrCode.png" alt="Mock QR Code Image" id="qrCodeImg">
-
+                        <div>
+                            <!--Make QR code image  -->
+                            <img [src]="qrCodeImage" alt="QR Code">
+                            <p *ngIf="!qrCodeImage">Loading QR Code...</p>
+                            </div>
                     </div>
                 </div>
             </form>

@@ -45,12 +45,11 @@ export class TraineeComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private modalService: MdbModalService,
     private captureGoalService: CaptureGoalService,
-    private qrCodeDialog :MatDialog
+    private qrCodeDialog :MatDialog,
+    private dialog: MatDialog
   ) {}
 
-  openQRCodeModal(){
-    this.qrCodeDialog.open(QRCodeOpenerComponent)
-  }
+  
   ngOnInit(): void {
     // this.startTimer();
     const userId = this.userId
@@ -63,6 +62,18 @@ export class TraineeComponent implements OnInit {
    
     // this.sendDetails()
   }
+
+
+  openQRCodeModal(attendanceId: String) {
+    const dialogRef = this.dialog.open(QRCodeOpenerComponent, {
+      data: { attendanceId: attendanceId }
+
+    })
+    console.log("ID : " + attendanceId)
+    ;
+  }
+
+
   sendDetails() {
     console.log(this.holdingArray.value + ' ');
     this.attendanceService

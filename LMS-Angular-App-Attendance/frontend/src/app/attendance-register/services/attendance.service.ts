@@ -22,6 +22,9 @@ export class AttendanceService {
   updateAttendanceGoals(value: any) {
     return this.http.put(`${this.config.apiUrl}/Attendance`, value);
   }
+  getQrCode(attendanceId: String): Observable<Blob> {
+    return this.http.get(`${this.config.apiUrl}/api/attendance/generate/${attendanceId}`, { responseType: 'blob' });
+  }
 
   getAttendances(date: String){
     return this.http.get<any>(`${this.config.apiUrl}/attendance/today-attendance/${date}`)

@@ -4,6 +4,7 @@ import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
 import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.LogInRequestDTO;
+import com.geeks.AttendanceSpringBootBackend.entity.dto.LogInResponseDto;
 import com.geeks.AttendanceSpringBootBackend.repository.UserRepository;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
 import com.sun.tools.javac.Main;
@@ -22,24 +23,27 @@ public class LogInTestImplementation {
     UserRepository userRepository;
     @Autowired
     AttendanceInterface attendanceInterface;
-    public Optional<User> logInTester(LogInRequestDTO logInRequest){
+    private AttendanceResponseDto attendanceRecord;
+    public LogInResponseDto logInTester(LogInRequestDTO logInRequest){
 
         Optional<User> validUser = userRepository.findByEmail(logInRequest.getEmail());
         System.out.println(validUser);
-        AttendanceResponseDto attendanceRecord;
+
         if (validUser.isPresent()){
             String userPassword = validUser.get().getPassword();
             String  userEmail = validUser.get().getEmail();
 
             if (userEmail.equals(logInRequest.getEmail()) && userPassword.equals(logInRequest.getPassword())){
                 User user = validUser.get();
-                logger.info(logInRequest);
-                if (!user.getRole().equals("Admin")){
-                    attendanceRecord = attendanceInterface.newAttendance(user);
 
-                }
 
-                return validUser;
+                attendanceRecord = attendanceInterface.newAttendance(user);
+                LogInResponseDto logInResponse = new LogInResponseDto();
+
+                logInResponse.setUser(validUser.get());
+                logInResponse.setAttendanceResponseDto(attendanceRecord);
+
+                return logInResponse;
             }
             else {
                 throw new IllegalStateException("Failed to log in try again");
@@ -52,13 +56,5 @@ public class LogInTestImplementation {
         }
 
     }
-
-    public boolean checkRemotely(long attendanceId){
-
-        return attendanceId == 0;
-    }
-
-
-
 
 }

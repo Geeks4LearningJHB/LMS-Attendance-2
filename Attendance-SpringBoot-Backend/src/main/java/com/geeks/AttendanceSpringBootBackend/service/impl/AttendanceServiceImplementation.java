@@ -67,7 +67,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         AttendanceRecord attendanceRecord = new AttendanceRecord();
         AttendanceRecord newAttendanceRecord;
         AttendanceResponseDto mappedAttendance = null;
-//        String logInIp =  "41.140.81.0";
+       //String logInIp =  "41.140.81.0";
         String logInIp =   ipAdressInterface.getLocation();
 
         List<User> users = userRepository.findAll();
@@ -81,9 +81,9 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         attendanceRecord.setUserId(user);
 
         //check if the user has attendance record for that day
-        if (currentDateAttendance == null && !user.getRole().equals("Admin") ){
+        if (currentDateAttendance == null){
 
-            if (logInIp.equals("Office")){
+            if (logInIp.equals("Office") && user.getRole().equals("Learner") ){
                 attendanceRecord.setLogInTime(currentTime);
                 attendanceRecord.setDate(currentDate);
                 attendanceRecord.setLogInLocation(logInIp);
@@ -106,15 +106,14 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
                 attendanceRecord1.setLogInTime(currentTime);
                 attendanceRecord1.setDate(currentDate);
                 attendanceRecord1.setLogInLocation(logInIp);
-                logger.info("ATTENDANCE : " + attendanceRecord1.toString());
-               // attendanceRecord1.setCheckOutTime(logOutTimeImplimentation.checkOutTimeCreation(attendanceRecord.getLogInTime()));
+
                 AttendanceResponseDto noneSavedAttendance;
                 noneSavedAttendance = attendanceDtoMapper.mapToDto(attendanceRecord1);
                 return noneSavedAttendance;
 
             }
         }else {
-            return mappedAttendance;
+            return attendanceDtoMapper.mapToDto(currentDateAttendance);
         }
 
     }

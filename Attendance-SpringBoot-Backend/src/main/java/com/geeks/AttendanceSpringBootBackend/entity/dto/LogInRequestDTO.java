@@ -12,4 +12,5 @@ public class LogInRequestDTO {
 
     String email;
     String password;
+
 }

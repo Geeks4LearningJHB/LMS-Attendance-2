@@ -10,6 +10,9 @@ import { CaptureGoalsComponent } from '../../../goal-management/modals/capture-g
 import { LunchTimeNotificationComponent } from '../../lunch-time-notification/lunch-time-notification.component';
 import { AttendanceModel } from '../../models/attendance.interface';
 import { AttendanceService } from '../../services/attendance.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { QRCodeOpenerComponent } from '../../qrcode-opener/qrcode-opener.component';
+
 
 @Component({
   selector: 'app-trainee',
@@ -41,8 +44,13 @@ export class TraineeComponent implements OnInit {
     private attendanceService: AttendanceService,
     private formBuilder: UntypedFormBuilder,
     private modalService: MdbModalService,
-    private captureGoalService: CaptureGoalService
+    private captureGoalService: CaptureGoalService,
+    private qrCodeDialog :MatDialog
   ) {}
+
+  openQRCodeModal(){
+    this.qrCodeDialog.open(QRCodeOpenerComponent)
+  }
   ngOnInit(): void {
     // this.startTimer();
     const userId = this.userId
@@ -118,6 +126,7 @@ export class TraineeComponent implements OnInit {
     this.isDisabled = !this.isDisabled;
   }
   //Test above
+  
 
   startTimer() {
     setInterval(() => {

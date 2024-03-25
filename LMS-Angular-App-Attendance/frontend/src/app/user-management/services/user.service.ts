@@ -16,6 +16,11 @@ export class UserService {
     return this.http.post(`${this.config.apiUrl}/user/login`, value);
   }
 
+  recentAttendance(): Observable<any> {
+    return this.http.get(`${this.config.apiUrl}/user/recent`);
+  }
+
+
   getAllUsers(): Observable<any>  {
     return this.http.get(`${this.config.apiUrl}/users`);
   }
@@ -43,8 +48,5 @@ export class UserService {
   getUsersByRole(role: Roles) {
     return this.http.get(`${this.config.apiUrl}/user/role/${role}`);
   }
-   
-  
-
 
 }

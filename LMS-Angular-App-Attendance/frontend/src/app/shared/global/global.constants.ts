@@ -4,5 +4,6 @@ export const constants = {
   role: 'role',
   time:'time',
   holidays: 'holidays',
+  logInLocation:"logInLocation"
 };
 

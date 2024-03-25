@@ -25,9 +25,10 @@ export class TraineeComponent implements OnInit {
   attendances!: AttendanceModel[];
   id: string | null = null;
   loginTime: any;
-  statu$: any = 'Present';
+  statu$: any ;
   testTime: any;
   leaveApplications: any;
+  logInLocation!: String | null;
 
   hoursWorked = {
     totalToday: 0,
@@ -46,12 +47,12 @@ export class TraineeComponent implements OnInit {
     // this.startTimer();
     const userId = this.userId
     this.id = sessionStorage.getItem('userId')
+    this.logInLocation = sessionStorage.getItem("logInLocation")
+    console.log("LOCATION " + this.logInLocation)
     if(this.id){
       this.getAttendance(this.id)
     }
-   console.log("user id: " + this.id)
-    this.getTotalHoursWorked()
-
+   
     // this.sendDetails()
   }
   sendDetails() {
@@ -77,7 +78,6 @@ export class TraineeComponent implements OnInit {
   }
   
   getAttendance(userId: string | null) {
-    console.log(userId)
     this.attendanceService
       .getAttendancesByUserId(userId)
       .subscribe((attendance: AttendanceModel[]) => {
@@ -86,7 +86,8 @@ export class TraineeComponent implements OnInit {
           this.id = attendance.id
           this.statu$ = attendance.status
           this.loginTime = attendance.logInTime;
-        
+      
+    
         });
       });
   }
@@ -102,8 +103,7 @@ export class TraineeComponent implements OnInit {
 
     const diffInMs = Math.abs(date2.getTime() - date1.getTime());
     const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-    console.log('I am date');
-    console.log(diffInDays);
+
   }
 
   getStatus(status: string): any {

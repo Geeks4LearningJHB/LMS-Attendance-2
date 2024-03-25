@@ -1,12 +1,17 @@
 <div class="container-fluid  py-4">
   <div class="row align-items-center mb-2">
-    <div class="col-8"></div>
+   <div class="col-8">
+      <h6 [ngClass]="{'red-text': logInLocation === 'Home'}">{{ logInLocation }}</h6>
+  </div>
+  
     <div class="col-4 text-end">
+
       <a
         class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase"
         (click)="createNewGoal()">
         CREATE GOALS
       </a>
+
     </div>
   </div>
   <div class="row">
@@ -48,7 +53,7 @@
               </thead>
               <tbody>
                 <ng-container>
-                  <!-- Mock Data for Timesheet Table -->
+                 
                   <tr *ngFor="let attendance of attendances">
                     <td class="align-middle text-xs ps-2" style="padding-left: 1.5rem !important;">
                       <div class="d-flex">

@@ -13,6 +13,7 @@
         </thead>
         <tbody>
             <ng-container *ngFor="let attendances of data">
+         
             <tr>
                 <td>{{attendances.date}}</td>
                 <td>{{attendances.date | date:'EEEE'}}</td>
@@ -23,7 +24,7 @@
                           'red-text': !unexpectedLogOut,
                           'blue-text': unexpectedLogOut
                         }">
-                          {{ attendances.logOutTime }}
+                          {{ attendances.logOutTime}}
                         </div>
                       </ng-container>
                       <ng-template #elseBlock>

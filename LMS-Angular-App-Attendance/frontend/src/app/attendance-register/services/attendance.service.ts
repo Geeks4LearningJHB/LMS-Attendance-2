@@ -49,6 +49,10 @@ export class AttendanceService {
   }
 
 
+  getUserLocation(){
+    
+  }
+
 
 
   getHoursWorked(period: HoursType, count: number): number {

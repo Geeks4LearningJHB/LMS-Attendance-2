@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   captureGoalsTime: any;
   loginForm!: UntypedFormGroup;
   holdingArray: UntypedFormGroup = new UntypedFormGroup({});
+  recentAttendance:any
 
   constructor(private userService: UserService, private router: Router, private dataService : DataService) { }
    
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit {
       Email: new UntypedFormControl(null, [Validators.required, Validators.email]),
       Password: new UntypedFormControl(null, Validators.required),
     }
+  
   
     );
 
@@ -64,7 +66,6 @@ export class LoginComponent implements OnInit {
   isTouched(key: string): boolean { return this.getFormControl(key).touched; }
 
   login(): void {
-
     // display the error message
     this.loginForm.markAllAsTouched();
 
@@ -80,18 +81,18 @@ export class LoginComponent implements OnInit {
    this.captureGoalsTime = new Date(Date.now()).getMinutes() + 1;
    this.dataService.setLoggedIn(email);
    const loggedInUser = this.dataService.getUserByUsername(email);
-   console.log(request)
 
     // making a backend call
     this.userService
       .authenticate(request)
       .subscribe((response: any) => {
-        console.log("Login successful",response);
-        const userId = response.userId;
+        const userId = response.user.userId;
+        const location = response.attendanceResponseDto.logInLocation;
         setSessionStoragePairs(
           [
             constants.token,
             "userId",
+            "logInLocation",
             constants.username,
             constants.role,
             constants.time,
@@ -99,21 +100,23 @@ export class LoginComponent implements OnInit {
             "times"
           ],
           [
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTIzNDU2Nzg5MCIsInVzZXJuYW1lIjoiZXhhbXBsZV91c2VyIiwiaWF0IjoxNjQ1NTI4NzU2LCJleHAiOjE2NDU1Mjg4MTZ9.VbZBtNnG4xOvWJzC9d4Z4R9BG48g6QezbXK7A9ARX18",
-           
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTIzNDU2Nzg5MCIsInVzZXJuYW1lIjoiZXhhbXBsZV91c2VyIiwiaWF0IjoxNjQ1NTI4NzU2LCJleHAiOjE2NDU1Mjg4MTZ9.VbZBtNnG4xOvWJzC9d4Z4R9BG48g6QezbXK7A9ARX18",   
              userId,
-            `${response?.userName}`,
-            response?.role,
+             location,
+            `${response?.user.userName}`,
+            response?.user.role,
             this.currentDateTime,
             this.currentDateTime,
             this.captureGoalsTime
           ]
         )
-
+        
         // route to the master layout
         console.log("I am sessionStorage : " + JSON.stringify(sessionStorage))
         this.router.navigate(['/dashboard']);
-      },
+      }
+      ,
+
         error => {
           console.log("Errrrrrr: ", error);
           this.getFormControl('Email').setErrors({ isUserNameOrPasswordIncorrect: true });
@@ -122,7 +125,4 @@ export class LoginComponent implements OnInit {
           this.serverErrorMessage = error?.message;
         });
   }
-
-
-
 }

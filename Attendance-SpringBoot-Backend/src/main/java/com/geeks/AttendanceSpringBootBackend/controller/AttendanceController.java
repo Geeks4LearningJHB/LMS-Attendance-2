@@ -113,6 +113,14 @@ public class AttendanceController {
        return checkOutTimeImplimentation.logOutBeforeExpected(id);
     }
 
+    @GetMapping("/user-early-logouts/{userId}")
+    public List<AttendanceResponseDto> getUserEarlyLogOutTimes(@PathVariable long userId) {
+        return attendanceInterface.getUserEarlyLogOutTimes(userId);
+    }
+    @GetMapping("/early-logouts/{date}")
+    public List<AttendanceResponseDto> getAllEarlyLogOutTimes(@PathVariable LocalDate date) {
+        return attendanceInterface.getAllEarlyLogOutTimes(date);
+    }
 
 }
 

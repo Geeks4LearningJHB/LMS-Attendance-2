@@ -212,7 +212,30 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         }
     }
 
+    // Improve( having same method on check out implementation)
+    private boolean isEarlyLogOut(AttendanceRecord attendanceRecord) {
+        if(attendanceRecord.getLogOutTime() != null &&
+                attendanceRecord.getLogOutTime().isBefore(attendanceRecord.getCheckOutTime().minusMinutes(5)))
+        {
+            return true;
+        }
+        return false;
+    }
 
+    @Override
+    public List<AttendanceResponseDto> getAllEarlyLogOutTimes(LocalDate date) {
+        return getEarlyLogOutTimes(attendanceRepository.findAttendanceByDate(date));
+    }
 
+    @Override
+    public List<AttendanceResponseDto> getUserEarlyLogOutTimes(long userId) {
+        return getEarlyLogOutTimes(attendanceRepository.findByUserIdUserId(userId));
+    }
 
+    private List<AttendanceResponseDto> getEarlyLogOutTimes(List<AttendanceRecord> attendanceRecords) {
+        return attendanceRecords.stream()
+                .filter(this::isEarlyLogOut)
+                .map(attendanceDtoMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
 }

@@ -1,6 +1,7 @@
 package com.geeks.AttendanceSpringBootBackend.service.impl;
 
 import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
+import com.geeks.AttendanceSpringBootBackend.entity.Learner;
 import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.enums.Status;
@@ -52,7 +53,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         return attendanceRecords;
     }
     @Override
-    public AttendanceResponseDto newAttendance(User user) {
+    public AttendanceResponseDto newAttendance(Learner learner) {
 
         LocalTime expectedLogOutTime ;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -75,15 +76,15 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         LocalTime testingTime = LocalTime.of(8 , 35);
 
         AttendanceRecord currentDateAttendance = attendanceRepository
-               .findByUserIdUserIdAndDate(user.getUserId() , currentDate);
+               .findByUserIdUserIdAndDate(learner.getUserId() , currentDate);
 
         //User exists if our system gets to this line
-        attendanceRecord.setUserId(user);
+        attendanceRecord.setUserId(learner);
 
         //check if the user has attendance record for that day
         if (currentDateAttendance == null){
 
-            if (logInIp.equals("Office") && user.getRole().equals("Learner") ){
+            if (logInIp.equals("Office")  ){
                 attendanceRecord.setLogInTime(currentTime);
                 attendanceRecord.setDate(currentDate);
                 attendanceRecord.setLogInLocation(logInIp);
@@ -102,7 +103,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
             else {
 
                 AttendanceRecord attendanceRecord1 = new AttendanceRecord();
-                attendanceRecord1.setUserId(user);
+                attendanceRecord1.setUserId(learner);
                 attendanceRecord1.setLogInTime(currentTime);
                 attendanceRecord1.setDate(currentDate);
                 attendanceRecord1.setLogInLocation(logInIp);

@@ -1,8 +1,13 @@
 package com.geeks.AttendanceSpringBootBackend.controller;
 
+import com.geeks.AttendanceSpringBootBackend.entity.Learner;
+import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceRequestDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
+import com.geeks.AttendanceSpringBootBackend.service.LearnerInterface;
 import com.geeks.AttendanceSpringBootBackend.service.impl.AttendanceServiceImplementation;
+import com.geeks.AttendanceSpringBootBackend.service.impl.LearnerServiceImplementation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +16,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminController {
 
     private final AttendanceServiceImplementation attendanceService;
-
-    @Autowired
-    public AdminController(AttendanceServiceImplementation attendanceService) {
-        this.attendanceService = attendanceService;
-    }
+    private final LearnerServiceImplementation  learnerService;
 
 
 
@@ -55,5 +57,10 @@ public class AdminController {
     public ResponseEntity<Void> deleteAttendanceRecord(@PathVariable Long id) {
         attendanceService.deleteAttendanceRecord(id);
         return ResponseEntity.noContent().build();
+    }
+//Added this method for admin to create learner With sponsor
+    @PostMapping("/addLearner")
+    public Learner addLearner (@RequestBody Learner learner){
+        return learnerService.addNewLearner(learner);
     }
 }

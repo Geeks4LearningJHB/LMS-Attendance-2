@@ -1,5 +1,6 @@
 package com.geeks.AttendanceSpringBootBackend.controller;
 
+import com.geeks.AttendanceSpringBootBackend.entity.Learner;
 import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
@@ -36,9 +37,9 @@ public class AttendanceController {
     CheckOutTimeImplimentation checkOutTimeImplimentation;
 
     @PostMapping("/create")
-    public ResponseEntity<AttendanceResponseDto> addNewAttendance(@RequestBody User user){
+    public ResponseEntity<AttendanceResponseDto> addNewAttendance(@RequestBody Learner learner){
 
-        AttendanceResponseDto attendanceResponseDto =attendanceInterface.newAttendance(user);
+        AttendanceResponseDto attendanceResponseDto =attendanceInterface.newAttendance(learner);
         return ResponseEntity.status(HttpStatus.CREATED).body(attendanceResponseDto);
     }
     @GetMapping("/view-all")

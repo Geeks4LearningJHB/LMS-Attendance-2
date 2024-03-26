@@ -2,6 +2,7 @@ package com.geeks.AttendanceSpringBootBackend.service.impl;
 
 import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.UserResponseDTO;
+import com.geeks.AttendanceSpringBootBackend.repository.LearnerRepository;
 import com.geeks.AttendanceSpringBootBackend.repository.UserRepository;
 import com.geeks.AttendanceSpringBootBackend.service.UserInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,18 @@ public class UserServiceImplimentation implements UserInterface {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    LearnerRepository learnerRepository;
     public UserResponseDTO mapToDto(User user) {
         UserResponseDTO userResponse = new UserResponseDTO();
         userResponse.setUserId(user.getUserId());
         userResponse.setUserName(user.getUserName());
         userResponse.setUserSurname(user.getUserSurname());
         userResponse.setEmail(user.getEmail());
-        userResponse.setSponsor(user.getSponsor());
+//        userResponse.setSponsor(user.getSponsor());
         return userResponse;
     }
+
 
 
     @Override

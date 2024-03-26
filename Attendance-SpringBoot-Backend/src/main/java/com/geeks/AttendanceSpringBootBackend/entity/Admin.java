@@ -1,31 +1,11 @@
 package com.geeks.AttendanceSpringBootBackend.entity;
 
-
+import com.geeks.AttendanceSpringBootBackend.enums.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Table(name = "admins")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "admin")
+public class Admin extends User {
 
-public class Admin {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private long adminId;
 
-    @Column(name = "user_name")
-    private String adminUsername;
-
-    @Column(name = "email")
-    private String adminEmail;
-
-    @Column(name = "password")
-    private String password;
 }

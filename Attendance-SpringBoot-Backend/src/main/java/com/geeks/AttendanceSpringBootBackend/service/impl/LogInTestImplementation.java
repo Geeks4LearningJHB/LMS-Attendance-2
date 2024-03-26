@@ -1,6 +1,7 @@
 package com.geeks.AttendanceSpringBootBackend.service.impl;
 
 import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
+import com.geeks.AttendanceSpringBootBackend.entity.Learner;
 import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.LogInRequestDTO;
@@ -34,10 +35,10 @@ public class LogInTestImplementation {
             String  userEmail = validUser.get().getEmail();
 
             if (userEmail.equals(logInRequest.getEmail()) && userPassword.equals(logInRequest.getPassword())){
-                User user = validUser.get();
+                Learner learner = (Learner) validUser.get();
 
 
-                attendanceRecord = attendanceInterface.newAttendance(user);
+                attendanceRecord = attendanceInterface.newAttendance(learner);
                 LogInResponseDto logInResponse = new LogInResponseDto();
 
                 logInResponse.setUser(validUser.get());

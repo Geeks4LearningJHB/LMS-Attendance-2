@@ -1,7 +1,7 @@
 package com.geeks.AttendanceSpringBootBackend.entity;
 
+import com.geeks.AttendanceSpringBootBackend.enums.UserRole;
 
-import com.geeks.AttendanceSpringBootBackend.enums.Sponsor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,21 +15,31 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private long userId;
+
     @Column(name = "user_name")
     private String userName;
+
     @Column(name = "user_surname")
     private String userSurname;
+
     @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
     private String password;
-    private Sponsor sponsor;
-    private String role;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_role")
+    private UserRole userRole;
+
 
 //    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
 //    private List<AttendanceRecord> attendanceRecords = new ArrayList<>();

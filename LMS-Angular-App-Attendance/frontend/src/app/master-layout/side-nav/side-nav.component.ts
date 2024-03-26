@@ -173,18 +173,13 @@ export class SideNavComponent implements OnInit {
 
 logout() {
   console.log(this.holdingArray.value);
-
   // clear the sessionStorage
   sessionStorage.clear();
-
   switch (this.user?.role) {
     case Roles.Learner:
-      this.attendanceService
-        .updateAttendance(this.holdingArray.value)
-        .subscribe((_: any) => {
           // Navigate to another page after updating attendance
           this.router.navigateByUrl('/login');
-        });
+    
       break;
     default:
       // Navigate to another page for other roles

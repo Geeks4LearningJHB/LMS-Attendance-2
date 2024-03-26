@@ -80,10 +80,13 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i aria-hidden="true" class="fa fa-ellipsis-v text-xs"></i>
                       </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    
+                     
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" [hidden]="attendance.scanned">
                         <li> 
-                      <a class="dropdown-item" (click)="openQRCodeModal(attendance.id)">Request Half Day</a>                        </li>
+                      <a class="dropdown-item" (click)="openQRCodeModal(attendance.id)">Clock Out</a>                   </li>
                       </ul>
+                   
                     </td>
                   </tr>
             

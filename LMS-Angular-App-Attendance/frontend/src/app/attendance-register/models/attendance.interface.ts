@@ -16,6 +16,7 @@ export interface AttendanceModel {
   surname: string;
   sponsor: Sponsor;
   logInLocation: string;
+  scanned: boolean;
 
 }
 

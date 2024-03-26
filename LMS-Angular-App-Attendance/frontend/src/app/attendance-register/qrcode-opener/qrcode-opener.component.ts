@@ -13,7 +13,7 @@ export class QRCodeOpenerComponent {
   allowModalClosure!: boolean;
   formModel: any;
   qrCodeImage: any;
-  displayQRCode: boolean = false;
+  displayQRCode!: boolean ;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {attendanceId : String} ,
@@ -48,6 +48,7 @@ export class QRCodeOpenerComponent {
 
     showQRCode() {
       this.displayQRCode = true;
+      console.log(this.displayQRCode)
     }
 
     close() {

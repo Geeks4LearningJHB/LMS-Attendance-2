@@ -12,16 +12,16 @@
             <div class="row">
                 <div class="col p-3">
                     <div class="row">
-                        <div class="col">
+                        <div class="col" [hidden]="displayQRCode" >
                             <p class="fw-bold m-1 align-items-center">
                                 <i class="fa-solid fa-question-circle mr-1"></i>
                                 Hey, would you like to scan the QR code to logout?
                             </p>
                         </div>
                     </div>
-                    <!-- <div class="row mt-4">
+                    <div class="row mt-4"  [hidden]="displayQRCode" >
                         <div class="col text-left">
-                            <button class="btn btn-sm bg-2 gradient-primary mb-0 border border-primary text" >
+                            <button class="btn btn-sm bg-2 gradient-primary mb-0 border border-primary text" (click)="showQRCode()" >
                                 YES
                             </button>
                         
@@ -31,10 +31,16 @@
                                 NO
                             </button>
                         </div>
-                    </div> -->
-                    <div class="text-center">
+                    </div>
+                    <div class="col" >
+                   
+                    </div>
+                    <div [hidden]="!displayQRCode" class="text-center">
+                        <p class="fw-bold m-1 align-items-center">
+                            <i class="fa-solid fa-confim mr-1"></i>
+                            Please scan to confirm your clock out time!
+                        </p>
                         <img [src]="qrCodeImage" alt="QR Code">
-                        <p *ngIf="!qrCodeImage">Loading QR Code...</p>
                     </div>
                 </div>
             </div>

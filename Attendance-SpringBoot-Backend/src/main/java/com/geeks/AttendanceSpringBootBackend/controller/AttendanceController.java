@@ -97,7 +97,7 @@ public class AttendanceController {
     @GetMapping("/update/logOut/{id}/{logOutTime}")
     public void UpdateLogOutTime(@PathVariable long id,@PathVariable LocalTime logOutTime){
 
-      logger.info("Method triggered with ID : " + id +" and time : "+logOutTime);
+
 
       attendanceInterface.updateLogOutTime(id, logOutTime );
     }
@@ -109,7 +109,7 @@ public class AttendanceController {
 
     @GetMapping("log-out-flag/{id}")
     public boolean logOutFlag(@PathVariable long id){
-        logger.info("Triggrered/n : "+ id);
+
        return checkOutTimeImplimentation.logOutBeforeExpected(id);
     }
 

@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AttendanceService } from '../services/attendance.service';
-import { AttendanceModel } from '../models/attendance.interface';
+import { AttendanceService } from '../../services/attendance.service';
+import { AttendanceModel } from '../../models/attendance.interface';
 import {DomSanitizer , SafeUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-qrcode-opener',

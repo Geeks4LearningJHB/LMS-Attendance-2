@@ -11,7 +11,7 @@ import { LunchTimeNotificationComponent } from '../../lunch-time-notification/lu
 import { AttendanceModel } from '../../models/attendance.interface';
 import { AttendanceService } from '../../services/attendance.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { QRCodeOpenerComponent } from '../../qrcode-opener/qrcode-opener.component';
+import { QRCodeOpenerComponent } from '../../all-popup-modals/qrcode-opener/qrcode-opener.component';
 
 
 @Component({

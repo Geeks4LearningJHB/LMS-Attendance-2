@@ -106,7 +106,6 @@ export class TraineeComponent implements OnInit {
           this.statu$ = attendance.status
           this.loginTime = attendance.logInTime;
       
-    
         });
       });
   }

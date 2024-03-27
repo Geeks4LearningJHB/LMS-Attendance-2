@@ -35,18 +35,18 @@
           </tr>
         </thead>
 <tbody >
-          <ng-container *ngFor="let attendedUsers of attendences">
+          <ng-container *ngFor="let attendedUsers of attendences ; let i = index">
             <tr >
               <td class="align-middle text-xs ps-2" >{{attendedUsers.name}} {{attendedUsers.surname}}</td>
               <td class="align-middle text-xs ps-2"> {{attendedUsers.date}}</td>
               <td class="align-middle text-xs ps-2">{{attendedUsers.sponsor}}</td>
-              <td class="align-middle text-xs ps-2">{{attendedUsers.logInTime}}</td>
+              <td class="align-middle text-xs ps-2">{{reversedLogInTimes[i]}}</td> 
               <td class="align-middle text-xs ps-2">{{attendedUsers.checkOutTime}}</td>
-            
-            
-              <td class="align-middle text-xs ps-2 " > <p class="font-weight-bold mb-0" [class]="getStatus(attendedUsers.status)">
+              <td class="align-middle text-xs ps-2 " >
+                <p class="font-weight-bold mb-0" [class]="getStatus(attendedUsers.status)">
                 {{attendedUsers.status}}
-              </p></td>
+                </p>
+              </td>
               <td class="align-middle dropdown">
                 <button class="btn btn-link text-secondary mb-0 dropdown-toggle" type="button" id="dropdownMenuButton1"
                   data-bs-toggle="dropdown" aria-expanded="false">
@@ -56,15 +56,18 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                   <li>
                     <a class="dropdown-item">
-                      &nbsp;&nbsp;View Profile</a>
+                      &nbsp;&nbsp;View Profile
+                    </a>
                   </li>
                   <li>
                     <a class="dropdown-item" (click)="getOneAttendanceById(attendedUsers.id)" (click)="openModal()">
-                      &nbsp;&nbsp;Update</a>
+                      &nbsp;&nbsp;Update
+                    </a>
                   </li>
                   <li>
                     <a class="dropdown-item" (click)="getAttendanceById(attendedUsers.userId)"  (click)="openModal()">
-                      &nbsp;&nbsp;View Attendance</a>
+                      &nbsp;&nbsp;View Attendance
+                    </a>
                   </li>
                 </ul>
               </td>
@@ -76,12 +79,12 @@
       <!-- Added Pagination-->
       <nav aria-label="Page navigation example" style="Margin-top:20px; Margin-left:20px">
           <ul class="pagination">
-<button >Previous</button>         
+            <button >Previous</button>         
             <li class="page-item"><a class="page-link"  (click)="openModal()">2</a></li>
             <li class="page-item"><a class="page-link" (click)="openModal()">3</a></li>
             <li class="page-item"><a class="page-link" (click)="openModal()">Next</a></li>
           </ul>
-        </nav>
+      </nav>
     </div>
   </div>
 </div>

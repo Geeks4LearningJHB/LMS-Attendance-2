@@ -56,8 +56,6 @@ export class AttendanceService {
     
   }
 
-
-
   getHoursWorked(period: HoursType, count: number): number {
     switch (period) {
       case 'Month':

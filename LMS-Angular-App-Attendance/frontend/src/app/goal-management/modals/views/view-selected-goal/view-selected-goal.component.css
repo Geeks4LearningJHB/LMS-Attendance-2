@@ -1,0 +1,44 @@
+.completedBackgroundColor {
+  background-color: rgba(69, 172, 66, 0.2);
+  color: var(--g4l-completed-state-color);
+}
+
+.startedBackgroundColor {
+  background-color: rgba(57, 112, 151, 0.2);
+  color: var(--g4l-started-state-color);
+}
+
+.pausedBackgroundColor {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: var(--g4l-paused-state-color);
+}
+
+.archivedBackgroundColor {
+  background-color: rgba(110, 2, 128, 0.2);
+  color: var(--g4l-archived-state-color);
+}
+
+.backlogBackgroundColor {
+  background-color: rgba(255, 183, 3, 0.2);
+  color: var(--g4l-backlog-state-color);
+}
+
+.archivedBackgroundColor,
+.backlogBackgroundColor,
+.completedBackgroundColor,
+.pausedBackgroundColor,
+.startedBackgroundColor {
+  font-size: 11pt;
+  padding: 0.2rem 0.5rem;
+}
+
+.defaultCase {
+  font-size: 10pt;
+}
+
+/* .progress-bar .progress-percentage-display{
+  position: absolute;
+  right: 1rem;
+  font-size: 7pt;
+  color: #fff;
+} */

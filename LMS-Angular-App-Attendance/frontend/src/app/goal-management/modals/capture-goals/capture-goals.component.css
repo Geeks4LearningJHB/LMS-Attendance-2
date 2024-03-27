@@ -1,0 +1,15 @@
+.coursename p {
+  margin-top: 0.5rem;
+}
+
+.coursename p b {
+  margin-left: 0.4rem;
+}
+
+.error {
+  border: 2px solid red;
+}
+
+.errorMessage {
+  color: red;
+}

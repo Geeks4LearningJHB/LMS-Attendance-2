@@ -1,0 +1,9 @@
+.number-circular-container {
+    position: relative;
+    padding: 0;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    overflow: hidden;
+    background-color: transparent;
+}

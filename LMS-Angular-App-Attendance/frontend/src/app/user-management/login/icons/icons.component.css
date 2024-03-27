@@ -1,0 +1,16 @@
+.fa-brands,
+.fa {
+  color: #344767;
+  font-size: 14pt;
+}
+
+.icons {
+  transform: translate(-50%, -55%);
+  position: absolute;
+  top: 87%;
+  left: 50%;
+}
+
+fa-icon {
+  height: 30px;
+}

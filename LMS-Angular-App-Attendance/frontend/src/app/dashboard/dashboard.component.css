@@ -1,0 +1,83 @@
+.border-radius-md {
+  border-radius: 0.5rem;
+}
+
+.icon-shape {
+  width: 48px;
+  height: 48px;
+  background-position: 50%;
+  border-radius: 0.75rem;
+}
+
+.bg-gradient-primary {
+  background-image: linear-gradient(310deg, #031098, #09092e);
+}
+
+.shadow {
+  box-shadow: 0 0.3125rem 0.625rem 0 rgba(0, 0, 0, 0.12) !important;
+}
+
+.icon {
+  fill: currentColor;
+  stroke: none;
+}
+
+.icon {
+  display: inline-block;
+  color: #111;
+}
+
+.icon {
+  fill: currentColor;
+  stroke: none;
+  position: absolute;
+  right: 1rem;
+}
+
+.icon-shape .ni {
+  top: 14px;
+}
+
+.text-lg {
+  font-size: 1.125rem !important;
+}
+
+.opacity-10 {
+  opacity: 1 !important;
+}
+
+.ni {
+  display: inline-block;
+  font: normal normal normal 14px/1 NucleoIcons;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shape i {
+  color: #fff;
+  opacity: 0.8;
+  top: 11px;
+  position: relative;
+}
+
+.pls-2 {
+  padding-left: 3rem;
+}
+
+.vl {
+  border-left: 6px solid var(--g4l-greeny-blue);
+  border-radius: 5px;
+  height: 80%;
+  position: absolute;
+  left: 5%;
+  margin-left: 0px;
+  top: 11%;
+}
+
+.notification-card {
+  border-radius: 1rem !important;
+  border: none;
+  background-color: #f8f9fa;
+}

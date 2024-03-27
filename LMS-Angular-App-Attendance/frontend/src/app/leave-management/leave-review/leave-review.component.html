@@ -1,0 +1,284 @@
+<div class="container-fluid m-0 p-0">
+  <div class="card m-0 p-0">
+    <div class="card-header pb-0">
+      <div class="row align-items-center">
+        <div class="col-8">
+          <h6 class="mb-0 text-uppsercase">Review request</h6>
+        </div>
+        <div class="col-4 text-end">
+          <a (click)="close()" class="cursor-pointer">
+            <i class="fa-solid fa-xmark"></i></a>
+        </div>
+      </div>
+      <hr class="horizontal dark my-2" />
+    </div>
+    <div class="card-body pt-0">
+      <div class="row p-2">
+        <div class="col">
+          <h6 class="fw-bold m-1 g4l-grey-text">
+            <i class="fa-solid fa-user mr-1"></i>
+            {{ request?.user.name }} {{ request?.user.surname }}
+          </h6>
+          <p class="fw-bold m-1">
+            <i class="fa-solid fa-building mr-1"></i>
+            {{ sponsor?.registeredName }}
+          </p>
+          <p class="m-1 g4l-light-grey-text">
+            <i class="fa-solid fa-briefcase mr-1"></i>
+            {{ request?.user.career | removeUnderscore }}
+          </p>
+        </div>
+        <div class="col">
+          <div class="card border-grey p-3">
+            <h6 class="fw-bold">Days Used</h6>
+            <p class="m-0 g4l-grey-text">{{ getLeaveBalance(request?.leaveType)?.used }}</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-grey p-3">
+            <h6 class="fw-bold">Days Available</h6>
+            <p class="m-0 g4l-grey-text">{{ getLeaveBalance(request?.leaveType)?.remaining }}</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-radius" [class]="getStatusBgColor(request?.status)">
+            <p class="p-3 m-0 white-text text-uppercase"><i class="fa-solid"
+                [class]="getStatusIcon(request?.status)"></i>
+              &nbsp;{{ request?.status | removeUnderscore }}</p>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="formModel" autocomplete="off" class="p-2">
+        <!-- Leave type -->
+        <div class="row mt-3">
+          <div class="col-4">
+            <div class="form-group">
+              <label class="form-control-label" for="input-leaveType" [ngClass]="{
+                      'red-text':
+                        formModel.controls['leaveType'].invalid &&
+                        formModel.controls['leaveType'].touched
+                    }">Leave type</label>
+              <select type="text" id="input-leaveType" class="form-select" formControlName="leaveType" [ngClass]="{
+                      'red-border':
+                        formModel.controls['leaveType'].invalid &&
+                        formModel.controls['leaveType'].touched
+                    }">
+                <option *ngFor="let leaveType of keys(leaveTypes)" [ngValue]="leaveType" [disabled]="true">
+                  {{ leaveType | removeUnderscore }}
+                </option>
+              </select>
+              <div class="red-text" *ngIf="
+                      formModel.controls['leaveType'].invalid &&
+                      formModel.controls['leaveType'].touched
+                    ">
+                <div *ngIf="formModel.controls['leaveType'].errors.required">
+                  Please select a leave type
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group" *ngIf="request?.documents">
+              <label class="form-control-label">Attachments</label>
+              <ul>
+                <li *ngFor="let attachment of request?.documents">
+                  <div class="bg-5-g4l-greeny-blue border-radius cursor-pointer fit-content p-1"
+                    (click)="openOnNewTab(attachment?.filePath)">
+                    <a class="p-2"><i class="fa-solid" [class]="getFileIcon(attachment?.fileName)"></i>
+                      &nbsp;{{ attachment?.fileName }}</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-1">
+          <div class="col-4">
+            <label class="form-control-label p-1" for="input-startDate" [ngClass]="{
+              'red-text':
+                formModel.controls['startDate'].invalid &&
+                formModel.controls['startDate'].touched
+            }">From</label>
+            <div class="card border-grey p-3">
+              <h6 class="fw-bold">{{ request?.startDate | date: 'EEEE' }}</h6>
+              <p class="m-0 g4l-grey-text fw-bold">{{ request?.startDate | date: 'd MMMM' }}
+                <span class="m-0 g4l-grey-text float-end fw-normal">{{ request?.startDate | date: 'y' }}</span>
+              </p>
+            </div>
+          </div>
+          <i class="arrow fa-solid fa-arrow-right"></i>
+          <div class="col-4">
+            <label class="form-control-label p-1" for="input-endDate" [ngClass]="{
+              'red-text':
+                formModel.controls['endDate'].invalid &&
+                formModel.controls['endDate'].touched
+            }">To</label>
+            <div class="card border-grey p-3">
+              <h6 class="fw-bold">{{ request?.endDate | date: 'EEEE' }}</h6>
+              <p class="m-0 g4l-grey-text fw-bold">{{ request?.endDate | date: 'd MMMM' }}
+                <span class="m-0 g4l-grey-text float-end fw-normal">{{ request?.endDate | date: 'y' }}</span>
+              </p>
+            </div>
+          </div>
+          <div class="col" style="padding-top:2.5rem;">
+            <p>{{ request?.usedDays }} work days requested</p>
+            <button (click)="proposeChanges()" class="btn btn-sm bg-2 gradient-primary dark-border mb-0 text-uppercase">
+              <i class="fa-solid fa-pen"></i>&nbsp;
+              Propose a change</button>
+          </div>
+        </div>
+
+        <!-- learners comments -->
+        <div class="row mt-3">
+          <div class="col">
+            <div class="form-group">
+              <label class="form-control-label" for="input-comments" [ngClass]="{
+                  'red-text':
+                    formModel.controls['comments'].invalid &&
+                    formModel.controls['comments'].touched
+                }">Comments</label>
+              <textarea type="text" id="input-comments" class="form-control" formControlName="comments" [ngClass]="{
+                  'red-border':
+                    formModel.controls['comments'].invalid &&
+                    formModel.controls['comments'].touched
+                }">
+              </textarea>
+              <div class="red-text" *ngIf="
+                  formModel.controls['comments'].invalid &&
+                  formModel.controls['comments'].touched
+                ">
+                <div *ngIf="formModel.controls['comments'].errors.required">
+                  Please type your comments for the approvers
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="horizontal dark my-4" />
+
+        <div formArrayName="approvers" *ngFor="let item of formModel.controls['approvers'].controls; let i = index">
+          <div [formGroupName]="i" class="mt-3" *ngIf="isAllowedToViewAll(getFormControl(item, 'role').value)">
+            <div class="row mb-3" *ngIf="isTrainer(getFormControl(item, 'role').value)">
+              <div class="col-2">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-comments" [ngClass]="{
+                      'red-text':
+                        getFormControl(item, 'status').invalid &&
+                        getFormControl(item, 'status').touched
+                    }">Approver's status</label>
+                  <p class="py-2 m-0 text-uppercase">
+                    <i class="fa-solid" [class]="getStatusIcon(getFormControl(item, 'status').value)"></i>
+                    &nbsp;{{ getFormControl(item, 'status').value | removeUnderscore }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-userId" [ngClass]="{
+                          'red-text':
+                          getFormControl(item, 'userId').invalid &&
+                          getFormControl(item, 'userId').touched
+                        }">Approver</label>
+                  <select type="text" id="input-leaveType" #approver class="form-select" formControlName="userId"
+                    (change)="setNewApprover()" [ngClass]="{
+                          'red-border':
+                            getFormControl(item, 'userId').invalid &&
+                            getFormControl(item, 'userId').touched
+                        }">
+                    <option *ngFor="let trainer of trainers" [ngValue]="trainer.id">
+                      {{ trainer?.name }} {{ trainer?.surname }}
+                      <!-- {{ trainer.id }} -->
+                    </option>
+                  </select>
+                  <div class="red-text" *ngIf="
+                          getFormControl(item, 'userId').invalid &&
+                          getFormControl(item, 'userId').touched
+                        ">
+                    <div *ngIf="getFormControl(item, 'userId').errors.required">
+                      Please select a trainer
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col" style="padding-top: 1.5rem;">
+                <button (click)="saveChangeOfApprover()"
+                  class="btn btn-sm bg-2 gradient-primary dark-border mb-0 text-uppercase"
+                  [disabled]="!getFormControl(item, 'userId').dirty">
+                  <i class="fa-solid fa-pen"></i>&nbsp;
+                  Change the approver</button>
+              </div>
+            </div>
+            <div class="row mb-3" *ngIf="!isTrainer(getFormControl(item, 'role').value)">
+              <div class="col-2">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-comments" [ngClass]="{
+                      'red-text':
+                        getFormControl(item, 'status').invalid &&
+                        getFormControl(item, 'status').touched
+                    }">Approver's status</label>
+                  <p class="py-2 m-0 text-uppercase">
+                    <i class="fa-solid" [class]="getStatusIcon(getFormControl(item, 'status').value)"></i>
+                    &nbsp;{{ getFormControl(item, 'status').value | removeUnderscore }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-comments" [ngClass]="{
+                    'red-text':
+                      getFormControl(item, 'fullName').invalid &&
+                      getFormControl(item, 'fullName').touched
+                  }">Approver</label>
+                  <p class="py-2 m-0">
+                    &nbsp;{{ getFormControl(item, 'fullName').value }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-1">
+              <div class="form-group">
+                <label class="form-control-label" for="input-comments" [ngClass]="{
+                    'red-text':
+                      getFormControl(item, 'comments').invalid &&
+                      getFormControl(item, 'comments').touched
+                  }">Notes from {{ getFormControl(item, 'fullName').value }}</label>
+                <textarea type="text" id="input-comments" class="form-control" formControlName="comments"
+                  [disabled]="!isTrainer(role)" [ngClass]="{
+                    'red-border':
+                      getFormControl(item, 'comments').invalid &&
+                      getFormControl(item, 'comments').touched
+                  }">
+                </textarea>
+                <div class="red-text" *ngIf="
+                    getFormControl(item, 'comments').invalid &&
+                    getFormControl(item, 'comments').touched
+                  ">
+                  <div *ngIf="getFormControl(item, 'comments').errors.required">
+                    Please type your comments for rejecting the leave request
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-6"></div>
+          <div class="col-3 text-end">
+            <button (click)="updateLeaveStatus('Rejected')"
+              class="btn btn-sm bg-2 gradient-primary dark-border mb-0 text-uppercase">
+              Reject Request</button>
+          </div>
+          <div class="col-3 text-end">
+            <button (click)="updateLeaveStatus('Approved')"
+              class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase">
+              Approve Request</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

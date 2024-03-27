@@ -1,0 +1,27 @@
+{
+    "data": {
+        "attendances": [
+            {
+                "UserId": "e5bde2f1-6ed3-4b73-aa8e-08dab6cc499c",
+                "Date": "23 Sept 2022 ",
+                "LoginTime": "07h40",
+                "LogoutTime": "16h40",
+                "Status": "Present"
+            },
+            {
+                "UserId": "8062ccdd-6d1d-46cd-fbf3-08dab13996f4",
+                "Date": "23 Sept 2022  ",
+                "LoginTime": "",
+                "LogoutTime": "",
+                "Status": "Absent"
+            },
+            {
+                "UserId": "952ecebd-8183-4d70-c5d2-08dabe69a3b7",
+                "Date": "23 Sept 2022  ",
+                "LoginTime": "08h56",
+                "LogoutTime": "17h00",
+                "Status": "Late"
+            }
+        ]
+    }
+}

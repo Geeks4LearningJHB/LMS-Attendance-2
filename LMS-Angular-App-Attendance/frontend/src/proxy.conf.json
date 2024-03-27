@@ -1,0 +1,8 @@
+{
+  "/api/*": {
+    "secure": false,
+    "target": "https://geeks4learning.herokuapp.com",
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

@@ -1,0 +1,51 @@
+<div mat-dialog-title class="dialog-container">
+<h5>View Weekly Attendance</h5>
+</div>
+<div mat-dialog-content>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Status</th>
+                <th>Log Out Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let attendances of data">
+         
+            <tr>
+                <td>{{attendances.date}}</td>
+                <td>{{attendances.date | date:'EEEE'}}</td>
+                <td>{{attendances.status}}</td>
+                  <td class="align-middle text-xs ps-2">
+                    <ng-container *ngIf="attendances.logOutTime !== null; else elseBlock">
+                        <div [ngClass]="{
+                          'red-text': !unexpectedLogOut,
+                          'blue-text': unexpectedLogOut
+                        }">
+                          {{ attendances.logOutTime}}
+                        </div>
+                      </ng-container>
+                      <ng-template #elseBlock>
+                        - - -
+                      </ng-template>
+              </td>
+            </tr>
+        </ng-container>
+        </tbody>
+    </table>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; Margin-top: 20px; Margin-left: 20px;">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination" style="display: flex; list-style: none; margin: 0; padding: 0;">
+            <li class="page-item"></li>
+        </ul>
+    </nav>
+
+    <div mat-dialog-action>
+        <button class="download-button" style="width: 100px;" href="#">Download</button>
+        <button class="done-button" style="width: 100px;" (click)="onDoneClick()">Done</button>
+      </div>
+      
+</div>

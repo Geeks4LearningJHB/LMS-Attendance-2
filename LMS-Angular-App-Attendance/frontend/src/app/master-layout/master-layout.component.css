@@ -1,0 +1,5 @@
+@media (min-width: 1200px) {
+  .sidenav.fixed-start ~ .main-content {
+    margin-left: 17.125rem;
+  }
+}

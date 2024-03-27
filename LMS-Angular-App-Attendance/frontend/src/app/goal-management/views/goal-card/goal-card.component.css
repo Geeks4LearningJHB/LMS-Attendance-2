@@ -1,0 +1,102 @@
+mat-card {
+  background-color: #ffffff;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  border-radius: 7px;
+  box-shadow: 0 0 3px 4px rgba(0, 0, 0, 0.3);
+}
+
+mat-card:hover {
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+mat-card-header {
+  padding: 0;
+  margin: 0;
+  border-radius: 0 10px 0 0;
+  pointer-events: none;
+}
+
+mat-card-header mat-card-title {
+  position: relative;
+  color: #000;
+  margin: 0;
+  padding: 5px 0;
+  font-size: 12pt;
+}
+
+mat-card-content {
+  display: block;
+  padding: 0.4rem;
+  pointer-events: none;
+}
+
+mat-card-content .backlog {
+  border-left: var(--g4l-goal-state-border) var(--g4l-backlog-state-color);
+}
+
+mat-card-content .backlog .goal-content-item.goal-duration .goal-item-icon i {
+  color: var(--g4l-backlog-state-color);
+}
+
+mat-card-content .started {
+  border-left: var(--g4l-goal-state-border) var(--g4l-started-state-color);
+}
+
+mat-card-content .started .goal-content-item.goal-duration .goal-item-icon i {
+  color: var(--g4l-started-state-color);
+}
+
+mat-card-content .paused {
+  border-left: var(--g4l-goal-state-border) var(--g4l-paused-state-color);
+}
+
+mat-card-content .paused .goal-content-item.goal-duration .goal-item-icon i {
+  color: var(--g4l-paused-state-color);
+}
+
+mat-card-content .completed {
+  border-left: var(--g4l-goal-state-border) var(--g4l-completed-state-color);
+}
+
+mat-card-content .completed .goal-content-item.goal-duration .goal-item-icon i {
+  color: var(--g4l-completed-state-color);
+}
+
+mat-card-content .archived {
+  border-left: var(--g4l-goal-state-border) var(--g4l-archived-state-color);
+}
+
+mat-card-content .archived .goal-content-item.goal-duration .goal-item-icon i {
+  color: var(--g4l-archived-state-color);
+}
+
+mat-card-content .goal-content-item {
+  display: flex;
+  margin-bottom: 0.4rem;
+}
+
+mat-card-content .goal-content-item .goal-item-icon {
+  margin-right: 0.3rem;
+}
+
+mat-card-content .goal-content-item.goal-description .goal-item-icon i{
+  color: #67748e;
+  font-size: 9pt;
+}
+
+mat-card-content .goal-content-item.goal-description .goal-item-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+mat-card-content .goal-content-item.goal-duration .goal-duration{
+  font-weight: bold;
+}
+
+mat-card-content > .d-block {
+  padding-left: 5px;
+}

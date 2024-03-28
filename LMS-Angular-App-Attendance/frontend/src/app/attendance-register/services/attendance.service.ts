@@ -12,7 +12,7 @@ export class AttendanceService {
   TODAY_HOURS = 8;
   MONTH_HOURS = 160;
   WEEK_HOURS = 40;
- 
+
 
   constructor(
     @Inject(APP_SERVICE_CONFIG) private config: AppConfig,
@@ -39,6 +39,11 @@ export class AttendanceService {
     return this.http.put(`${this.config.apiUrl}/Attendance`, logoutTime);
   }
 
+   updateAttendance1(id: any, status: any): Observable<any> {
+      const url = `${this.config.apiUrl}/attendance/update/status/${id}/${status}`;
+      return this.http.put(url, {});
+    }
+
   getAttendancesByUserId(userId: string | null): Observable<AttendanceModel[]> {
     return this.http.get<AttendanceModel[]>(
       `${this.config.apiUrl}/attendance/view-by-user-id/${userId}`
@@ -53,7 +58,7 @@ export class AttendanceService {
 
 
   getUserLocation(){
-    
+
   }
 
 

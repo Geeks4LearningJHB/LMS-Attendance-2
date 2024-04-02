@@ -23,11 +23,11 @@ attendences: any[] = [];
   loginTime: any;
   statu$: any;
   date: any;
-  
+
   // testing data
-  
+
   constructor(
-    
+
     private formBuider: UntypedFormBuilder,
     private attendenceService: AttendanceService,
     private userService: UserService,private dialog: MatDialog
@@ -39,20 +39,20 @@ attendences: any[] = [];
     const convertedDate = new Date(date);
     this.getAllAttendances(date);
     console.log(convertedDate)
-   
+
   }
- 
+
   openModal(): void {
     this.dialog.open
   }
   closeModal() {
-    this.dialog.closeAll; 
+    this.dialog.closeAll;
   }
 
- updateStatus(attendanceId : string){
-  this.attendenceService.updateAttendance(attendanceId)
-  .subscribe()
- }
+//  updateStatus(attendanceId : string){
+//   this.attendenceService.updateAttendance(attendanceId)
+//   .subscribe()
+//  }
  getOneAttendanceById(attendanceId: string) {
   this.attendenceService
   .getUserAttendanceById(attendanceId)
@@ -91,7 +91,7 @@ getAllAttendances(date : String){
   //       this.attendences = res;
   //       console.log(res)
   //       console.log("Get Attendances method");
-        
+
   //     });
   //   this.userService.getPagedUsers(skip, take).subscribe((res: any) => {
   //     res.forEach((element: any) => {

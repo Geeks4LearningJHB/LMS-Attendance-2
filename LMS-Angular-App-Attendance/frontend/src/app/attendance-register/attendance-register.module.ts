@@ -9,6 +9,7 @@ import { AdminComponent } from './views/admin/admin.component';
 import { TraineeComponent } from './views/trainee/trainee.component';
 import { AdminpopupComponent } from './popup/adminpopup/adminpopup.component';
 import { ViewAttendancesComponent } from './modal/view-attendances/view-attendances.component';
+import { AbsentModalComponent } from './all-popup-modals/absent-modal/absent-modal.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ViewAttendancesComponent } from './modal/view-attendances/view-attendan
     TraineeComponent,
     AdminpopupComponent,
     ViewAttendancesComponent,
+    AbsentModalComponent,
   ],
   imports: [
     CommonModule,

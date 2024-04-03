@@ -31,7 +31,7 @@ export class AdminpopupComponent {
         console.log("The status is " + this.unexpectedLogOut);
       });
   }
-
+ 
   @Output() doneClicked = new EventEmitter<void>();
 
   onDoneClick() {

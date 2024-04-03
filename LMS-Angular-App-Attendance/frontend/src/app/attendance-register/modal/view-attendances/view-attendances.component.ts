@@ -35,15 +35,11 @@ export class ViewAttendancesComponent {
     updateStatus() {
 
       this.formModel
-      // Call the backend service to update the status
       const id = this.attendance.id;
       const newStatus = this.formModel.get('AttendanceStatus').value;
-
       this.attendanceService.updateAttendance1(id,newStatus).subscribe((response) => {
-        // Handle response if needed
         console.log('Status updated successfully', response);
       }, (error) => {
-        // Handle error if needed
         console.error('Error updating status', error);
       });
     }

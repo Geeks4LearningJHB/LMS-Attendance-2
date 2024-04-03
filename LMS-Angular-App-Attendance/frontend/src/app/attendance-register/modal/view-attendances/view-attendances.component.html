@@ -95,7 +95,6 @@
                       }">Select Status to update</label>
                 <select type="text" id="input-status" class="form-select" formControlName="AttendanceStatus" >
                   <option > PRESENT</option>
-                  <option > ABSENT</option>
                   <option > LATE</option>
                 </select>
                 <div class="red-text" *ngIf="
@@ -123,7 +122,7 @@
           </div>
           <div class="col-3 text-end">
             <button
-              class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase">
+              class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" (click)="updateStatus()">
               Update Status</button>
           </div>
         </div>

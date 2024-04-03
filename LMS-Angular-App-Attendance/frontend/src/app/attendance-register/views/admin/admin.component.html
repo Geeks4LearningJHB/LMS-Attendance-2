@@ -25,6 +25,9 @@
               Check out 
             </th>
             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+              clocked Out?
+            </th>
+            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
               Status
             </th>
             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
@@ -42,6 +45,10 @@
               <td class="align-middle text-xs ps-2">{{attendedUsers.sponsor}}</td>
               <td class="align-middle text-xs ps-2">{{attendedUsers.logInTime}}</td>
               <td class="align-middle text-xs ps-2">{{attendedUsers.checkOutTime}}</td>
+              <td class="text-uppercase align-middle text-xs ps-2" [ngClass]="{'red-text': !attendedUsers.scanned, 'green-text': attendedUsers.scanned}">
+                {{ attendedUsers.scanned ? 'true' : 'false' }}
+              </td>
+              
             
             
               <td class="align-middle text-xs ps-2 " > <p class="font-weight-bold mb-0" [class]="getStatus(attendedUsers.status)">

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
 import { AttendanceModel } from '../../models/attendance.interface';
@@ -17,13 +17,36 @@ export class ViewAttendancesComponent {
   constructor(
     private formBuilder: UntypedFormBuilder ,
     @Inject(MAT_DIALOG_DATA) public data: AttendanceModel ,
-    private attendanceService:AttendanceService){}
-   
+    private attendanceService:AttendanceService,
+    private fb: FormBuilder){}
+
     ngOnInit(){
       this.attendance = this.data
-      console.log(this.attendance)
+      console.log(this.attendance);
+      this.formModel = this.fb.group({
+        AttendanceStatus: [this.attendance.status, Validators.required] // Validators for required selection
+      });
     }
+
+
     close() {
       this.close();
     }
+    updateStatus() {
+
+      this.formModel
+      // Call the backend service to update the status
+      const id = this.attendance.id;
+      const newStatus = this.formModel.get('AttendanceStatus').value;
+
+      this.attendanceService.updateAttendance1(id,newStatus).subscribe((response) => {
+        // Handle response if needed
+        console.log('Status updated successfully', response);
+      }, (error) => {
+        // Handle error if needed
+        console.error('Error updating status', error);
+      });
+    }
+
+
 }

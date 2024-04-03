@@ -1,1 +1,50 @@
-<p>absent-modal works!</p>
+<div class="container-fluid m-0 p-0">
+    <div class="card m-0 p-0">
+        <div class="card-header pb-0">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h6 class="mb-0">Absent Students</h6>
+                </div>
+                <hr class="horizontal dark my-4" />
+            </div>
+        </div>
+        <div class="card-body pt-0">
+            <div class="row">
+                <div class="col">
+                    <!-- List of Absent Students -->
+                    <div class="table-container" *ngIf="absentStudents.length > 0">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Name</th>
+                                    <th>Sponsor</th>
+                                    <th>Phone Number</th>
+                                    <th>Date</th>
+                                    <th>Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let student of absentStudents; let i = index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ student.name }}</td>
+                                    <td>{{ student.sponsor }}</td>
+                                    <td>{{ student.phoneNumber }}</td>
+                                    <td>{{ student.date | date }}</td>
+                                    <td>{{ student.reason }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                 
+                        <button class="btn btn-sm btn-blue" (click)="closeModal()">Close</button>
+              
+                    </div>
+                    <!-- Show a message if no students are absent -->
+                    <div *ngIf="absentStudents.length === 0">
+                        <p>No students are absent.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

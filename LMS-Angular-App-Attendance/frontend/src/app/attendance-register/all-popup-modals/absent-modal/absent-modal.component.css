@@ -1,0 +1,16 @@
+.btn-blue {
+    background-color: rgb(8, 189, 255);
+    color: white;
+    border-color: rgb(8, 189, 255);
+}
+
+.btn-blue:hover {
+    background-color: #00a2ff;
+    border-color: #00a2ff;
+}
+
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+}

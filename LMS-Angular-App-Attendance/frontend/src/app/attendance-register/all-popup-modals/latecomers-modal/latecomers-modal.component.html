@@ -3,7 +3,7 @@
         <div class="card-header pb-0">
             <div class="row align-items-center">
                 <div class="col-8">
-                    <h6 class="mb-0">View Absent Geeks</h6>
+                    <h6 class="mb-0">View Latecomers</h6>
                 </div>
                 <hr class="horizontal dark my-4" />
             </div>
@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col">
                     <!-- List of Absent Students -->
-                    <div class="table-container" *ngIf="absentStudents.length > 0">
+                    <div class="table-container" *ngIf="lateComers.length > 0">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -25,7 +25,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let student of absentStudents; let i = index">
+                                <tr *ngFor="let student of lateComers; let i = index">
                                     <td>{{ i + 1 }}</td>
                                     <td>{{ student.name }}</td>
                                     <td>{{ student.sponsor }}</td>
@@ -35,12 +35,12 @@
                                 </tr>
                             </tbody>
                         </table>
-                 
-                        <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" (click)="closeModal()">Close</button>
-              
+
+                        <button   class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" (click)="closeModal()">Close</button>
+
                     </div>
                     <!-- Show a message if no students are absent -->
-                    <div *ngIf="absentStudents.length === 0">
+                    <div *ngIf="lateComers.length === 0">
                         <p>No students are absent.</p>
                     </div>
                 </div>

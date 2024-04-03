@@ -3,7 +3,7 @@
         <div class="card-header pb-0">
             <div class="row align-items-center">
                 <div class="col-8">
-                    <h6 class="mb-0">View Absent Geeks</h6>
+                    <h6 class="mb-0">View Early Depatures</h6>
                 </div>
                 <hr class="horizontal dark my-4" />
             </div>
@@ -35,9 +35,10 @@
                                 </tr>
                             </tbody>
                         </table>
-                 
-                        <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" (click)="closeModal()">Close</button>
-              
+
+                        <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase"
+                            (click)="closeModal()">Close</button>
+
                     </div>
                     <!-- Show a message if no students are absent -->
                     <div *ngIf="absentStudents.length === 0">

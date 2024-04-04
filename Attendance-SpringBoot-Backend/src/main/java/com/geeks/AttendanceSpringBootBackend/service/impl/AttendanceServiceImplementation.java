@@ -237,7 +237,8 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
         for (AttendanceRecord record : records) {
 
-            if (!logOutTimeImplimentation.logOutBeforeExpected(record.getUserId().getUserId())) {
+            if (record.isScanned() && record.getLogOutTime()
+                    .isBefore(record.getCheckOutTime())) {
                 early.add(record);
             }
         }

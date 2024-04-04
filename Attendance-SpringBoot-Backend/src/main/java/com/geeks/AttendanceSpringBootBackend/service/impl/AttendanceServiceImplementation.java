@@ -6,6 +6,7 @@ import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.UserResponseDTO;
 import com.geeks.AttendanceSpringBootBackend.enums.Status;
 import com.geeks.AttendanceSpringBootBackend.exceptions.AttendanceExceptions;
+import com.geeks.AttendanceSpringBootBackend.exceptions.UserException;
 import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
 import com.geeks.AttendanceSpringBootBackend.repository.UserRepository;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
@@ -263,24 +264,32 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     }
 
     @Override
-    public List<UserResponseDTO> absentGeeks(LocalTime time, LocalDate date) {
+    public List<UserResponseDTO> absentGeeks() {
+        date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
+        time  = timeFetcherApi.getCurrentTimeInSouthAfrica();
+
+        //format date and time to the localDate pattern
+        currentTime = LocalTime.parse(time , formatter);
+        currentDate = LocalDate.parse(date , formatDate);
 
         LocalTime checkTime = LocalTime.of(7 ,30);
-
-        if ((time.isAfter(checkTime) &&time.isBefore(LocalTime.of(17,30)))){
+        List<UserResponseDTO> absentGeeks = new ArrayList<UserResponseDTO>();
+        if ((currentTime.isAfter(checkTime) &&currentTime.isBefore(LocalTime.of(17,30)))){
             List<UserResponseDTO> allGeeks = userInterface.allGeeks();
-            List<UserResponseDTO> absentGeeks = new ArrayList<UserResponseDTO>();
+            //run for each
             for (UserResponseDTO geek : allGeeks) {
-
                 AttendanceRecord todayRecord = attendanceRepository
-                        .findByUserIdUserIdAndDate(geek.getUserId(), date);
+                        .findByUserIdUserIdAndDate(geek.getUserId(),currentDate);
+                logger.info(todayRecord);
 
                 if (todayRecord == null) {
                     absentGeeks.add(geek);
+                    logger.info("Number of absent : " + geek);
                 }
+
             }
             return absentGeeks;
         }
-        return null;
+        throw new UserException("Check after 07h30");
     }
 }

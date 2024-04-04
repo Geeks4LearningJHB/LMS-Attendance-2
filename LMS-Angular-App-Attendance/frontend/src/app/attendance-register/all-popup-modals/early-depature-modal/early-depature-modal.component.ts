@@ -11,7 +11,7 @@ import { AttendanceModel } from '../../models/attendance.interface';
 export class EarlyDepatureModalComponent implements OnInit {
 
   earlyDepartures: AttendanceModel[] = []
-  
+  currentDate!: Date;
  constructor(public dialogRef: MatDialogRef<EarlyDepatureModalComponent>,
               @Inject(MAT_DIALOG_DATA) public data: AttendanceModel[],
                private attendanceService:AttendanceService) {}
@@ -25,6 +25,7 @@ export class EarlyDepatureModalComponent implements OnInit {
  
   ngOnInit(): void {
    if (this.data && this.data.length > 0) {
+    this.currentDate = new Date();
       this.earlyDepartures = this.data
       console.log(this.earlyDepartures)
     }

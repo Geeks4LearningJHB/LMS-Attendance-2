@@ -114,19 +114,10 @@ public class AttendanceController {
         return attendanceInterface.getAllEarlyLogOutTimes();
     }
 
-    @GetMapping("/absent/{time}/{date}")
-    public ResponseEntity<List<UserResponseDTO>> getAbsentGeeks(@PathVariable LocalTime time ,  LocalDate date) {
+    @GetMapping("/absent")
+    public ResponseEntity<List<UserResponseDTO>> getAbsentGeeks() {
 
-     List<UserResponseDTO> absent =  attendanceInterface.absentGeeks(time , date);
-
-        if (absent == null && time.isBefore(LocalTime.of(7, 30))) {
-            throw new IllegalStateException("Please Check after 07h30");
-        }
-        if (absent == null){
-            throw new UserException
-            ("Please Check after 07h30");
-        }
-        logger.info(absent.size());
+     List<UserResponseDTO> absent =  attendanceInterface.absentGeeks();
         return ResponseEntity.ok(absent);
     }
 

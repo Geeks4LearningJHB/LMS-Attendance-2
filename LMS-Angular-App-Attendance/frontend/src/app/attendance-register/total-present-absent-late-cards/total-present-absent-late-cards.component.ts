@@ -19,6 +19,7 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
   ealryDepatureCount: any;
   allAttendancesCount:any;
   allGeeks:any;
+  absentCount : any
   constructor(private absentModal: MatDialog,
      private lateComersModal: MatDialog, private ealyDepatureModal: MatDialog 
     ,private attendanceService:AttendanceService , private dialog: MatDialog) {}
@@ -26,12 +27,10 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
 
      ngOnInit(): void {
       this.getCount()
-      this. getAllAttendanceCount()
-      this.getAllGeeks()
      }
 
   openAbsentModal() {
-    this.dialogRef = this.absentModal.open(AbsentModalComponent);
+    this.dialog.open;
   }
 
   closeAbsentModal(): void {
@@ -60,6 +59,17 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
       });
   }
 
+  getAbsentGeeks(){
+    this.attendanceService
+    .getAbsentGeeks()
+    .subscribe((absentGeeks : any )=>{
+      const dialogRef = this.absentModal.open(AbsentModalComponent , {
+        data: absentGeeks,
+    
+      });
+    });
+  }
+
   getCount(){
     this.attendanceService
     .earlyDeparture()
@@ -67,22 +77,27 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
       this.ealryDepatureCount = e.length
     }
     );
-   
+   this.attendanceService
+   .getAbsentGeeks()
+   .subscribe((absent : any)=>{
+    this.absentCount = absent.length
+  }
+  );
+  this.attendanceService
+  .getAttendances()
+  .subscribe((all : AttendanceModel[])=>{
+    this.allAttendancesCount = all.length
+  }
+  );
+  this.attendanceService
+  .getAllGeeks()
+  .subscribe((geeks : any)=>{
+    this.allGeeks = geeks.length
+  })
   }
 
-  getAllAttendanceCount(){
-    this.attendanceService
-    .getAttendances()
-    .subscribe((all : AttendanceModel[])=>{
-      this.allAttendancesCount = all.length
-    }
-    );
-  }
-  getAllGeeks(){
-    this.attendanceService
-    .getAllGeeks()
-    .subscribe((geeks : any)=>{
-      this.allGeeks = geeks.length
-    })
-  };
+  
+  
+
+
 }

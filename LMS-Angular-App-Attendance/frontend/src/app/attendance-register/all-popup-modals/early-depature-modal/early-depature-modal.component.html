@@ -5,6 +5,14 @@
                 <div class="col-8">
                     <h6 class="mb-0">View Early Depatures</h6>
                 </div>
+                <div class="col-4">
+                    <div class="card border-grey p-2">
+                      <h6 class="fw-bold">{{ currentDate| date: 'EEEE' }}</h6>
+                      <p class="m-0 g4l-grey-text fw-bold">{{ currentDate| date: 'd MMMM' }}
+                        <span class="m-0 g4l-grey-text float-end fw-normal">{{ currentDate | date: 'y' }}</span>
+                      </p>
+                    </div>
+                  </div>
                 <hr class="horizontal dark my-4" />
             </div>
         </div>
@@ -19,9 +27,7 @@
                                     <th>No.</th>
                                     <th>Name</th>
                                     <th>Sponsor</th>
-                                    <th>Date</th>
                                     <th>Clock Out Time</th>
-                                    <th>Reason</th>
                                     <th>Phone Number</th>
                                 </tr>
                             </thead>
@@ -31,16 +37,15 @@
                                     <td>{{ i + 1 }}</td>
                                     <td>{{ ealyLogOuts.name }}</td>
                                     <td>{{ ealyLogOuts.sponsor }}</td>
-                                    <td>{{ ealyLogOuts.date | date }}</td>
+                                 
                                     <td>{{ ealyLogOuts.logOutTime}}</td>
-                                    <td>Reason not disclosed</td>
                                     <td><a href="tel:0728685375" style="display: block; height:
                                      25px; width: 125px; background: #0a5dc9;
                                     color: #ffffff; text-align: center; 
                                     font-weight: bold; font-size: 80%;
                                     line-height: 25px; font-family: Arial; border-radius: 10px; text-decoration: none;
                                     "
-                                    >(071)-778-7312</a></td>
+                                   class="bg-blue" >(071)-778-7312</a></td>
                                 </tr>
                             </ng-container>
                             </tbody>

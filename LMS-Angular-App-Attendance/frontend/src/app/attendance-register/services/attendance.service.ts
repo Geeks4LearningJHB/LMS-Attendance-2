@@ -91,4 +91,8 @@ export class AttendanceService {
     return this.http.get<any>(`${this.config.apiUrl}/users/all-geeks`)
   }
 
+  getAbsentGeeks():Observable<any>{
+    return this.http.get<any>(`${this.config.apiUrl}/attendance/absent`)
+  }
+
 }

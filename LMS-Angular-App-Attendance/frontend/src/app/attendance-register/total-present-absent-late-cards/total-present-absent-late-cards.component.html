@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-xl-3 mb-1 boxes1" (click)="openAbsentModal()">
+    <div class="col-md-3 col-xl-3 mb-1 boxes1"(click)="getAbsentGeeks()" (click)="openAbsentModal()">
         <div class="card shadow border-start-warning py-1">
             <div class="card-body">
                 <div class="row align-items-center no-gutters">
@@ -27,7 +27,7 @@
                                 <p>Absent</p>
                             </span></div>
                         <div class="text-dark  h5 mb-0"><span>
-                                <h6>52</h6>
+                                <h6>{{absentCount}}</h6>
                             </span></div>
                     </div>
                     <div class="icon icon-shape bg-blue shadow text-center border-radius-md m-3">

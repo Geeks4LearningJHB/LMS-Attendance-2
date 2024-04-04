@@ -103,10 +103,9 @@ export class TraineeComponent implements OnInit {
         this.attendances = attendance;
         this.attendances.forEach((attendance: AttendanceModel) => {
           this.id = attendance.id
+      
           this.statu$ = attendance.status
           this.loginTime = attendance.logInTime;
-      
-    
         });
       });
   }

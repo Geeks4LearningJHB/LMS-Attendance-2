@@ -14,6 +14,7 @@ export class ViewAttendancesComponent {
   allowModalClosure!: boolean;
   formModel: any;
   attendance!:AttendanceModel
+  presentCount: any
   constructor(
     private formBuilder: UntypedFormBuilder ,
     @Inject(MAT_DIALOG_DATA) public data: AttendanceModel ,
@@ -26,6 +27,10 @@ export class ViewAttendancesComponent {
       this.formModel = this.fb.group({
         AttendanceStatus: [this.attendance.status, Validators.required] // Validators for required selection
       });
+     const userId =  sessionStorage.getItem('userId')
+     console.log("ID on view "+userId)
+      this.getPresentAttendance(this.attendance.userId)
+
     }
 
 
@@ -37,12 +42,23 @@ export class ViewAttendancesComponent {
       this.formModel
       const id = this.attendance.id;
       const newStatus = this.formModel.get('AttendanceStatus').value;
-      this.attendanceService.updateAttendance1(id,newStatus).subscribe((response) => {
+      this.attendanceService.updateAttendance(id,newStatus).subscribe((response) => {
         console.log('Status updated successfully', response);
       }, (error) => {
         console.error('Error updating status', error);
       });
     }
 
+
+  getPresentAttendance(userId : string | null){
+   this.attendanceService
+   .getAttendancesByUserId(userId)
+   .subscribe((data : AttendanceModel[])=>{
+    console.log(data)
+   this.presentCount = data.length
+   }
+   )
+
+  }
 
 }

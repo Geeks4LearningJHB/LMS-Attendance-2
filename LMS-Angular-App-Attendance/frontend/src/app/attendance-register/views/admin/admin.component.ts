@@ -8,6 +8,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AttendanceModel } from '../../models/attendance.interface';
 import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
 import { ViewAttendancesComponent } from '../../modal/view-attendances/view-attendances.component';
+import { EarlyDepatureModalComponent } from '../../all-popup-modals/early-depature-modal/early-depature-modal.component';
 
 @Component({
   selector: 'app-admin',
@@ -37,7 +38,7 @@ attendences: any[] = [];
     const currentDate = new Date();
     const date = currentDate.toISOString().split('T')[0];
     const convertedDate = new Date(date);
-    this.getAllAttendances(date);
+    this.getAllAttendances();
     console.log(convertedDate)
 
   }
@@ -75,12 +76,14 @@ attendences: any[] = [];
       });
       console.log("Fetching attendance data for user with ID:", userId);
   }
-getAllAttendances(date : String){
-  this.attendenceService.getAttendances(date).subscribe(respose=>{
+getAllAttendances(){
+  this.attendenceService.getAttendances().subscribe(respose=>{
   this.attendences = respose
  console.log(this.attendences)
   })
 }
+
+
 
 
 
@@ -116,7 +119,6 @@ getAllAttendances(date : String){
   // getStatus(status: any): any {
   //   return status.toLowerCase();
   // }
-
 
 
 

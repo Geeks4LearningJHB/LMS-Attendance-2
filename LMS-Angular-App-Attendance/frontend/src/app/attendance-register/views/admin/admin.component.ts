@@ -40,7 +40,9 @@ attendences: any[] = [];
     const convertedDate = new Date(date);
     this.getAllAttendances();
     console.log(convertedDate)
+    
 
+    
   }
 
   openModal(): void {
@@ -82,11 +84,6 @@ getAllAttendances(){
  console.log(this.attendences)
   })
 }
-
-
-
-
-
   // getAttendences(skip: any, take: any) {
   //   this.attendenceService
   //     .getPagedAttendance(skip, take)
@@ -119,14 +116,6 @@ getAllAttendances(){
   // getStatus(status: any): any {
   //   return status.toLowerCase();
   // }
-
-
-
-
-
-
-
-
   getStatus(status: string): any {
     return status.toLowerCase();
   }

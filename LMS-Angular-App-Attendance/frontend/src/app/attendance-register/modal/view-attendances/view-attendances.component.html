@@ -1,5 +1,3 @@
-
-
 <div class="container-fluid m-0 p-0">
   <div class="card m-0 p-0">
     <div class="card-header pb-0">
@@ -9,123 +7,151 @@
         </div>
         <div class="col-4 text-end">
           <a (click)="close()" class="cursor-pointer">
-            <i class="fa-solid fa-xmark"></i></a>
+            <i class="fa-solid fa-xmark"></i
+          ></a>
         </div>
       </div>
       <hr class="horizontal dark my-2" />
     </div>
     <div class="card-body pt-0">
-   
-        <div class="row p-2">
-          <div class="col">
-            <h6 class="fw-bold m-1 g4l-grey-text">
-              <i class="fa-solid fa-user mr-1"></i>
-              {{attendance.name}} {{attendance.surname}}
-            </h6>
-            <p class="fw-bold m-1">
-              <i class="fa-solid fa-building mr-1"></i>
-              {{attendance.sponsor}} 
+      <div class="row p-2">
+        <div class="col">
+          <h6 class="fw-bold m-1 g4l-grey-text">
+            <i class="fa-solid fa-user mr-1"></i>
+            {{ attendance.name }} {{ attendance.surname }}
+          </h6>
+          <p class="fw-bold m-1">
+            <i class="fa-solid fa-building mr-1"></i>
+            {{ attendance.sponsor }}
+          </p>
+          <p class="m-1 g4l-light-grey-text">
+            <i class="fa-solid fa-briefcase mr-1"></i>
+            Developer
+          </p>
+        </div>
+        <div class="col">
+          <div class="card border-grey p-3">
+            <h6 class="fw-bold">Days Present</h6>
+            <p class="m-0 text-uppercase">
+              <i class="fa-solid">
+                {{ presentCount }}
+              </i>
             </p>
-            <p class="m-1 g4l-light-grey-text">
-              <i class="fa-solid fa-briefcase mr-1"></i>
-              Developer
-            </p>
-          </div>
-          <div class="col">
-            <div class="card border-grey p-3">
-              <h6 class="fw-bold">Days Present</h6>
-              <p class="m-0  text-uppercase">
-                <i class="fa-solid">
-                 {{presentCount}}
-                </i>
-              </p>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card border-grey p-3">
-              <h6 class="fw-bold">Days Absent</h6>
-              <p class="m-0  text-uppercase">
-                <i class="fa-solid">
-                 5
-                </i>
-              </p>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card border-grey p-3">
-              <h6 class="fw-bold">Ealy Clock Out</h6>
-              <p class="m-0  text-uppercase">
-                <i class="fa-solid">
-                 3
-                </i>
-              </p>
-            </div>
           </div>
         </div>
-  
+        <div class="col">
+          <div class="card border-grey p-3">
+            <h6 class="fw-bold">Days Absent</h6>
+            <p class="m-0 text-uppercase">
+              <i class="fa-solid"> 5 </i>
+            </p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-grey p-3">
+            <h6 class="fw-bold">Early Clock Out</h6>
+            <p class="m-0 text-uppercase">
+              <i class="fa-solid">
+                {{ userEarlyDepartureCount }}
+              </i>
+            </p>
+          </div>
+        </div>
+      </div>
+
       <form [formGroup]="formModel" autocomplete="off" class="p-2">
         <div class="row mt-3">
-   <div class="row mt-1">
-          <div class="col-4">
-            <label class="form-control-label p-1">Date</label>
-            <div class="card border-grey p-3">
-              <h6 class="fw-bold">{{ attendance.date | date: 'EEEE' }}</h6>
-              <p class="m-0 g4l-grey-text fw-bold">{{ attendance.date| date: 'd MMMM' }}
-                <span class="m-0 g4l-grey-text float-end fw-normal">{{ attendance.date | date: 'y' }}</span>
-              </p>
+          <div class="row mt-1">
+            <div class="col-4">
+              <label class="form-control-label p-1">Date</label>
+              <div class="card border-grey p-3">
+                <h6 class="fw-bold">{{ attendance.date | date : "EEEE" }}</h6>
+                <p class="m-0 g4l-grey-text fw-bold">
+                  {{ attendance.date | date : "d MMMM" }}
+                  <span class="m-0 g4l-grey-text float-end fw-normal">{{
+                    attendance.date | date : "y"
+                  }}</span>
+                </p>
+              </div>
             </div>
-          </div>
-    
-          <div class="col-4">
-            <label class="form-control-label p-1">Status</label>
-            <div class="card border-grey p-3">
-              <h6 class="fw-bold">{{ attendance.status}}</h6>
-              <p class="m-0 g4l-grey-text fw-bold">Log In Time
-                <span class="m-0 g4l-grey-text float-end fw-normal">{{ attendance.logInTime }}</span>
-              </p>
+
+            <div class="col-4">
+              <label class="form-control-label p-1">Status</label>
+              <div class="card border-grey p-3">
+                <h6 class="fw-bold">{{ attendance.status }}</h6>
+                <p class="m-0 g4l-grey-text fw-bold">
+                  Log In Time
+                  <span class="m-0 g4l-grey-text float-end fw-normal">{{
+                    attendance.logInTime
+                  }}</span>
+                </p>
+              </div>
             </div>
-          </div>
-          <div class="col" style="padding-top:2.5rem;">
+            <div class="col" style="padding-top: 2.5rem">
               <!-- Select a status -->
               <div class="form-group">
-                <label class="form-control-label" for="input-status" [ngClass]="{
-                        'red-text':
-                          formModel.controls['AttendanceStatus'].invalid &&
-                          formModel.controls['AttendanceStatus'].touched
-                      }">Select Status to update</label>
-                <select type="text" id="input-status" class="form-select" formControlName="AttendanceStatus" >
-                  <option > PRESENT</option>
-                  <option > LATE</option>
+                <label
+                  class="form-control-label"
+                  for="input-status"
+                  [ngClass]="{
+                    'red-text':
+                      formModel.controls['AttendanceStatus'].invalid &&
+                      formModel.controls['AttendanceStatus'].touched
+                  }"
+                  >Select Status to update</label
+                >
+                <select
+                  type="text"
+                  id="input-status"
+                  class="form-select"
+                  formControlName="AttendanceStatus"
+                >
+                  <option>PRESENT</option>
+                  <option>LATE</option>
                 </select>
-                <div class="red-text" *ngIf="
-                        formModel.controls['AttendanceStatus'].invalid &&
-                        formModel.controls['AttendanceStatus'].touched
-                      ">
-                  <div *ngIf="formModel.controls['AttendanceStatus'].errors.required">
+                <div
+                  class="red-text"
+                  *ngIf="
+                    formModel.controls['AttendanceStatus'].invalid &&
+                    formModel.controls['AttendanceStatus'].touched
+                  "
+                >
+                  <div
+                    *ngIf="
+                      formModel.controls['AttendanceStatus'].errors.required
+                    "
+                  >
                     Please select a Status type
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="horizontal dark my-4" />
+
+          <div>
+            <div class="row mt-3">
+              <div class="col-6"></div>
+              <div class="col-3 text-end">
+                <button
+                  class="btn btn-sm bg-2 gradient-primary dark-border mb-0 text-uppercase"
+                >
+                  Close
+                </button>
+              </div>
+              <div class="col-3 text-end">
+                <button
+                  class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase"
+                  (click)="updateStatus()"
+                >
+                  Update Status
+                </button>
               </div>
             </div>
           </div>
         </div>
-
-        <hr class="horizontal dark my-4" />
-   
-     <div>
-
-        <div class="row mt-3">
-          <div class="col-6"></div>
-          <div class="col-3 text-end">
-            <button 
-              class="btn btn-sm bg-2 gradient-primary dark-border mb-0 text-uppercase">
-              Close</button>
-          </div>
-          <div class="col-3 text-end">
-            <button
-              class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" (click)="updateStatus()">
-              Update Status</button>
-          </div>
-        </div>
-   
-    </div> 
+      </form>
+    </div>
   </div>
+</div>

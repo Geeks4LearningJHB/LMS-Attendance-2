@@ -27,5 +27,6 @@ public interface AttendanceInterface {
      AttendanceResponseDto updateLogOutTime(long id ,LocalTime logOutTime);
      AttendanceResponseDto scannedQr(long attendanceId);
      List<AttendanceResponseDto> getAllEarlyLogOutTimes();
+     List<AttendanceResponseDto> getUserEarlyLogOut(long userId);
      List<UserResponseDTO> absentGeeks(LocalTime time , LocalDate date);
 }

@@ -114,6 +114,11 @@ public class AttendanceController {
         return attendanceInterface.getAllEarlyLogOutTimes();
     }
 
+    @GetMapping("/user-early-logouts/{userId}")
+    public List<AttendanceResponseDto> getUserEarlyLogOut(@PathVariable long userId){
+        return attendanceInterface.getUserEarlyLogOut(userId);
+    }
+
     @GetMapping("/absent/{time}/{date}")
     public ResponseEntity<List<UserResponseDTO>> getAbsentGeeks(@PathVariable LocalTime time ,  LocalDate date) {
 

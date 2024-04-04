@@ -230,9 +230,18 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
             throw  new AttendanceExceptions("Attendance not found");
         }
     }
-    // Improve( having same method on check out implementation)
-    private boolean isEarlyLogOut(AttendanceRecord attendanceRecord) {
-       return logOutTimeImplimentation.logOutBeforeExpected(attendanceRecord.getUserId().getUserId());
+
+    public List<AttendanceResponseDto> getUserEarlyLogOut(long userId){
+        List<AttendanceRecord> records = attendanceRepository.findByUserIdUserId(userId);
+        List<AttendanceRecord> early = new ArrayList<>();
+
+        for (AttendanceRecord record : records) {
+
+            if (!logOutTimeImplimentation.logOutBeforeExpected(record.getUserId().getUserId())) {
+                early.add(record);
+            }
+        }
+        return attendanceDtoMapper.mapToResponseDtoList(early);
     }
 
     @Override
@@ -246,8 +255,6 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
         return allEarly(yesterdaysDate);
     }
-
-
     public List<AttendanceResponseDto> allEarly(LocalDate date) {
         List<AttendanceRecord> records = attendanceRepository.findAttendanceByDate(date);
         List<AttendanceRecord> earlyLogOuts = new ArrayList<AttendanceRecord>();

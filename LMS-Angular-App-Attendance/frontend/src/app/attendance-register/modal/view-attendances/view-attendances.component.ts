@@ -15,6 +15,7 @@ export class ViewAttendancesComponent {
   formModel: any;
   attendance!:AttendanceModel
   presentCount: any
+  userEarlyDepartureCount: any
   constructor(
     private formBuilder: UntypedFormBuilder ,
     @Inject(MAT_DIALOG_DATA) public data: AttendanceModel ,
@@ -29,7 +30,7 @@ export class ViewAttendancesComponent {
       });
      const userId =  sessionStorage.getItem('userId')
      console.log("ID on view "+userId)
-      this.getPresentAttendance(this.attendance.userId)
+      this.getCount(this.attendance.userId)
 
     }
 
@@ -48,17 +49,19 @@ export class ViewAttendancesComponent {
         console.error('Error updating status', error);
       });
     }
+    getCount(userId : string | null){
+      this.attendanceService
+      .getAttendancesByUserId(userId)
+      .subscribe((data : AttendanceModel[])=>{
+       console.log(data)
+      this.presentCount = data.length
+      }
+      )
+      this.attendanceService.getUserEarlyDeparture(userId)
+      .subscribe((data : AttendanceModel[])=>{
+        console.log('Early Logouts', data);
+        this.userEarlyDepartureCount = data.length;
+      })
+    }
+    }
 
-
-  getPresentAttendance(userId : string | null){
-   this.attendanceService
-   .getAttendancesByUserId(userId)
-   .subscribe((data : AttendanceModel[])=>{
-    console.log(data)
-   this.presentCount = data.length
-   }
-   )
-
-  }
-
-}

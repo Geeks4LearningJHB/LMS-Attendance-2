@@ -108,7 +108,10 @@ public class AttendanceController {
     public boolean logOutFlag(@PathVariable long id){
        return checkOutTimeImplimentation.logOutBeforeExpected(id);
     }
-
+    @GetMapping("/user-early-logouts/{userId}")
+    public List<AttendanceResponseDto> getUserEarlyLogOut(@PathVariable long userId){
+        return attendanceInterface.getUserEarlyLogOut(userId);
+    }
     @GetMapping("/early-logouts")
     public List<AttendanceResponseDto> getAllEarlyLogOutTimes() {
         return attendanceInterface.getAllEarlyLogOutTimes();

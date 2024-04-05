@@ -23,7 +23,7 @@
               
                 <div class="col">
                     <!-- List of Absent Students -->
-                    <div class="table-container" *ngIf="absentGeeks.length > 0">
+                    <div class="table-container" >
                         <table class="table">
                             <thead>
                                 <tr>
@@ -35,8 +35,9 @@
                                    
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr *ngFor="let geeks of absentGeeks; let i = index">
+                            <tbody *ngIf="absentGeeks.length >0" >
+                                <ng-container  *ngFor="let geeks of absentGeeks; let i = index">
+                                <tr >
                                     <td>{{ i + 1 }}</td>
                                     <td>{{ geeks.userName }}</td>
                                     <td>{{ geeks.sponsor }}</td>
@@ -52,16 +53,17 @@
                                    
                                     
                                 </tr>
+                            </ng-container>
                             </tbody>
                         </table>
-                 
-                        <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" (click)="closeModal()">Close</button>
-              
-                    </div>
-                    <!-- Show a message if no students are absent -->
+                         <!-- Show a message if no students are absent -->
                     <div *ngIf="absentGeeks.length === 0">
                         <p>No students are absent.</p>
                     </div>
+                        <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" (click)="closeModal()">Close</button>
+              
+                    </div>
+                   
                 </div>
             </div>
         </div>

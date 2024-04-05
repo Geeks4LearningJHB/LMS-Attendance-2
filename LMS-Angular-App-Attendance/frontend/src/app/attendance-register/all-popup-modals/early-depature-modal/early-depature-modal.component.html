@@ -7,9 +7,9 @@
                 </div>
                 <div class="col-4">
                     <div class="card border-grey p-2">
-                      <h6 class="fw-bold">{{ currentDate| date: 'EEEE' }}</h6>
-                      <p class="m-0 g4l-grey-text fw-bold">{{ currentDate| date: 'd MMMM' }}
-                        <span class="m-0 g4l-grey-text float-end fw-normal">{{ currentDate | date: 'y' }}</span>
+                      <h6 class="fw-bold">{{ yesterdayDate| date: 'EEEE' }}</h6>
+                      <p class="m-0 g4l-grey-text fw-bold">{{ yesterdayDate| date: 'd MMMM' }}
+                        <span class="m-0 g4l-grey-text float-end fw-normal">{{ yesterdayDate | date: 'y' }}</span>
                       </p>
                     </div>
                   </div>
@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col">
                     <!-- List of Absent Students -->
-                    <div class="table-container" *ngIf="data.length > 0">
+                    <div class="table-container">
                         <table class="table">
                             <thead>
                                 <tr class="text-center">
@@ -31,8 +31,8 @@
                                     <th>Phone Number</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <ng-container *ngFor="let ealyLogOuts of data ; let i = index">
+                            <tbody *ngIf="data.length > 0">
+                                <ng-container  *ngFor="let ealyLogOuts of data ; let i = index">
                                 <tr class="text-center">
                                     <td>{{ i + 1 }}</td>
                                     <td>{{ ealyLogOuts.name }}</td>
@@ -50,15 +50,15 @@
                             </ng-container>
                             </tbody>
                         </table>
-
+                <!-- Show a message if no students are absent -->
+                    <div *ngIf="data.length === 0" class="text-center">
+                        <p>No Early depatured students.</p>
+                    </div>
                         <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase"
                             (click)="closeModal()">Close</button>
 
                     </div>
-                    <!-- Show a message if no students are absent -->
-                    <div *ngIf="data.length === 0">
-                        <p>No absent students.</p>
-                    </div>
+                   
                 </div>
             </div>
         </div>

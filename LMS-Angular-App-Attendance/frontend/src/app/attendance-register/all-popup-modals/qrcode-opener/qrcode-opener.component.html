@@ -5,6 +5,11 @@
                 <div class="col-8">
                     <h6 class="mb-0">Request QR Code</h6>
                 </div>
+                <div class="col-4 text-end">
+                    <a (click)="close()" class="cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
+                </div>
                 <hr class="horizontal dark my-4" />
             </div>
         </div>
@@ -12,28 +17,26 @@
             <div class="row">
                 <div class="col p-3">
                     <div class="row">
-                        <div class="col" [hidden]="displayQRCode" >
+                        <div class="col" [hidden]="displayQRCode">
                             <p class="fw-bold m-1 align-items-center">
                                 <i class="fa-solid fa-question-circle mr-1"></i>
                                 Hey, would you like to scan the QR code to logout?
                             </p>
                         </div>
                     </div>
-                    <div class="row mt-4"  [hidden]="displayQRCode" >
+                    <div class="row mt-4" [hidden]="displayQRCode">
                         <div class="col text-left">
-                            <button class="btn btn-sm bg-2 gradient-primary mb-0 border border-primary text" (click)="showQRCode()" >
+                            <button class="btn btn-sm bg-2 gradient-primary mb-0 border border-primary text" (click)="showQRCode()">
                                 YES
                             </button>
-                        
                         </div>
                         <div class="col text-end">
-                            <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text">
+                            <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text" (click)="close()">
                                 NO
                             </button>
                         </div>
                     </div>
-                    <div class="col" >
-                   
+                    <div class="col">
                     </div>
                     <div [hidden]="!displayQRCode" class="text-center">
                         <p class="fw-bold m-1 align-items-center">

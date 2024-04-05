@@ -24,7 +24,6 @@ export class QRCodeOpenerComponent {
     ngOnInit(){
       this.openQRCodeModal(this.data.attendanceId);
       console.log(" QR " + this.displayQRCode)
- 
     }
 
     openQRCodeModal(attendanceId: String) {
@@ -52,7 +51,8 @@ export class QRCodeOpenerComponent {
     }
 
     close() {
-      this.close();
+      // Close the dialog
+      this.dialogRef.close();
     }
     
     

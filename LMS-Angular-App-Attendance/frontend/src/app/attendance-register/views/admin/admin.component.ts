@@ -16,7 +16,11 @@ import { EarlyDepatureModalComponent } from '../../all-popup-modals/early-depatu
   styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
-attendences: any[] = [];
+  attendences: any[] = [];
+  reversedAttendance: any[] = [];
+  reversedLogInTime: any[] = [];
+  reversedNames: any[] = [];
+  reversedSurnames: any[] = [];
   users: any;
   testing: UntypedFormGroup = new UntypedFormGroup({});
   userId!: number;
@@ -40,9 +44,9 @@ attendences: any[] = [];
     const convertedDate = new Date(date);
     this.getAllAttendances();
     console.log(convertedDate)
-    
 
-    
+
+
   }
 
   openModal(): void {
@@ -79,8 +83,11 @@ attendences: any[] = [];
       console.log("Fetching attendance data for user with ID:", userId);
   }
 getAllAttendances(){
-  this.attendenceService.getAttendances().subscribe(respose=>{
-  this.attendences = respose
+  this.attendenceService.getAttendances().subscribe(response=>{
+  this.attendences = response
+  this.reversedAttendance = this.attendences.map((attendance: any) => attendance).reverse();
+  this.reversedLogInTime = this.attendences.map((attendance: any) => attendance.logInTime).reverse();
+
  console.log(this.attendences)
   })
 }

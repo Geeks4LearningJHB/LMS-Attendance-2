@@ -19,8 +19,8 @@ export class AdminComponent implements OnInit {
   attendences: any[] = [];
   reversedAttendance: any[] = [];
   reversedLogInTime: any[] = [];
-  reversedNames: any[] = [];
-  reversedSurnames: any[] = [];
+   itemsPerPage: number = 5;
+    currentPage: number = 1;
   users: any;
   testing: UntypedFormGroup = new UntypedFormGroup({});
   userId!: number;
@@ -126,4 +126,25 @@ getAllAttendances(){
   getStatus(status: string): any {
     return status.toLowerCase();
   }
+
+    nextPage() {
+      this.currentPage++;
+    }
+
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    }
+
+    getIndexRange(): { start: number, end: number } {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = Math.min(startIndex + this.itemsPerPage, this.attendences.length);
+      return { start: startIndex, end: endIndex };
+    }
+
+    getPageNumbers(): number[] {
+      const pageCount = Math.ceil(this.attendences.length / this.itemsPerPage);
+      return Array(pageCount).fill(0).map((x, i) => i + 1);
+    }
 }

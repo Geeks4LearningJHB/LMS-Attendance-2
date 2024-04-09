@@ -15,6 +15,7 @@ export class ViewAttendancesComponent {
   formModel: any;
   attendance!:AttendanceModel
   presentCount: any
+  userEarlyDepartureCount: any
 
   constructor(
     private formBuilder: UntypedFormBuilder ,
@@ -32,7 +33,7 @@ export class ViewAttendancesComponent {
     });
     const userId =  sessionStorage.getItem('userId')
     console.log("ID on view "+userId)
-    this.getPresentAttendance(this.attendance.userId)
+    this.getCount(this.attendance.userId)
   }
 
   close() {
@@ -46,9 +47,6 @@ export class ViewAttendancesComponent {
     const newStatus = this.formModel.get('AttendanceStatus').value;
     this.attendanceService.updateAttendance(id, newStatus).subscribe(
       (response) => {
-        console.log('Status updated successfully', response);
-        // Close the dialog after updating the status
-        
       },
       (error) => {
         console.error('Error updating status', error);
@@ -59,12 +57,19 @@ export class ViewAttendancesComponent {
     window.location.reload();
   }
 
-  getPresentAttendance(userId : string | null){
+  getCount(userId : string | null){
     this.attendanceService
     .getAttendancesByUserId(userId)
     .subscribe((data : AttendanceModel[])=>{
-      console.log(data)
-      this.presentCount = data.length;
-    });
+    this.presentCount = data.length
+    }
+    )
+    this.attendanceService.getUserEarlyDeparture(userId)
+    .subscribe((data : AttendanceModel[])=>{
+      console.log('Early Logouts', data);
+      this.userEarlyDepartureCount = data.length;
+    })
   }
+
+
 }

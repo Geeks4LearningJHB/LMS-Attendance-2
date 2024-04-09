@@ -3,7 +3,7 @@
    <div class="col-8">
       <h6 [ngClass]="{'red-text': logInLocation === 'Home'}">{{ logInLocation }}</h6>
   </div>
-  
+
     <div class="col-4 text-end">
 
       <a
@@ -53,8 +53,8 @@
               </thead>
               <tbody>
                 <ng-container>
-                 
-                  <tr *ngFor="let attendance of attendances">
+
+                  <tr *ngFor="let attendance of attendances.slice(getIndexRange().start, getIndexRange().end);">
                     <td class="align-middle text-xs ps-2" style="padding-left: 1.5rem !important;">
                       <div class="d-flex">
                         <div class="d-flex flex-column justify-content-center">
@@ -80,29 +80,30 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i aria-hidden="true" class="fa fa-ellipsis-v text-xs"></i>
                       </button>
-                    
-                     
+
+
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" [hidden]="attendance.scanned">
-                        <li> 
+                        <li>
                       <a class="dropdown-item" (click)="openQRCodeModal(attendance.id)">Clock Out</a>                   </li>
                       </ul>
-                   
+
                     </td>
                   </tr>
-            
+
                 </ng-container>
               </tbody>
 
             </table>
             <!-- Added Pagination -->
-            <div class="d-flex">
-              <div class="ml-auto p-2 align-right">
-                <ngb-pagination
-                  [collectionSize]="70"
-                  [(page)]="page"
-                  [disabled]="isDisabled"></ngb-pagination>
-              </div>
-            </div>
+            <nav aria-label="Page navigation example" style="Margin-top:10px; Margin-left:10px">
+              <ul class="pagination">
+                <button class="page-link" (click)="prevPage()">Previous</button>
+                <li class="page-item">
+                  <a class="page-link" *ngFor="let page of getPageNumbers()" (click)="currentPage = page">{{ page }}</a>
+                </li>
+                <button class="page-link" (click)="nextPage()">Next</button>
+              </ul>
+            </nav>
 
           </div>
         </div>

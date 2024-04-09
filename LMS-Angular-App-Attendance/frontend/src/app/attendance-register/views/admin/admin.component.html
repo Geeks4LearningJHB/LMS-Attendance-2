@@ -81,7 +81,9 @@
       <nav aria-label="Page navigation example" style="Margin-top:10px; Margin-left:10px">
         <ul class="pagination">
           <button class="page-link" (click)="prevPage()">Previous</button>
-          <li class="page-item"><a class="page-link" *ngFor="let page of getPageNumbers()" (click)="currentPage = page">{{ page }}</a></li>
+          <li class="page-item">
+            <a class="page-link" *ngFor="let page of getPageNumbers()" (click)="currentPage = page">{{ page }}</a>
+          </li>
           <button class="page-link" (click)="nextPage()">Next</button>
         </ul>
       </nav>

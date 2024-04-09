@@ -19,8 +19,8 @@ export class AdminComponent implements OnInit {
   attendences: any[] = [];
   reversedAttendance: any[] = [];
   reversedLogInTime: any[] = [];
-   itemsPerPage: number = 5;
-    currentPage: number = 1;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
   users: any;
   testing: UntypedFormGroup = new UntypedFormGroup({});
   userId!: number;
@@ -45,8 +45,6 @@ export class AdminComponent implements OnInit {
     this.getAllAttendances();
     console.log(convertedDate)
 
-
-
   }
 
   openModal(): void {
@@ -56,10 +54,7 @@ export class AdminComponent implements OnInit {
     this.dialog.closeAll;
   }
 
-//  updateStatus(attendanceId : string){
-//   this.attendenceService.updateAttendance(attendanceId)
-//   .subscribe()
-//  }
+
  getOneAttendanceById(attendanceId: string) {
   this.attendenceService
   .getUserAttendanceById(attendanceId)
@@ -91,38 +86,8 @@ getAllAttendances(){
  console.log(this.attendences)
   })
 }
-  // getAttendences(skip: any, take: any) {
-  //   this.attendenceService
-  //     .getPagedAttendance(skip, take)
-  //     .subscribe((res: any) => {
-  //       this.attendences = res;
-  //       console.log(res)
-  //       console.log("Get Attendances method");
 
-  //     });
-  //   this.userService.getPagedUsers(skip, take).subscribe((res: any) => {
-  //     res.forEach((element: any) => {
-  //       if (element.role == 'Learner') {
-  //         this.ids = element.id;
-  //         this.testing = this.formBuider.group({
-  //           userId: [element.id],
-  //           date: [this.date],
-  //           status: ['Absent'],
-  //         });
-  //         this.attendenceService
-  //           .captureDetails(this.testing.value)
-  //           .subscribe((_) => {});
-  //         console.log(this.testing.value);
-  //         console.log(this.ids);
-  //       }
-  //     });
-  //     this.users = res;
-  //   });
-  // }
 
-  // getStatus(status: any): any {
-  //   return status.toLowerCase();
-  // }
   getStatus(status: string): any {
     return status.toLowerCase();
   }

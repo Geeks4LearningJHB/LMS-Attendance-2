@@ -171,18 +171,3 @@
 
   background: #007fa3;
 }
-
-/*pagination styles*/
-.page-item{
-  display: flex;
-
-}
-.page-item a{
-  color: #6c757d;
-}
-.pagination{
-  border-radius: 55px;
-}
-.pagination button{
-  color: #092f4f;
-}

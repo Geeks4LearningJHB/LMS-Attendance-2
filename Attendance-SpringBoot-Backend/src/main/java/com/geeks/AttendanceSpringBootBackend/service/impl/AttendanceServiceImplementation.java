@@ -231,6 +231,10 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
             throw  new AttendanceExceptions("Attendance not found");
         }
     }
+    // Improve( having same method on check out implementation)
+    private boolean isEarlyLogOut(AttendanceRecord attendanceRecord) {
+       return logOutTimeImplimentation.logOutBeforeExpected(attendanceRecord.getUserId().getUserId());
+    }
 
     @Override
     public List<AttendanceResponseDto> getAllEarlyLogOutTimes() {
@@ -243,6 +247,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
         return allEarly(yesterdaysDate);
     }
+
 
     public List<AttendanceResponseDto> allEarly(LocalDate date) {
         List<AttendanceRecord> records = attendanceRepository.findAttendanceByDate(date);
@@ -289,19 +294,19 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     }
 
     @Override
-    public List<AttendanceResponseDto> getUserEarlyLogOut(long userId){
-        List<AttendanceRecord> records = attendanceRepository.findByUserIdUserId(userId);
-        List<AttendanceRecord> early = new ArrayList<>();
+    public List<AttendanceResponseDto> getLateComers(){
+        date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
 
-        for (AttendanceRecord record : records) {
+        currentDate = LocalDate.parse(date , formatDate);
 
-            if (record.isScanned() && record.getLogOutTime()
-                    .isBefore(record.getCheckOutTime().minusMinutes(5))) {
-                early.add(record);
+        List<AttendanceRecord> records = attendanceRepository.findAttendanceByDate(currentDate);
+        List<AttendanceRecord> lateComers = new ArrayList<AttendanceRecord>();
+
+        for (AttendanceRecord attRecords : records) {
+            if (attRecords.getStatus().equals(Status.LATE)){
+                lateComers.add(attRecords);
             }
         }
-        return attendanceDtoMapper.mapToResponseDtoList(early);
+        return attendanceDtoMapper.mapToResponseDtoList(lateComers);
     }
-
-
 }

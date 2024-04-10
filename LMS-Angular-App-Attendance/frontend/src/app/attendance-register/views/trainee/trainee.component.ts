@@ -32,8 +32,6 @@ export class TraineeComponent implements OnInit {
   testTime: any;
   leaveApplications: any;
   logInLocation!: String | null;
-  itemsPerPage: number = 5;
-  currentPage: number = 1;
 
   hoursWorked = {
     totalToday: 0,
@@ -51,7 +49,7 @@ export class TraineeComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
-
+  
   ngOnInit(): void {
     // this.startTimer();
     const userId = this.userId
@@ -61,7 +59,7 @@ export class TraineeComponent implements OnInit {
     if(this.id){
       this.getAttendance(this.id)
     }
-
+   
     // this.sendDetails()
   }
 
@@ -97,7 +95,7 @@ export class TraineeComponent implements OnInit {
     console.log(this.holdingArray.value);
     this.getAttendance(this.id);
   }
-
+  
   getAttendance(userId: string | null) {
     this.attendanceService
       .getAttendancesByUserId(userId)
@@ -105,13 +103,13 @@ export class TraineeComponent implements OnInit {
         this.attendances = attendance;
         this.attendances.forEach((attendance: AttendanceModel) => {
           this.id = attendance.id
-
+      
           this.statu$ = attendance.status
           this.loginTime = attendance.logInTime;
         });
       });
   }
-
+  
   getTotalHoursWorked() {
     const todayAttendance: AttendanceModel[] = this.attendances.filter(
       (attendance) => attendance.date === new Date()
@@ -138,7 +136,7 @@ export class TraineeComponent implements OnInit {
     this.isDisabled = !this.isDisabled;
   }
   //Test above
-
+  
 
   startTimer() {
     setInterval(() => {
@@ -165,25 +163,15 @@ export class TraineeComponent implements OnInit {
     this.captureGoalService.createNewGoal();
   }
 
-      nextPage() {
-        this.currentPage++;
-      }
-
-      prevPage() {
-        if (this.currentPage > 1) {
-          this.currentPage--;
-        }
-      }
-
-      getIndexRange(): { start: number, end: number } {
-        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-        const endIndex = Math.min(startIndex + this.itemsPerPage, this.attendances.length);
-        return { start: startIndex, end: endIndex };
-      }
-
-      getPageNumbers(): number[] {
-        const pageCount = Math.ceil(this.attendances.length / this.itemsPerPage);
-        return Array(pageCount).fill(0).map((x, i) => i + 1);
-      }
-
+  // CreateGoalsDialog(id:any) {
+  //   this.modalDialog = this.modalService.open(CaptureGoalsComponent, {
+  //     animation: true,
+  //     backdrop: true,
+  //     data:{attendanceId: id},
+  //     containerClass: 'modal top fade modal-backdrop',
+  //     ignoreBackdropClick: false,
+  //     keyboard: true,
+  //     modalClass: 'modal-xl modal-dialog-centered',
+  //   });
+  // }
 }

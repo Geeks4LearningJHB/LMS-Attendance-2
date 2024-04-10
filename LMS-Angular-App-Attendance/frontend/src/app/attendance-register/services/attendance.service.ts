@@ -91,13 +91,11 @@ export class AttendanceService {
     return this.http.get<any>(`${this.config.apiUrl}/users/all-geeks`)
   }
 
-  getAbsentGeeks():Observable<any>{
+  getAbsentGeeks(): Observable<any>{
     return this.http.get<any>(`${this.config.apiUrl}/attendance/absent`)
   }
 
-
- getUserEarlyDeparture(userId : string | null): Observable<AttendanceModel[]> {
-    return this.http.get<AttendanceModel[]>(`${this.config.apiUrl}/attendance/user-early-logouts/${userId}`)
+  getLateComers(): Observable<any>{
+    return this.http.get<any>(`${this.config.apiUrl}/attendance/late-users`)
   }
-
 }

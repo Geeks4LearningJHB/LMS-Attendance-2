@@ -19,7 +19,7 @@ export class EarlyDepatureModalComponent implements OnInit {
   
  
   ngOnInit(): void {
-    this.currentDate = new Date();
+    this.currentDate = new Date(); 
     this.yesterdayDate = new Date();
     this.yesterdayDate.setDate(this.currentDate.getDate() - 1);
     

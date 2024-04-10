@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-xl-3 mb-1 boxes1" (click)="openLatecomersModal()">
+    <div class="col-md-3 col-xl-3 mb-1 boxes1"(click)="getLateGeeks()" (click)="openLatecomersModal()">
         <div class="card shadow border-start-success py-1">
             <div class="card-body">
                 <div class="row align-items-center no-gutters">
@@ -47,7 +47,7 @@
                                 <p>Latecomers</p>
                             </span></div>
                         <div class="text-dark  h5 mb-0"><span>
-                                <h6>5</h6>
+                                <h6>{{lateCount}}</h6>
                             </span></div>
                     </div>
                     <div class="icon icon-shape bg-purple shadow text-center border-radius-md m-3"><a ><i

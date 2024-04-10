@@ -22,7 +22,7 @@
               Login Time
             </th>
             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
-              Check out
+              Check out 
             </th>
             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
               clocked Out?
@@ -34,20 +34,23 @@
               Action
             </th>
             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"></th>
-
+            
           </tr>
         </thead>
 <tbody >
-        <ng-container *ngFor="let attendedUsers of attendences.slice(getIndexRange().start, getIndexRange().end); let i = index">
+          <ng-container *ngFor="let attendedUsers of attendences">
             <tr >
-              <td class="align-middle text-xs ps-2" >{{reversedAttendance[i].name}} {{reversedAttendance[i].surname}}</td>
-              <td class="align-middle text-xs ps-2"> {{reversedAttendance[i].date}}</td>
-              <td class="align-middle text-xs ps-2">{{reversedAttendance[i].sponsor}}</td>
-              <td class="align-middle text-xs ps-2">{{reversedLogInTime[i]}}</td>
-              <td class="align-middle text-xs ps-2">{{reversedAttendance[i].checkOutTime}}</td>
+              <td class="align-middle text-xs ps-2" >{{attendedUsers.name}} {{attendedUsers.surname}}</td>
+              <td class="align-middle text-xs ps-2"> {{attendedUsers.date}}</td>
+              <td class="align-middle text-xs ps-2">{{attendedUsers.sponsor}}</td>
+              <td class="align-middle text-xs ps-2">{{attendedUsers.logInTime}}</td>
+              <td class="align-middle text-xs ps-2">{{attendedUsers.checkOutTime}}</td>
               <td class="text-uppercase align-middle text-xs ps-2" [ngClass]="{'red-text': !attendedUsers.scanned, 'green-text': attendedUsers.scanned}">
-                {{ reversedAttendance[i].scanned ? 'true' : 'false' }}
+                {{ attendedUsers.scanned ? 'true' : 'false' }}
               </td>
+              
+            
+            
               <td class="align-middle text-xs ps-2 " > <p class="font-weight-bold mb-0" [class]="getStatus(attendedUsers.status)">
                 {{attendedUsers.status}}
               </p></td>
@@ -78,15 +81,14 @@
       </table>
 
       <!-- Added Pagination-->
-      <nav aria-label="Page navigation example" style="Margin-top:10px; Margin-left:10px">
-        <ul class="pagination">
-          <button class="page-link" (click)="prevPage()">Previous</button>
-          <li class="page-item">
-            <a class="page-link" *ngFor="let page of getPageNumbers()" (click)="currentPage = page">{{ page }}</a>
-          </li>
-          <button class="page-link" (click)="nextPage()">Next</button>
-        </ul>
-      </nav>
+      <nav aria-label="Page navigation example" style="Margin-top:20px; Margin-left:20px">
+          <ul class="pagination">
+<button >Previous</button>         
+            <li class="page-item"><a class="page-link"  (click)="openModal()">2</a></li>
+            <li class="page-item"><a class="page-link" (click)="openModal()">3</a></li>
+            <li class="page-item"><a class="page-link" (click)="openModal()">Next</a></li>
+          </ul>
+        </nav>
     </div>
   </div>
 </div>

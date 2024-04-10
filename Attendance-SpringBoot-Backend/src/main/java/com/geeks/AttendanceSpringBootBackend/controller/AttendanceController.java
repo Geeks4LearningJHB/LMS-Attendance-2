@@ -120,11 +120,11 @@ public class AttendanceController {
      List<UserResponseDTO> absent =  attendanceInterface.absentGeeks();
         return ResponseEntity.ok(absent);
     }
-    @GetMapping("/user-early-logouts/{userId}")
-    public List<AttendanceResponseDto> getUserEarlyLogOut(@PathVariable long userId){
 
-        logger.info("TRIGGERED!");
-        return attendanceInterface.getUserEarlyLogOut(userId);
+    @GetMapping("/late-users")
+    public List<AttendanceResponseDto> getLateComers() {
+        return attendanceInterface.getLateComers();
     }
+
 }
 

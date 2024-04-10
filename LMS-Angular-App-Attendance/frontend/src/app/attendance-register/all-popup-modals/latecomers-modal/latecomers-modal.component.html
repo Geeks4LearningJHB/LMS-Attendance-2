@@ -5,6 +5,14 @@
                 <div class="col-8">
                     <h6 class="mb-0">View Latecomers</h6>
                 </div>
+                <div class="col-4">
+                    <div class="card border-grey p-2">
+                      <h6 class="fw-bold">{{ currentDate| date: 'EEEE' }}</h6>
+                      <p class="m-0 g4l-grey-text fw-bold">{{ currentDate| date: 'd MMMM' }}
+                        <span class="m-0 g4l-grey-text float-end fw-normal">{{ currentDate | date: 'y' }}</span>
+                      </p>
+                    </div>
+                  </div>
                 <hr class="horizontal dark my-4" />
             </div>
         </div>
@@ -12,26 +20,32 @@
             <div class="row">
                 <div class="col">
                     <!-- List of Absent Students -->
-                    <div class="table-container" *ngIf="lateComers.length > 0">
+                    <div class="table-container">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>No.</th>
                                     <th>Name</th>
                                     <th>Sponsor</th>
-                                    <th>Phone Number</th>
                                     <th>Date</th>
                                     <th>Reason</th>
+                                    <th>Phone Number</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr *ngFor="let student of lateComers; let i = index">
+                            <tbody *ngIf="lateGeeks.length > 0">
+                                <tr *ngFor="let geeks of lateGeeks; let i = index">
                                     <td>{{ i + 1 }}</td>
-                                    <td>{{ student.name }}</td>
-                                    <td>{{ student.sponsor }}</td>
-                                    <td>{{ student.phoneNumber }}</td>
-                                    <td>{{ student.date | date }}</td>
-                                    <td>{{ student.reason }}</td>
+                                    <td>{{ geeks.name }}</td>
+                                    <td>{{ geeks.sponsor }}</td>
+                                    <td>{{ geeks.date | date }}</td>
+                                    <td>Not disclosed</td>
+                                    <td><a href="tel:0728685375" style="display: block; height:
+                                        25px; width: 125px; ;
+                                       color: #ffffff; text-align: center;
+                                       font-weight: bold; font-size: 80%;
+                                       line-height: 25px; font-family: Arial; border-radius: 10px; text-decoration: none;
+                                       "
+                                       class="bg-blue">(071)-778-7312</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -40,8 +54,8 @@
 
                     </div>
                     <!-- Show a message if no students are absent -->
-                    <div *ngIf="lateComers.length === 0">
-                        <p>No students are absent.</p>
+                    <div *ngIf="lateGeeks.length === 0">
+                        <p>No students are late.</p>
                     </div>
                 </div>
             </div>

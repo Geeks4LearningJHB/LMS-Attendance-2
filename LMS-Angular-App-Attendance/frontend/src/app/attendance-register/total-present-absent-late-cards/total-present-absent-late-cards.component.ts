@@ -20,6 +20,7 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
   allAttendancesCount:any;
   allGeeks:any;
   absentCount : any
+  lateCount : any 
   constructor(private absentModal: MatDialog,
      private lateComersModal: MatDialog, private ealyDepatureModal: MatDialog 
     ,private attendanceService:AttendanceService , private dialog: MatDialog) {}
@@ -40,7 +41,14 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
   }
 
   openLatecomersModal() {
-    this.lateComersFilter = this.lateComersModal.open(LatecomersModalComponent);
+    // this.lateComersFilter = this.lateComersModal.open(LatecomersModalComponent);
+    this.dialog.open
+  }
+
+  openLateModal(){
+    if (this.lateComersFilter) {
+      this.lateComersFilter.close();
+    }
   }
 
   openEarlyDepatureModal(){
@@ -65,9 +73,18 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
     .subscribe((absentGeeks : any )=>{
       const dialogRef = this.absentModal.open(AbsentModalComponent , {
         data: absentGeeks,
-    
       });
     });
+  }
+
+  getLateGeeks(){
+    this.attendanceService
+    .getLateComers()
+    .subscribe(( lateGeeks : AttendanceModel[]) => {
+      const dialogRef = this.lateComersModal.open(LatecomersModalComponent , {
+        data: lateGeeks,
+      });
+    })
   }
 
   getCount(){
@@ -93,6 +110,12 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
   .getAllGeeks()
   .subscribe((geeks : any)=>{
     this.allGeeks = geeks.length
+  })
+
+  this.attendanceService
+  .getLateComers()
+  .subscribe((late : AttendanceModel[])=>{
+    this.lateCount = late.length
   })
   }
 

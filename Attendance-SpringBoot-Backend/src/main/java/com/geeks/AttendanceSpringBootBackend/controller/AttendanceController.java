@@ -126,5 +126,9 @@ public class AttendanceController {
         logger.info("TRIGGERED!");
         return attendanceInterface.getUserEarlyLogOut(userId);
     }
+    @GetMapping("/user-absent/{userId}")
+    public List<AttendanceResponseDto> getAbsentUserDays(@PathVariable long userId){
+        return attendanceInterface.getAbsentUserDays(userId);
+    }
 }
 

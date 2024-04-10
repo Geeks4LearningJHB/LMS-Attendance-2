@@ -86,7 +86,7 @@ export class AttendanceService {
   earlyDeparture(): Observable<AttendanceModel[]> {
     return this.http.get<AttendanceModel[]>(`${this.config.apiUrl}/attendance/early-logouts`)
   }
-  
+
   getAllGeeks(): Observable<any> {
     return this.http.get<any>(`${this.config.apiUrl}/users/all-geeks`)
   }
@@ -98,6 +98,10 @@ export class AttendanceService {
 
  getUserEarlyDeparture(userId : string | null): Observable<AttendanceModel[]> {
     return this.http.get<AttendanceModel[]>(`${this.config.apiUrl}/attendance/user-early-logouts/${userId}`)
+  }
+
+  getUserAbsent(userId : string | null): Observable<AttendanceModel[]> {
+    return this.http.get<AttendanceModel[]>(`${this.config.apiUrl}/attendance/user-absent/${userId}`)
   }
 
 }

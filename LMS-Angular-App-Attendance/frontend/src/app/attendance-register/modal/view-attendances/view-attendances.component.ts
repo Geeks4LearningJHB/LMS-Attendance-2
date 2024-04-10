@@ -15,6 +15,7 @@ export class ViewAttendancesComponent {
   formModel: any;
   attendance!:AttendanceModel
   presentCount: any
+  absentCount: any
   userEarlyDepartureCount: any
 
   constructor(
@@ -51,7 +52,7 @@ export class ViewAttendancesComponent {
       (error) => {
         console.error('Error updating status', error);
       }
-      
+
     );
     this.dialogRef.close();
     window.location.reload();
@@ -69,6 +70,11 @@ export class ViewAttendancesComponent {
       console.log('Early Logouts', data);
       this.userEarlyDepartureCount = data.length;
     })
+    this.attendanceService.getUserAbsent(userId)
+    .subscribe((data : AttendanceModel[])=>{
+      console.log('Absent :', data);
+      this.absentCount = data.length
+    });
   }
 
 

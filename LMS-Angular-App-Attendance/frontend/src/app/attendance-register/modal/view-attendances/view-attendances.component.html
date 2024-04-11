@@ -15,7 +15,7 @@
       <hr class="horizontal dark my-2" />
     </div>
     <div class="card-body pt-0">
-   
+
         <div class="row p-2">
           <div class="col">
             <h6 class="fw-bold m-1 g4l-grey-text">
@@ -24,7 +24,7 @@
             </h6>
             <p class="fw-bold m-1">
               <i class="fa-solid fa-building mr-1"></i>
-              {{attendance.sponsor}} 
+              {{attendance.sponsor}}
             </p>
             <p class="m-1 g4l-light-grey-text">
               <i class="fa-solid fa-briefcase mr-1"></i>
@@ -46,7 +46,7 @@
               <h6 class="fw-bold">Days Absent</h6>
               <p class="m-0  text-uppercase">
                 <i class="fa-solid">
-                 5
+                 {{absentCount}}
                 </i>
               </p>
             </div>
@@ -62,7 +62,7 @@
             </div>
           </div>
         </div>
-  
+
       <form [formGroup]="formModel" autocomplete="off" class="p-2">
         <div class="row mt-3">
    <div class="row mt-1">
@@ -75,7 +75,7 @@
               </p>
             </div>
           </div>
-    
+
           <div class="col-4">
             <label class="form-control-label p-1">Status</label>
             <div class="card border-grey p-3">
@@ -110,13 +110,13 @@
         </div>
 
         <hr class="horizontal dark my-4" />
-   
+
      <div>
 
         <div class="row mt-3">
           <div class="col-6"></div>
           <div class="col-3 text-end">
-            <button 
+            <button
               class="btn btn-sm bg-2 gradient-primary dark-border mb-0 text-uppercase"(click)="close()">
               Close</button>
           </div>
@@ -126,6 +126,6 @@
               Update Status</button>
           </div>
         </div>
-   
-    </div> 
+
+    </div>
   </div>

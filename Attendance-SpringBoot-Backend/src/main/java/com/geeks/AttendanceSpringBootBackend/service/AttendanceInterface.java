@@ -29,4 +29,6 @@ public interface AttendanceInterface {
      List<AttendanceResponseDto> getAllEarlyLogOutTimes();
      List<UserResponseDTO> absentGeeks();
      List<AttendanceResponseDto> getUserEarlyLogOut(long userId);
+
+     List<AttendanceResponseDto> getAbsentUserDays(long userId);
 }

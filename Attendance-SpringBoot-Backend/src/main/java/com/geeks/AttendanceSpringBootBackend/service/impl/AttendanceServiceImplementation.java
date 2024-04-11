@@ -237,9 +237,13 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
         date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
         currentDate = LocalDate.parse(date , formatDate);
-
         LocalDate yesterdaysDate;
-        yesterdaysDate = currentDate.minusDays(1);
+
+        if (currentDate.getDayOfWeek() == DayOfWeek.MONDAY) {
+            yesterdaysDate = currentDate.minusDays(3);
+        } else {
+            yesterdaysDate = currentDate.minusDays(1);
+        }
 
         return allEarly(yesterdaysDate);
     }
@@ -250,7 +254,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
         for (AttendanceRecord attRecords : records) {
             if (attRecords.isScanned() && attRecords.getLogOutTime()
-                    .isBefore(attRecords.getCheckOutTime())) {
+                    .isBefore(attRecords.getCheckOutTime().minusMinutes(5))) {
 
                 earlyLogOuts.add(attRecords);
             }
@@ -303,5 +307,46 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         return attendanceDtoMapper.mapToResponseDtoList(early);
     }
 
+    public List<AttendanceResponseDto> getAbsentUserDays(long userId) {
+
+        date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
+
+        //format date and time to the localDate pattern
+        currentDate = LocalDate.parse(date , formatDate);
+
+        List<AttendanceRecord> records = attendanceRepository.findByUserIdUserId(userId);
+        List<LocalDate> absentDates = new ArrayList<>();
+
+        for (AttendanceRecord record : records) {
+            absentDates.add(record.getDate());
+        }
+
+        Optional<User> user = userRepository.findById(userId);
+
+        LocalDate startOfContract = user.get().getLearnershipStartDate();
+        LocalDate endOfContract = user.get().getLearnershipEndDate();
+
+        LocalDate startOfWeek = startOfContract.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = startOfWeek.plusDays(4);
+        LocalDate yesterday = currentDate.minusDays(1);
+
+        List<AttendanceResponseDto> absentUsers = new ArrayList<>();
+
+        for (LocalDate date = startOfWeek; date.isBefore(yesterday.plusDays(1)); date = date.plusDays(1)) {
+            if (date.isBefore(startOfContract) || date.isAfter(endOfContract)) {
+                continue; // Skip dates outside the contract period
+            }
+            if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                continue; // Skip weekends
+            }
+            if (!absentDates.contains(date)) {
+                AttendanceResponseDto absentUser = new AttendanceResponseDto();
+                absentUser.setDate(date);
+                absentUser.setUserId(userId);
+                absentUsers.add(absentUser);
+            }
+        }
+        return absentUsers;
+    }
 
 }

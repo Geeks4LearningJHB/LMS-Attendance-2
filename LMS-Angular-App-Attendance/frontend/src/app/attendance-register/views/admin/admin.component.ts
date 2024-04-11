@@ -54,7 +54,6 @@ export class AdminComponent implements OnInit {
     this.dialog.closeAll;
   }
 
-
  getOneAttendanceById(attendanceId: string) {
   this.attendenceService
   .getUserAttendanceById(attendanceId)

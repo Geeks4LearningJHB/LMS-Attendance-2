@@ -40,13 +40,13 @@
 <tbody >
         <ng-container *ngFor="let attendedUsers of attendences.slice(getIndexRange().start, getIndexRange().end); let i = index">
             <tr >
-              <td class="align-middle text-xs ps-2" >{{reversedAttendance[i].name}} {{reversedAttendance[i].surname}}</td>
-              <td class="align-middle text-xs ps-2"> {{reversedAttendance[i].date}}</td>
-              <td class="align-middle text-xs ps-2">{{reversedAttendance[i].sponsor}}</td>
-              <td class="align-middle text-xs ps-2">{{reversedLogInTime[i]}}</td>
-              <td class="align-middle text-xs ps-2">{{reversedAttendance[i].checkOutTime}}</td>
+              <td class="align-middle text-xs ps-2" >{{attendedUsers.name}} {{attendedUsers.surname}}</td>
+              <td class="align-middle text-xs ps-2"> {{attendedUsers.date}}</td>
+              <td class="align-middle text-xs ps-2">{{attendedUsers.sponsor}}</td>
+              <td class="align-middle text-xs ps-2">{{attendedUsers.logInTime}}</td>
+              <td class="align-middle text-xs ps-2">{{attendedUsers.checkOutTime}}</td>
               <td class="text-uppercase align-middle text-xs ps-2" [ngClass]="{'red-text': !attendedUsers.scanned, 'green-text': attendedUsers.scanned}">
-                {{ reversedAttendance[i].scanned ? 'true' : 'false' }}
+                {{ attendedUsers.scanned ? 'true' : 'false' }}
               </td>
               <td class="align-middle text-xs ps-2 " > <p class="font-weight-bold mb-0" [class]="getStatus(attendedUsers.status)">
                 {{attendedUsers.status}}

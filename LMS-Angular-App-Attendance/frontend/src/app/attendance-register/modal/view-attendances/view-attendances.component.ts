@@ -28,12 +28,9 @@ export class ViewAttendancesComponent {
 
   ngOnInit(){
     this.attendance = this.data
-    console.log(this.attendance);
     this.formModel = this.fb.group({
-      AttendanceStatus: [this.attendance.status, Validators.required] // Validators for required selection
+      AttendanceStatus: [this.attendance.status, Validators.required] 
     });
-    const userId =  sessionStorage.getItem('userId')
-    console.log("ID on view "+userId)
     this.getCount(this.attendance.userId)
   }
 

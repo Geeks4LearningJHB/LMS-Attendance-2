@@ -12,12 +12,13 @@ import { AttendanceService } from '../../services/attendance.service';
 export class AdminpopupComponent {
 
   unexpectedLogOut!:boolean;
-
+  name!:String
   constructor(@Inject(MAT_DIALOG_DATA) public data: AttendanceModel[] , private attendanceService:AttendanceService) {}
   
   ngOnInit() {
     if (this.data && this.data.length > 0) {
       const attendanceId = this.data[0].id;
+      this.name=this.data[3].name
       this.checkUexpectedLogOut(attendanceId);
     }
   }
@@ -36,5 +37,12 @@ export class AdminpopupComponent {
   onDoneClick() {
     this.doneClicked.emit();
   }
+
+
+  getStatus(status: string): any {
+    return status.toLowerCase();
+  }
+
+
 
 }

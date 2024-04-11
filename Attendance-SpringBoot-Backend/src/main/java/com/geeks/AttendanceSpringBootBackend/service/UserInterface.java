@@ -10,6 +10,8 @@ import java.util.List;
 public interface UserInterface {
     User  addNewUser(User user);
     List<UserResponseDTO> viewUsers();
+    List<UserResponseDTO> allGeeks();
+
 
 
 

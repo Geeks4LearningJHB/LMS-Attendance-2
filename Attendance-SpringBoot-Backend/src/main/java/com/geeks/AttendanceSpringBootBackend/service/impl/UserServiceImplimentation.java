@@ -42,6 +42,12 @@ public class UserServiceImplimentation implements UserInterface {
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
-
+    @Override
+    public List<UserResponseDTO> allGeeks(){
+            List<User> geeks = userRepository.findAllByRole("Learner");
+            return geeks.stream()
+                    .map(this::mapToDto)
+                    .collect(Collectors.toList());
+    }
 
 }

@@ -28,4 +28,9 @@ public class UserController {
         return userInterface.viewUsers();
     }
 
+    @GetMapping("/all-geeks")
+    public List<UserResponseDTO> allGeeks(){
+        return userInterface.allGeeks();
+    }
+
 }

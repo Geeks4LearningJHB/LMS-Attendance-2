@@ -4,6 +4,7 @@ import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
 import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceRequestDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
+import com.geeks.AttendanceSpringBootBackend.entity.dto.UserResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,9 +23,12 @@ public interface AttendanceInterface {
      void deleteAttendanceRecord(long id);
      List<AttendanceResponseDto> getAllUserAttendances(long userId);
 
-     List<AttendanceResponseDto> getTodayAttendance(LocalDate date);
+     List<AttendanceResponseDto> getTodayAttendance();
      AttendanceResponseDto updateLogOutTime(long id ,LocalTime logOutTime);
      AttendanceResponseDto scannedQr(long attendanceId);
-     List<AttendanceResponseDto> getAllEarlyLogOutTimes(LocalDate date);
-     List<AttendanceResponseDto> getUserEarlyLogOutTimes(long userId);
+     List<AttendanceResponseDto> getAllEarlyLogOutTimes();
+     List<UserResponseDTO> absentGeeks();
+     List<AttendanceResponseDto> getUserEarlyLogOut(long userId);
+
+     List<AttendanceResponseDto> getAbsentUserDays(long userId);
 }

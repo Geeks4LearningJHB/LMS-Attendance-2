@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AppConfig } from 'src/app/shared/app-config/app-config.interface';
 import { APP_SERVICE_CONFIG } from 'src/app/shared/app-config/app-config.service';
 import { AttendanceModel, HoursType } from '../models/attendance.interface';
+import { User } from 'src/app/mockData/data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,8 +27,8 @@ export class AttendanceService {
     return this.http.get(`${this.config.apiUrl}/api/attendance/generate/${attendanceId}`, { responseType: 'blob' });
   }
 
-  getAttendances(date: String){
-    return this.http.get<any>(`${this.config.apiUrl}/attendance/today-attendance/${date}`)
+  getAttendances(){
+    return this.http.get<any>(`${this.config.apiUrl}/attendance/today-attendance`)
   }
 
   getPagedAttendance(skip: any, take: any) {
@@ -35,11 +36,7 @@ export class AttendanceService {
       `${this.config.apiUrl}/attendance/view-all/pages?skip=${skip}&take=${take}`
     );
   }
-  updateAttendance(logoutTime: any): Observable<any> {
-    return this.http.put(`${this.config.apiUrl}/Attendance`, logoutTime);
-  }
-
-   updateAttendance1(id: any, status: any): Observable<any> {
+   updateAttendance(id: any, status: any): Observable<any> {
       const url = `${this.config.apiUrl}/attendance/update/status/${id}/${status}`;
       return this.http.put(url, {});
     }
@@ -60,8 +57,6 @@ export class AttendanceService {
   getUserLocation(){
 
   }
-
-
 
   getHoursWorked(period: HoursType, count: number): number {
     switch (period) {
@@ -88,6 +83,25 @@ export class AttendanceService {
     return this.http.get<boolean>(`${this.config.apiUrl}/attendance/log-out-flag/${attendanceId}`)
   }
 
+  earlyDeparture(): Observable<AttendanceModel[]> {
+    return this.http.get<AttendanceModel[]>(`${this.config.apiUrl}/attendance/early-logouts`)
+  }
 
+  getAllGeeks(): Observable<any> {
+    return this.http.get<any>(`${this.config.apiUrl}/users/all-geeks`)
+  }
+
+  getAbsentGeeks():Observable<any>{
+    return this.http.get<any>(`${this.config.apiUrl}/attendance/absent`)
+  }
+
+
+ getUserEarlyDeparture(userId : string | null): Observable<AttendanceModel[]> {
+    return this.http.get<AttendanceModel[]>(`${this.config.apiUrl}/attendance/user-early-logouts/${userId}`)
+  }
+
+  getUserAbsent(userId : string | null): Observable<AttendanceModel[]> {
+    return this.http.get<AttendanceModel[]>(`${this.config.apiUrl}/attendance/user-absent/${userId}`)
+  }
 
 }

@@ -60,8 +60,6 @@ public class CheckOutTimeImplimentation {
             AttendanceRecord userAtendanceRecord= attendanceRecord.get();
             if (userAtendanceRecord.getLogOutTime().isAfter(userAtendanceRecord.getCheckOutTime())
                     || userAtendanceRecord.getCheckOutTime().equals(userAtendanceRecord.getLogOutTime())) {
-                //true         ||  false
-
                 return true;
             }
             return false;

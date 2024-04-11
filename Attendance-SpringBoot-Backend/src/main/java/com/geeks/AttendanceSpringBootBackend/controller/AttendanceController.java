@@ -2,6 +2,8 @@ package com.geeks.AttendanceSpringBootBackend.controller;
 
 import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
+import com.geeks.AttendanceSpringBootBackend.entity.dto.UserResponseDTO;
+import com.geeks.AttendanceSpringBootBackend.exceptions.UserException;
 import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
 import com.geeks.AttendanceSpringBootBackend.service.IpAdressInterface;
@@ -77,9 +79,9 @@ public class AttendanceController {
         return attendanceInterface.getAllUserAttendances(userId);
     }
 
-    @GetMapping("/today-attendance/{date}")
-    public List<AttendanceResponseDto> todayAttendance(@PathVariable LocalDate date){
-        return attendanceInterface.getTodayAttendance(date);
+    @GetMapping("/today-attendance")
+    public List<AttendanceResponseDto> todayAttendance(){
+        return attendanceInterface.getTodayAttendance();
     }
 
    @DeleteMapping("delete/{id}")
@@ -96,31 +98,37 @@ public class AttendanceController {
 
     @GetMapping("/update/logOut/{id}/{logOutTime}")
     public void UpdateLogOutTime(@PathVariable long id,@PathVariable LocalTime logOutTime){
-
-
-
       attendanceInterface.updateLogOutTime(id, logOutTime );
     }
-
     @GetMapping("/scanLink/{id}")
     public void scanLink(@PathVariable long id){
        attendanceInterface.scannedQr(id);
     }
-
     @GetMapping("log-out-flag/{id}")
     public boolean logOutFlag(@PathVariable long id){
-
        return checkOutTimeImplimentation.logOutBeforeExpected(id);
     }
 
-    @GetMapping("/user-early-logouts/{userId}")
-    public List<AttendanceResponseDto> getUserEarlyLogOutTimes(@PathVariable long userId) {
-        return attendanceInterface.getUserEarlyLogOutTimes(userId);
-    }
-    @GetMapping("/early-logouts/{date}")
-    public List<AttendanceResponseDto> getAllEarlyLogOutTimes(@PathVariable LocalDate date) {
-        return attendanceInterface.getAllEarlyLogOutTimes(date);
+    @GetMapping("/early-logouts")
+    public List<AttendanceResponseDto> getAllEarlyLogOutTimes() {
+        return attendanceInterface.getAllEarlyLogOutTimes();
     }
 
+    @GetMapping("/absent")
+    public ResponseEntity<List<UserResponseDTO>> getAbsentGeeks() {
+
+     List<UserResponseDTO> absent =  attendanceInterface.absentGeeks();
+        return ResponseEntity.ok(absent);
+    }
+    @GetMapping("/user-early-logouts/{userId}")
+    public List<AttendanceResponseDto> getUserEarlyLogOut(@PathVariable long userId){
+
+        logger.info("TRIGGERED!");
+        return attendanceInterface.getUserEarlyLogOut(userId);
+    }
+    @GetMapping("/user-absent/{userId}")
+    public List<AttendanceResponseDto> getAbsentUserDays(@PathVariable long userId){
+        return attendanceInterface.getAbsentUserDays(userId);
+    }
 }
 

@@ -102,15 +102,13 @@ export class TraineeComponent implements OnInit {
     this.attendanceService
       .getAttendancesByUserId(userId)
       .subscribe((attendance: AttendanceModel[]) => {
-        this.attendances = attendance;
-        this.attendances.forEach((attendance: AttendanceModel) => {
-          this.id = attendance.id
-
-          this.statu$ = attendance.status
-          this.loginTime = attendance.logInTime;
-        });
+        this.attendances = attendance.reverse();
+        //this.attendances.forEach((attendance: AttendanceModel) => attendance).reverse();
+        console.log(this.attendances)
       });
   }
+
+
 
   getTotalHoursWorked() {
     const todayAttendance: AttendanceModel[] = this.attendances.filter(

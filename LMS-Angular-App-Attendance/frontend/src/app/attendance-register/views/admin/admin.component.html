@@ -58,17 +58,19 @@
                 </button>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          
                   <li>
-                    <a class="dropdown-item">
-                      &nbsp;&nbsp;View Profile</a>
+                    <a class="dropdown-item" (click)="getAttendanceById(attendedUsers.userId)"  (click)="openModal()">
+                      &nbsp;&nbsp;View All </a>
                   </li>
                   <li>
                     <a class="dropdown-item" (click)="getOneAttendanceById(attendedUsers.id)" (click)="openModal()">
-                      &nbsp;&nbsp;Update</a>
+                      &nbsp;&nbsp;View Summary</a>
                   </li>
+              
                   <li>
-                    <a class="dropdown-item" (click)="getAttendanceById(attendedUsers.userId)"  (click)="openModal()">
-                      &nbsp;&nbsp;View Attendance</a>
+                    <a class="dropdown-item">
+                      &nbsp;&nbsp;View Profile</a>
                   </li>
                 </ul>
               </td>

@@ -12,13 +12,17 @@ import { AttendanceService } from '../../services/attendance.service';
 export class AdminpopupComponent {
 
   unexpectedLogOut!:boolean;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+  attendences: any[] = [];
   name!:String
   constructor(@Inject(MAT_DIALOG_DATA) public data: AttendanceModel[] , private attendanceService:AttendanceService) {}
   
   ngOnInit() {
-    if (this.data && this.data.length > 0) {
+    if (this.data.length > 0) {
       const attendanceId = this.data[0].id;
-      this.name=this.data[3].name
+      this.name=this.data[0].name
+      this.attendences = this.data;
       this.checkUexpectedLogOut(attendanceId);
     }
   }
@@ -27,8 +31,6 @@ export class AdminpopupComponent {
       .unexpectedLogOutTime(attendanceId)
       .subscribe(response => {
         this.unexpectedLogOut = response;
-        console.log(attendanceId)
-        console.log("The status is " + this.unexpectedLogOut);
       });
   }
  
@@ -43,6 +45,37 @@ export class AdminpopupComponent {
     return status.toLowerCase();
   }
 
+  nextPage() {
+    const pageCount = Math.ceil(this.attendences.length / this.itemsPerPage);
+    if (this.currentPage < pageCount) {
+      this.currentPage++;
+    }
+  }
+  
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  getIndexRange(): { start: number, end: number } {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    
+    const endIndex = Math.min(startIndex + this.itemsPerPage, this.attendences.length);
+    return { start: startIndex, end: endIndex };
+  }
+
+  getPageNumbers(): number[] {
+    const pageCount = Math.ceil(this.attendences.length / this.itemsPerPage);
+
+    return Array(pageCount).fill(0).map((x, i) => i + 1);
+  }
+  isNextButtonDisabled(): boolean {
+    const pageCount = Math.ceil(this.attendences.length / this.itemsPerPage);
+    return this.currentPage >= pageCount;
+  }
+  
 
 
 }

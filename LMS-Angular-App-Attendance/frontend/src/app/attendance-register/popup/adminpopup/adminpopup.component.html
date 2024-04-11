@@ -26,7 +26,7 @@
       </thead>
 
         <tbody>
-            <ng-container *ngFor="let attendances of data">
+            <ng-container *ngFor="let attendances of data.slice(getIndexRange().start, getIndexRange().end); let i = index">
          
             <tr>
                 <td>{{attendances.date}}</td>
@@ -54,11 +54,18 @@
   </div>
 </div>
 <div style="display: flex; justify-content: space-between; align-items: center; Margin-top: 20px; Margin-left: 20px;">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination" style="display: flex; list-style: none; margin: 0; padding: 0;">
-            <li class="page-item">1</li>
-        </ul>
-    </nav>
+  <nav aria-label="Page navigation example" style="Margin-top:10px; Margin-left:10px">
+    <ul class="pagination">
+      <button class="page-link" (click)="prevPage()">Previous</button>
+      <li class="page-item">
+        <a class="page-link" *ngFor="let page of getPageNumbers()" (click)="currentPage = page">{{ page }}</a>
+      </li>
+      <button 
+      
+      
+      class="page-link" (click)="nextPage() " [disabled]="isNextButtonDisabled()">Next</button>
+    </ul>
+  </nav>
     <div mat-dialog-action>
     <button  class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" >Download</button>
     <span style="margin-right: 10px;"></span> 

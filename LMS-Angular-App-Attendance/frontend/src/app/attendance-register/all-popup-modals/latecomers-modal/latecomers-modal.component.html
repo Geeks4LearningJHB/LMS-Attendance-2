@@ -27,9 +27,9 @@
                                     <th>No.</th>
                                     <th>Name</th>
                                     <th>Sponsor</th>
+                                    <th>Phone Number</th>
                                     <th>Date</th>
                                     <th>Reason</th>
-                                    <th>Phone Number</th>
                                 </tr>
                             </thead>
                             <tbody *ngIf="lateGeeks.length > 0">
@@ -37,15 +37,15 @@
                                     <td>{{ i + 1 }}</td>
                                     <td>{{ geeks.name }}</td>
                                     <td>{{ geeks.sponsor }}</td>
-                                    <td>{{ geeks.date | date }}</td>
-                                    <td>Not disclosed</td>
                                     <td><a href="tel:0728685375" style="display: block; height:
-                                        25px; width: 125px; ;
-                                       color: #ffffff; text-align: center;
+                                        25px; width: 125px; background: #0a5dc9;
+                                       color: #ffffff; text-align: center; 
                                        font-weight: bold; font-size: 80%;
                                        line-height: 25px; font-family: Arial; border-radius: 10px; text-decoration: none;
                                        "
-                                       class="bg-blue">(071)-778-7312</a></td>
+                                      class="bg-blue" >(071)-778-7312</a></td>
+                                    <td>{{ geeks.date | date }}</td>
+                                    <td>Not disclosed</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -53,7 +53,7 @@
                         <button   class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" (click)="closeModal()">Close</button>
 
                     </div>
-                    <!-- Show a message if no students are absent -->
+                    <!-- Show a message if no students are late -->
                     <div *ngIf="lateGeeks.length === 0">
                         <p>No students are late.</p>
                     </div>

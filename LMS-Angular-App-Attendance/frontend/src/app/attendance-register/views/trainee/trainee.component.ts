@@ -103,7 +103,6 @@ export class TraineeComponent implements OnInit {
       .getAttendancesByUserId(userId)
       .subscribe((attendance: AttendanceModel[]) => {
         this.attendances = attendance.reverse();
-        //this.attendances.forEach((attendance: AttendanceModel) => attendance).reverse();
         console.log(this.attendances)
       });
   }

@@ -14,7 +14,7 @@ export class QRCodeOpenerComponent {
   formModel: any;
   qrCodeImage: any;
   displayQRCode!: boolean ;
-
+  attId! :String;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {attendanceId : String} ,
      private attendanceService: AttendanceService,
@@ -23,8 +23,8 @@ export class QRCodeOpenerComponent {
    
     ngOnInit(){
       this.openQRCodeModal(this.data.attendanceId);
-      console.log(" QR " + this.displayQRCode)
- 
+      this.attId = this.data.attendanceId
+      console.log(this.attId)
     }
 
     openQRCodeModal(attendanceId: String) {
@@ -55,7 +55,16 @@ export class QRCodeOpenerComponent {
       this.close();
     }
     
-    
+    logOut(id : String){
+      this.attendanceService.logOut(id)
+      .subscribe(
+        (response) => {
+            console.log(response)
+        },
+        (error) => {
+          console.error('Error updating status', error);
+        })
+    }
 
 
 

@@ -90,8 +90,8 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         String logInIp =   ipAdressInterface.getLocation();
 
         List<User> users = userRepository.findAll();
-        LocalDate testingDate = LocalDate.now().plusDays(1);
-        LocalTime testingTime = LocalTime.of(8 , 35);
+//        LocalDate testingDate = LocalDate.now().plusDays(1);
+//        LocalTime testingTime = LocalTime.of(8 , 35);
 
         AttendanceRecord currentDateAttendance = attendanceRepository
                .findByUserIdUserIdAndDate(user.getUserId() , currentDate);
@@ -197,14 +197,18 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     }
 
     @Override
-    public AttendanceResponseDto updateLogOutTime(long id , LocalTime logOutTime) {
+    public AttendanceResponseDto updateLogOutTime(long id) {
         Optional<AttendanceRecord> attendanceRecordOptional = attendanceRepository.findById(id);
+
+        time  = timeFetcherApi.getCurrentTimeInSouthAfrica();
+        //format date and time to the localDate pattern
+        currentTime = LocalTime.parse(time , formatter);
         if (attendanceRecordOptional.isPresent()) {
             AttendanceRecord attendanceRecord = attendanceRecordOptional.get();
             if (attendanceRecord.getLogOutTime() != null) {
                 throw new AttendanceExceptions("Log out time already set");
             }
-            attendanceRecord.setLogOutTime(logOutTime);
+            attendanceRecord.setLogOutTime(currentTime);
             attendanceRepository.save(attendanceRecord);
             AttendanceRecord updatedAttendanceRecord = attendanceRepository.save(attendanceRecord);
             return attendanceDtoMapper.mapToDto(updatedAttendanceRecord);

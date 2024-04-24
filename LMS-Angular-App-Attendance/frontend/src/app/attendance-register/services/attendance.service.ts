@@ -27,6 +27,12 @@ export class AttendanceService {
     return this.http.get(`${this.config.apiUrl}/api/attendance/generate/${attendanceId}`, { responseType: 'blob' });
   }
 
+  logOut(attendanceId: String ): Observable<any> {
+    sessionStorage.clear();
+    window.location.reload();
+    return this.http.get(`${this.config.apiUrl}/attendance/update/log-out/${attendanceId}`);
+  }
+
   getAttendances(){
     return this.http.get<any>(`${this.config.apiUrl}/attendance/today-attendance`)
   }

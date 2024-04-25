@@ -131,5 +131,9 @@ public class AttendanceController {
     public List<AttendanceResponseDto> getAbsentUserDays(@PathVariable long userId){
         return attendanceInterface.getAbsentUserDays(userId);
     }
+    @GetMapping("/late-users")
+    public List<AttendanceResponseDto> getLateComers() {
+        return attendanceInterface.getLateUsers();
+    }
 }
 

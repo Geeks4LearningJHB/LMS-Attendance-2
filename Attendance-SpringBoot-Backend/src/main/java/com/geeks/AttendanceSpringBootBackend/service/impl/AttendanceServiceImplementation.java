@@ -353,4 +353,17 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         return absentUsers;
     }
 
+    public List<AttendanceResponseDto> getLateUsers(){
+        date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
+        currentDate = LocalDate.parse(date , formatDate);
+
+        List<AttendanceRecord> records = attendanceRepository.findAttendanceByDate(currentDate);
+        List<AttendanceRecord> lateComers = new ArrayList<AttendanceRecord>();
+        for (AttendanceRecord attRecords : records) {
+            if (attRecords.getStatus().equals(Status.LATE)){
+                lateComers.add(attRecords);
+            }
+        }
+        return attendanceDtoMapper.mapToResponseDtoList(lateComers);
+    }
 }

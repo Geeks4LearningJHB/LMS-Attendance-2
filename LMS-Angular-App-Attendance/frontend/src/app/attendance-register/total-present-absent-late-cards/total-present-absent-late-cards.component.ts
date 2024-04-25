@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AbsentModalComponent } from '../all-popup-modals/absent-modal/absent-modal.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { LatecomersModalComponent } from '../all-popup-modals/latecomers-modal/latecomers-modal.component';
+import { AbsentModalComponent } from '../all-popup-modals/absent-modal/absent-modal.component';
 import { EarlyDepatureModalComponent } from '../all-popup-modals/early-depature-modal/early-depature-modal.component';
-import { AttendanceService } from '../services/attendance.service';
+import { LatecomersModalComponent } from '../all-popup-modals/latecomers-modal/latecomers-modal.component';
 import { AttendanceModel } from '../models/attendance.interface';
+import { AttendanceService } from '../services/attendance.service';
 
 @Component({
   selector: 'app-total-present-absent-late-cards',
@@ -20,8 +20,9 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
   allAttendancesCount:any;
   allGeeks:any;
   absentCount : any
+  lateCount : any
   constructor(private absentModal: MatDialog,
-     private lateComersModal: MatDialog, private ealyDepatureModal: MatDialog 
+     private lateComersModal: MatDialog, private ealyDepatureModal: MatDialog
     ,private attendanceService:AttendanceService , private dialog: MatDialog) {}
 
 
@@ -40,11 +41,17 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
   }
 
   openLatecomersModal() {
-    this.lateComersFilter = this.lateComersModal.open(LatecomersModalComponent);
+    this.dialog.open
+  }
+
+  closeLateModal(){
+    if(this.lateComersFilter){
+      this.lateComersFilter.close();
+    }
   }
 
   openEarlyDepatureModal(){
-  this.dialog.open  
+  this.dialog.open
   }
 
   earlyDeparture() {
@@ -53,9 +60,9 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
       .subscribe((earlyDeparture: AttendanceModel[]) => {
         const dialogRef = this.ealyDepatureModal.open(EarlyDepatureModalComponent, {
           data: earlyDeparture,
-         
+
         });
-      
+
       });
   }
 
@@ -65,9 +72,19 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
     .subscribe((absentGeeks : any )=>{
       const dialogRef = this.absentModal.open(AbsentModalComponent , {
         data: absentGeeks,
-    
+
       });
     });
+  }
+
+  getLateGeeks(){
+    this.attendanceService
+    .getLateComers()
+    .subscribe(( lateGeeks : AttendanceModel[]) => {
+      const dialogRef = this.lateComersModal.open(LatecomersModalComponent , {
+        data: lateGeeks,
+      });
+    })
   }
 
   getCount(){
@@ -94,10 +111,13 @@ export class TotalPresentAbsentLateCardsComponent implements OnInit {
   .subscribe((geeks : any)=>{
     this.allGeeks = geeks.length
   })
+  this.attendanceService
+  .getLateComers()
+  .subscribe((late : AttendanceModel[])=>{
+    this.lateCount = late.length
+  })
   }
 
-  
-  
 
 
 }

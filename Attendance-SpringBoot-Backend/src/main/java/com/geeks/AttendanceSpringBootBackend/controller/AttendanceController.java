@@ -61,7 +61,7 @@ public class AttendanceController {
         LocalTime formattedTime = LocalTime.parse(southAfricanTime , formatter);
         attendanceInterface.scannedQr(attendanceRecord.getId());
 
-        attendanceInterface.updateLogOutTime(attendanceRecord.getId() , formattedTime);
+        attendanceInterface.updateLogOutTime(attendanceRecord.getId());
         return "You just scanned your QR Thank You ";
 
     }
@@ -96,9 +96,10 @@ public class AttendanceController {
         attendanceInterface.updateAttendanceRecord(id, status );
     }
 
-    @GetMapping("/update/logOut/{id}/{logOutTime}")
-    public void UpdateLogOutTime(@PathVariable long id,@PathVariable LocalTime logOutTime){
-      attendanceInterface.updateLogOutTime(id, logOutTime );
+    @GetMapping("/update/log-out/{id}")
+    public void UpdateLogOutTime(@PathVariable long id){
+        logger.info("Triggered!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      attendanceInterface.updateLogOutTime(id);
     }
     @GetMapping("/scanLink/{id}")
     public void scanLink(@PathVariable long id){
@@ -129,6 +130,10 @@ public class AttendanceController {
     @GetMapping("/user-absent/{userId}")
     public List<AttendanceResponseDto> getAbsentUserDays(@PathVariable long userId){
         return attendanceInterface.getAbsentUserDays(userId);
+    }
+    @GetMapping("/late-users")
+    public List<AttendanceResponseDto> getLateComers() {
+        return attendanceInterface.getLateUsers();
     }
 }
 

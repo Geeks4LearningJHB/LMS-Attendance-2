@@ -15,7 +15,7 @@
                         <div class="col" [hidden]="displayQRCode" >
                             <p class="fw-bold m-1 align-items-center">
                                 <i class="fa-solid fa-question-circle mr-1"></i>
-                                Hey, would you like to scan the QR code to logout?
+                                Hope you had a productive day would you like to clock-out?
                             </p>
                         </div>
                     </div>
@@ -40,8 +40,17 @@
                             <i class="fa-solid fa-confim mr-1"></i>
                             Please scan to confirm your clock out time!
                         </p>
+                       
                         <img [src]="qrCodeImage" alt="QR Code">
+                        <div>
+                            <p>OR</p>
+                            <button
+                               class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase"
+                               (click)="logOut(attId)"
+                            >Clock Out</button>
+                        </div>
                     </div>
+                    
                 </div>
             </div>
         </div>

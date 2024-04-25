@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { AppConfig } from 'src/app/shared/app-config/app-config.interface';
 import { APP_SERVICE_CONFIG } from 'src/app/shared/app-config/app-config.service';
 import { AttendanceModel, HoursType } from '../models/attendance.interface';
-import { User } from 'src/app/mockData/data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +24,12 @@ export class AttendanceService {
   }
   getQrCode(attendanceId: String): Observable<Blob> {
     return this.http.get(`${this.config.apiUrl}/api/attendance/generate/${attendanceId}`, { responseType: 'blob' });
+  }
+
+  logOut(attendanceId: String ): Observable<any> {
+    sessionStorage.clear();
+    window.location.reload();
+    return this.http.get(`${this.config.apiUrl}/attendance/update/log-out/${attendanceId}`);
   }
 
   getAttendances(){
@@ -104,4 +109,7 @@ export class AttendanceService {
     return this.http.get<AttendanceModel[]>(`${this.config.apiUrl}/attendance/user-absent/${userId}`)
   }
 
+  getLateComers(): Observable<AttendanceModel[]>{
+    return this.http.get<any>(`${this.config.apiUrl}/attendance/late-users`)
+  }
 }

@@ -20,6 +20,7 @@ public class AttendanceRecord {
     private long id;
     private LocalTime logInTime;
     private LocalTime checkOutTime;
+    @Temporal(TemporalType.DATE)
     private LocalDate date;
     private String logInLocation;
     private Status status;

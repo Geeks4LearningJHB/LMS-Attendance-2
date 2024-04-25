@@ -1,79 +1,123 @@
 <div class="row">
-    <div class="col-md-3 col-xl-3 mb-1 boxes">
-        <div class="card shadow border-start-primary py-1">
-            <div class="card-body">
-                <div class="row align-items-center no-gutters ">
-                    <div class="col me-2">
-                        <div class=" text-xs "><span>
-                                <p>Attendees</p>
-                            </span></div>
-                        <div class="text-dark  h5 mb-0"><span>
-                                <h6>{{allAttendancesCount}}/{{allGeeks}}</h6>
-                            </span></div>
-                    </div>
-                    <div class="icon icon-shape bg-orange text-center shadow border-radius-md m-3"><a><i
-                                class="fa-solid fa-users mt-3" style="color:white;"></i></a></div>
-                    <!-- <i class="fa-solid fa-calendar-xmark"></i> -->
-                </div>
+  <div class="col-md-3 col-xl-3 mb-1 boxes">
+    <div class="card shadow border-start-primary py-1">
+      <div class="card-body">
+        <div class="row align-items-center no-gutters">
+          <div class="col me-2">
+            <div class="text-xs">
+              <span>
+                <p>Attendees</p>
+              </span>
             </div>
-        </div>
-    </div>
-    <div class="col-md-3 col-xl-3 mb-1 boxes1"(click)="getAbsentGeeks()" (click)="openAbsentModal()">
-        <div class="card shadow border-start-warning py-1">
-            <div class="card-body">
-                <div class="row align-items-center no-gutters">
-                    <div class="col me-2">
-                        <div class="  text-xs "><span>
-                                <p>Absent</p>
-                            </span></div>
-                        <div class="text-dark  h5 mb-0"><span>
-                                <h6>{{absentCount}}</h6>
-                            </span></div>
-                    </div>
-                    <div class="icon icon-shape bg-blue shadow text-center border-radius-md m-3">
-                        <a ><i class="fas fa-user-slash mt-3" style="color:white"></i></a>
-                    </div>
-                    <!-- <i class="fa-solid fa-xmark"></i> -->
-                </div>
+            <div class="text-dark h5 mb-0">
+              <span>
+                <h6>{{ allAttendancesCount }}/{{ allGeeks }}</h6>
+              </span>
             </div>
+          </div>
+          <div
+            class="icon icon-shape bg-orange text-center shadow border-radius-md m-3"
+          >
+            <a><i class="fa-solid fa-users mt-3" style="color: white"></i></a>
+          </div>
+          <!-- <i class="fa-solid fa-calendar-xmark"></i> -->
         </div>
+      </div>
     </div>
-    <div class="col-md-3 col-xl-3 mb-1 boxes1" (click)="openLatecomersModal()">
-        <div class="card shadow border-start-success py-1">
-            <div class="card-body">
-                <div class="row align-items-center no-gutters">
-                    <div class="col me-2">
-                        <div class="  text-xs"><span>
-                                <p>Latecomers</p>
-                            </span></div>
-                        <div class="text-dark  h5 mb-0"><span>
-                                <h6>5</h6>
-                            </span></div>
-                    </div>
-                    <div class="icon icon-shape bg-purple shadow text-center border-radius-md m-3"><a ><i
-                                class="fa-solid fa-clock mt-3" style="color:white"></i></a></div>
-                    <!-- <i class="fa-regular fa-calendar-check"></i> -->
-                </div>
+  </div>
+  <div
+    class="col-md-3 col-xl-3 mb-1 boxes1"
+    (click)="getAbsentGeeks()"
+    (click)="openAbsentModal()"
+  >
+    <div class="card shadow border-start-warning py-1">
+      <div class="card-body">
+        <div class="row align-items-center no-gutters">
+          <div class="col me-2">
+            <div class="text-xs">
+              <span>
+                <p>Absent</p>
+              </span>
             </div>
-        </div>
-    </div>
-    <div class="col-md-3 col-xl-3 mb-1 boxes1" (click)="earlyDeparture()" (click)="openEarlyDepatureModal()">
-        <div class="card shadow border-start-success py-1">
-            <div class="card-body">
-                <div class="row align-items-center no-gutters">
-                    <div class="col me-2">
-                        <div class="  text-xs"><span>
-                                <p>Early Departure</p>
-                            </span></div>
-                        <div class="text-dark  h5 mb-0"><span>
-                                <h6>{{ealryDepatureCount}}</h6>
-                            </span></div>
-                    </div>
-                    <div class="icon icon-shape bg-purple shadow text-center border-radius-md m-3"><a ><i
-                                class="fas fa-walking mt-3" style="color: white; margin-top: 3px;"></i></a></div>
-                    <!-- <i class="fa-regular fa-calendar-check"></i> <i class="fas fa-clock" style="color: white; margin-top: 3px;"></i> -->
-                </div>
+            <div class="text-dark h5 mb-0">
+              <span>
+                <h6>{{ absentCount }}</h6>
+              </span>
             </div>
+          </div>
+          <div
+            class="icon icon-shape bg-blue shadow text-center border-radius-md m-3"
+          >
+            <a><i class="fas fa-user-slash mt-3" style="color: white"></i></a>
+          </div>
+          <!-- <i class="fa-solid fa-xmark"></i> -->
         </div>
+      </div>
     </div>
+  </div>
+  <div
+    class="col-md-3 col-xl-3 mb-1 boxes1"
+    (click)="getLateGeeks()"
+    (click)="openLatecomersModal()"
+  >
+    <div class="card shadow border-start-success py-1">
+      <div class="card-body">
+        <div class="row align-items-center no-gutters">
+          <div class="col me-2">
+            <div class="text-xs">
+              <span>
+                <p>Latecomers</p>
+              </span>
+            </div>
+            <div class="text-dark h5 mb-0">
+              <span>
+                <h6>{{ lateCount }}</h6>
+              </span>
+            </div>
+          </div>
+          <div
+            class="icon icon-shape bg-purple shadow text-center border-radius-md m-3"
+          >
+            <a><i class="fa-solid fa-clock mt-3" style="color: white"></i></a>
+          </div>
+          <!-- <i class="fa-regular fa-calendar-check"></i> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-md-3 col-xl-3 mb-1 boxes1"
+    (click)="earlyDeparture()"
+    (click)="openEarlyDepatureModal()"
+  >
+    <div class="card shadow border-start-success py-1">
+      <div class="card-body">
+        <div class="row align-items-center no-gutters">
+          <div class="col me-2">
+            <div class="text-xs">
+              <span>
+                <p>Early Departure</p>
+              </span>
+            </div>
+            <div class="text-dark h5 mb-0">
+              <span>
+                <h6>{{ ealryDepatureCount }}</h6>
+              </span>
+            </div>
+          </div>
+          <div
+            class="icon icon-shape bg-purple shadow text-center border-radius-md m-3"
+          >
+            <a
+              ><i
+                class="fas fa-walking mt-3"
+                style="color: white; margin-top: 3px"
+              ></i
+            ></a>
+          </div>
+          <!-- <i class="fa-regular fa-calendar-check"></i> <i class="fas fa-clock" style="color: white; margin-top: 3px;"></i> -->
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

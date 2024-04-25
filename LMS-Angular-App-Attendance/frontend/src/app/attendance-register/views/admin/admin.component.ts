@@ -54,7 +54,6 @@ export class AdminComponent implements OnInit {
     this.dialog.closeAll;
   }
 
-
  getOneAttendanceById(attendanceId: string) {
   this.attendenceService
   .getUserAttendanceById(attendanceId)
@@ -83,7 +82,6 @@ getAllAttendances(){
   this.reversedAttendance = this.attendences.map((attendance: any) => attendance).reverse();
   this.reversedLogInTime = this.attendences.map((attendance: any) => attendance.logInTime).reverse();
 
- console.log(this.attendences)
   })
 }
 

@@ -90,8 +90,8 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         String logInIp =   ipAdressInterface.getLocation();
 
         List<User> users = userRepository.findAll();
-        LocalDate testingDate = LocalDate.now().plusDays(1);
-        LocalTime testingTime = LocalTime.of(8 , 35);
+//        LocalDate testingDate = LocalDate.now().plusDays(1);
+//        LocalTime testingTime = LocalTime.of(8 , 35);
 
         AttendanceRecord currentDateAttendance = attendanceRepository
                .findByUserIdUserIdAndDate(user.getUserId() , currentDate);
@@ -142,7 +142,6 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     public AttendanceResponseDto getAttendanceRecordById(long id) {
         Optional<AttendanceRecord> attendanceRecordOptional = attendanceRepository.findById(id);
         if (attendanceRecordOptional.isPresent()) {
-
             return  attendanceDtoMapper.mapToDto(attendanceRecordOptional.get());
         } else {
             // handle not found scenario
@@ -181,7 +180,12 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     @Override
     public List<AttendanceResponseDto> getAllUserAttendances(long userId) {
 
-         List<AttendanceRecord> attendanceRecords  =  attendanceRepository.findByUserIdUserId(userId);
+         List<AttendanceRecord> attendanceRecords  =  attendanceRepository.findAllByUserIdUserIdOrderByDateDesc(userId);
+        System.out.println("Records");
+
+        for (AttendanceRecord att : attendanceRecords){
+             System.out.println(att);
+         }
          return attendanceDtoMapper.mapToResponseDtoList(attendanceRecords);
 
     }
@@ -190,21 +194,26 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     public List<AttendanceResponseDto> getTodayAttendance() {
         date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
         currentDate = LocalDate.parse(date , formatDate);
-        List<AttendanceRecord> attendanceRecords  =  attendanceRepository.findAttendanceByDate(currentDate);
+        List<AttendanceRecord> attendanceRecords  =  attendanceRepository.findAttendanceByDateOrderByLogInTimeDesc(currentDate);
         return attendanceDtoMapper.mapToResponseDtoList(attendanceRecords);
 
 
     }
 
     @Override
-    public AttendanceResponseDto updateLogOutTime(long id , LocalTime logOutTime) {
+    public AttendanceResponseDto updateLogOutTime(long id) {
         Optional<AttendanceRecord> attendanceRecordOptional = attendanceRepository.findById(id);
+
+        time  = timeFetcherApi.getCurrentTimeInSouthAfrica();
+        //format date and time to the localDate pattern
+        currentTime = LocalTime.parse(time , formatter);
         if (attendanceRecordOptional.isPresent()) {
             AttendanceRecord attendanceRecord = attendanceRecordOptional.get();
-            if (attendanceRecord.getLogOutTime() != null) {
+            if (attendanceRecord.getLogOutTime() != null && attendanceRecord.isScanned()) {
                 throw new AttendanceExceptions("Log out time already set");
             }
-            attendanceRecord.setLogOutTime(logOutTime);
+            attendanceRecord.setLogOutTime(currentTime);
+            attendanceRecord.setScanned(true);
             attendanceRepository.save(attendanceRecord);
             AttendanceRecord updatedAttendanceRecord = attendanceRepository.save(attendanceRecord);
             return attendanceDtoMapper.mapToDto(updatedAttendanceRecord);
@@ -249,7 +258,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     }
 
     public List<AttendanceResponseDto> allEarly(LocalDate date) {
-        List<AttendanceRecord> records = attendanceRepository.findAttendanceByDate(date);
+        List<AttendanceRecord> records = attendanceRepository.findAttendanceByDateOrderByLogInTimeDesc(date);
         List<AttendanceRecord> earlyLogOuts = new ArrayList<AttendanceRecord>();
 
         for (AttendanceRecord attRecords : records) {
@@ -349,4 +358,17 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         return absentUsers;
     }
 
+    public List<AttendanceResponseDto> getLateUsers(){
+        date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
+        currentDate = LocalDate.parse(date , formatDate);
+
+        List<AttendanceRecord> records = attendanceRepository.findAttendanceByDateOrderByLogInTimeDesc(currentDate);
+        List<AttendanceRecord> lateComers = new ArrayList<AttendanceRecord>();
+        for (AttendanceRecord attRecords : records) {
+            if (attRecords.getStatus().equals(Status.LATE)){
+                lateComers.add(attRecords);
+            }
+        }
+        return attendanceDtoMapper.mapToResponseDtoList(lateComers);
+    }
 }

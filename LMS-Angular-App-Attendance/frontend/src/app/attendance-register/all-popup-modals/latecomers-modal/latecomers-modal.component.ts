@@ -7,27 +7,32 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./latecomers-modal.component.css']
 })
 export class LatecomersModalComponent implements OnInit{
-
+  lateGeeks : any
+  currentDate!: Date;
 
 
  constructor(public dialogRef: MatDialogRef<LatecomersModalComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {}
-              
-   lateComers: { name: string, phoneNumber: string, sponsor: string, date: Date , reason: string}[] = [
-    { name: 'Thaba Sambo', phoneNumber: '123-456-7890', sponsor: 'FNB', date: new Date('2022-04-05'), reason: "Taxi strike" },
-    { name: 'Tshepo Msiza', phoneNumber: '123-456-7890', sponsor: 'ABSA', date: new Date('2022-04-05'),  reason: "Car broke" },
-    { name: 'Sol Zondeka', phoneNumber: '123-456-7890', sponsor: 'FNB', date: new Date('2022-04-05'),  reason: "Wake up late" },
-    { name: 'Aubrey Mashaba', phoneNumber: '123-456-7890', sponsor: 'FNB', date: new Date('2022-04-05') ,  reason: "Too much traffic"},
-    { name: 'Wiseman Tali', phoneNumber: '123-456-7890', sponsor: 'Riverside', date: new Date('2022-04-05') ,  reason: "Waiting for my friend"},
-  ];
- 
+
+  //  lateComers: { name: string, phoneNumber: string, sponsor: string, date: Date , reason: string}[] = [
+  //   { name: 'Thaba Sambo', phoneNumber: '123-456-7890', sponsor: 'FNB', date: new Date('2022-04-05'), reason: "Taxi strike" },
+  //   { name: 'Tshepo Msiza', phoneNumber: '123-456-7890', sponsor: 'ABSA', date: new Date('2022-04-05'),  reason: "Car broke" },
+  //   { name: 'Sol Zondeka', phoneNumber: '123-456-7890', sponsor: 'FNB', date: new Date('2022-04-05'),  reason: "Wake up late" },
+  //   { name: 'Aubrey Mashaba', phoneNumber: '123-456-7890', sponsor: 'FNB', date: new Date('2022-04-05') ,  reason: "Too much traffic"},
+  //   { name: 'Wiseman Tali', phoneNumber: '123-456-7890', sponsor: 'Riverside', date: new Date('2022-04-05') ,  reason: "Waiting for my friend"},
+  // ];
+
 
   closeModal() {
     this.dialogRef.close();
   }
 
   ngOnInit(): void {
-    
+    this.currentDate = new Date();
+    if (this.data && this.data.length > 0) {
+      this.lateGeeks = this.data
+      console.log(this.lateGeeks)
+    }
   }
 
 }

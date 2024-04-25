@@ -9,6 +9,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class AbsentModalComponent implements OnInit {
 absentGeeks : any
 currentDate!: Date;
+itemsPerPage: number = 5;
+currentPage: number = 1;
 
  constructor(public dialogRef: MatDialogRef<AbsentModalComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {}
@@ -27,6 +29,40 @@ currentDate!: Date;
   }
 
 
+  getStatus(status: string): any {
+    return status.toLowerCase();
+  }
+
+  nextPage() {
+    const pageCount = Math.ceil(this.absentGeeks.length / this.itemsPerPage);
+    if (this.currentPage < pageCount) {
+      this.currentPage++;
+    }
+  }
+  
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  getIndexRange(): { start: number, end: number } {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    
+    const endIndex = Math.min(startIndex + this.itemsPerPage, this.absentGeeks.length);
+    return { start: startIndex, end: endIndex };
+  }
+
+  getPageNumbers(): number[] {
+    const pageCount = Math.ceil(this.absentGeeks.length / this.itemsPerPage);
+
+    return Array(pageCount).fill(0).map((x, i) => i + 1);
+  }
+  isNextButtonDisabled(): boolean {
+    const pageCount = Math.ceil(this.absentGeeks.length / this.itemsPerPage);
+    return this.currentPage >= pageCount;
+  }
   
 
 }

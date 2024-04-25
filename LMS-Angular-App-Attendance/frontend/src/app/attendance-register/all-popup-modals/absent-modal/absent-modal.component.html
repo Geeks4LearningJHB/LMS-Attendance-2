@@ -36,7 +36,7 @@
                                 </tr>
                             </thead>
                             <tbody *ngIf="absentGeeks.length >0" >
-                                <ng-container  *ngFor="let geeks of absentGeeks; let i = index">
+                                <ng-container  *ngFor="let geeks of absentGeeks.slice(getIndexRange().start, getIndexRange().end); let i = index">
                                 <tr >
                                     <td>{{ i + 1 }}</td>
                                     <td>{{ geeks.userName }}</td>
@@ -60,8 +60,22 @@
                     <div *ngIf="absentGeeks.length === 0">
                         <p>No students are absent.</p>
                     </div>
-                        <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" (click)="closeModal()">Close</button>
-              
+                    <div style="display: flex; justify-content: space-between; align-items: center; Margin-top: 20px; Margin-left: 20px;">
+
+                        <nav aria-label="Page navigation example" style="Margin-top:10px; Margin-left:10px">
+                            <ul class="pagination">
+                              <button class="page-link" (click)="prevPage()">Previous</button>
+                              <li class="page-item">
+                                <a class="page-link" *ngFor="let page of getPageNumbers()" (click)="currentPage = page">{{ page }}</a>
+                              </li>
+                              <button                    
+                              class="page-link" (click)="nextPage() " [disabled]="isNextButtonDisabled()">Next</button>
+                            </ul>
+                          </nav>
+                          <div>
+                            <button class="btn btn-sm bg-2 gradient-primary mb-0 btn-dark text-uppercase" (click)="closeModal()">Close</button>
+
+                          </div>
                     </div>
                    
                 </div>

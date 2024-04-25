@@ -25,7 +25,7 @@
             <div class="table-container">
               <table class="table">
                 <thead>
-                  <tr class="text-center">
+                  <tr >
                     <th>No.</th>
                     <th>Name</th>
                     <th>Sponsor</th>
@@ -36,7 +36,7 @@
                 </thead>
                 <tbody *ngIf="lateGeeks.length > 0">
                   <ng-container *ngFor="let geeks of lateGeeks; let i = index">
-                    <tr class="text-center">
+                    <tr>
                       <td>{{ i + 1 }}</td>
                       <td>{{ geeks.name }}</td>
                       <td>{{ geeks.sponsor }}</td>

@@ -12,9 +12,9 @@ public interface AttendanceRepository extends JpaRepository<AttendanceRecord, Lo
    List <AttendanceRecord> findAttendanceByDateOrderByLogInTimeDesc(LocalDate date);
   // AttendanceRecord findByUserIdAndDate(long userId , LocalDate currentDate);
 
-   AttendanceRecord findByUserIdUserIdAndDate(long id , LocalDate date);
-   List<AttendanceRecord> findByUserIdUserId(long userId);
+   AttendanceRecord findByUserIdAndDate(String id , LocalDate date);
+   List<AttendanceRecord> findByUserId(String userId);
 
 
-    List<AttendanceRecord> findAllByUserIdUserIdOrderByDateDesc(long userId);
+    List<AttendanceRecord> findAllByUserIdOrderByDateDesc(String userId);
 }

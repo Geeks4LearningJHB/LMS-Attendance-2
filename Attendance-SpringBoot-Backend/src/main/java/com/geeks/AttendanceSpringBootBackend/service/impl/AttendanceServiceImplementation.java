@@ -1,14 +1,12 @@
 package com.geeks.AttendanceSpringBootBackend.service.impl;
 
 import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
-import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
-import com.geeks.AttendanceSpringBootBackend.entity.dto.UserResponseDTO;
+import com.geeks.AttendanceSpringBootBackend.entity.dto.Geek;
 import com.geeks.AttendanceSpringBootBackend.enums.Status;
 import com.geeks.AttendanceSpringBootBackend.exceptions.AttendanceExceptions;
 import com.geeks.AttendanceSpringBootBackend.exceptions.UserException;
 import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
-import com.geeks.AttendanceSpringBootBackend.repository.UserRepository;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
 import com.geeks.AttendanceSpringBootBackend.service.IpAdressInterface;
 import com.geeks.AttendanceSpringBootBackend.service.UserInterface;
@@ -16,6 +14,7 @@ import com.sun.tools.javac.Main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
@@ -31,8 +30,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
     @Autowired
     private AttendanceRepository attendanceRepository;
-    @Autowired
-    private  UserRepository userRepository;
+
     @Autowired
     private AttendanceMapperServiceImpl attendanceDtoMapper;
     @Autowired
@@ -72,8 +70,8 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
 
     @Override
-    public AttendanceResponseDto newAttendance(User user) {
-
+    public AttendanceResponseDto newAttendance(Geek geek) {
+        logger.info("Triggered");
         LocalTime expectedLogOutTime ;
 
         date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
@@ -89,20 +87,20 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
        //String logInIp =  "41.140.81.0";
         String logInIp =   ipAdressInterface.getLocation();
 
-        List<User> users = userRepository.findAll();
+       // List<User> users = userRepository.findAll();
 //        LocalDate testingDate = LocalDate.now().plusDays(1);
 //        LocalTime testingTime = LocalTime.of(8 , 35);
 
         AttendanceRecord currentDateAttendance = attendanceRepository
-               .findByUserIdUserIdAndDate(user.getUserId() , currentDate);
+               .findByUserIdAndDate(geek.getUserId() , currentDate);
 
         //User exists if our system gets to this line
-        attendanceRecord.setUserId(user);
+        attendanceRecord.setUserId(geek.getUserId());
 
         //check if the geek has attendance record for that day
         if (currentDateAttendance == null){
 
-            if (logInIp.equals("Office") && user.getRole().equals("Learner") ){
+            if (logInIp.equals("Office")){
                 attendanceRecord.setLogInTime(currentTime);
                 attendanceRecord.setDate(currentDate);
                 attendanceRecord.setLogInLocation(logInIp);
@@ -121,7 +119,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
             else {
 
                 AttendanceRecord attendanceRecord1 = new AttendanceRecord();
-                attendanceRecord1.setUserId(user);
+                attendanceRecord1.setUserId(geek.getUserId());
                 attendanceRecord1.setLogInTime(currentTime);
                 attendanceRecord1.setDate(currentDate);
                 attendanceRecord1.setLogInLocation(logInIp);
@@ -178,11 +176,10 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     }
 
     @Override
-    public List<AttendanceResponseDto> getAllUserAttendances(long userId) {
+    public List<AttendanceResponseDto> getAllUserAttendances(String userId) {
 
-         List<AttendanceRecord> attendanceRecords  =  attendanceRepository.findAllByUserIdUserIdOrderByDateDesc(userId);
+         List<AttendanceRecord> attendanceRecords  =  attendanceRepository.findAllByUserIdOrderByDateDesc(userId);
         System.out.println("Records");
-
         for (AttendanceRecord att : attendanceRecords){
              System.out.println(att);
          }
@@ -272,7 +269,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     }
 
     @Override
-    public List<UserResponseDTO> absentGeeks() {
+    public List<Geek> absentGeeks() {
         date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
         time  = timeFetcherApi.getCurrentTimeInSouthAfrica();
 
@@ -281,13 +278,18 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         currentDate = LocalDate.parse(date , formatDate);
 
         LocalTime checkTime = LocalTime.of(7 ,30);
-        List<UserResponseDTO> absentGeeks = new ArrayList<UserResponseDTO>();
+        List<Geek> absentGeeks = new ArrayList<>();
         if ((currentTime.isAfter(checkTime) &&currentTime.isBefore(LocalTime.of(17,30)))){
-            List<UserResponseDTO> allGeeks = userInterface.allGeeks();
+            ResponseEntity<?> allGeeks = userInterface.allGeeks();
+            logger.info("Users{}:"+ allGeeks);
+
+            List<Geek> geekList = new ArrayList<>();
+            geekList.add((Geek) allGeeks.getBody());
+
             //run for each
-            for (UserResponseDTO geek : allGeeks) {
+            for (Geek geek : geekList) {
                 AttendanceRecord todayRecord = attendanceRepository
-                        .findByUserIdUserIdAndDate(geek.getUserId(),currentDate);
+                        .findByUserIdAndDate(geek.getUserId(),currentDate);
                 logger.info(todayRecord);
 
                 if (todayRecord == null) {
@@ -302,8 +304,8 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     }
 
     @Override
-    public List<AttendanceResponseDto> getUserEarlyLogOut(long userId){
-        List<AttendanceRecord> records = attendanceRepository.findByUserIdUserId(userId);
+    public List<AttendanceResponseDto> getUserEarlyLogOut(String userId){
+        List<AttendanceRecord> records = attendanceRepository.findByUserId(userId);
         List<AttendanceRecord> early = new ArrayList<>();
 
         for (AttendanceRecord record : records) {
@@ -316,46 +318,49 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         return attendanceDtoMapper.mapToResponseDtoList(early);
     }
 
-    public List<AttendanceResponseDto> getAbsentUserDays(long userId) {
+    public List<AttendanceResponseDto> getAbsentUserDays(String userId) {
 
         date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
 
         //format date and time to the localDate pattern
         currentDate = LocalDate.parse(date , formatDate);
 
-        List<AttendanceRecord> records = attendanceRepository.findByUserIdUserId(userId);
+        List<AttendanceRecord> records = attendanceRepository.findByUserId(userId);
         List<LocalDate> absentDates = new ArrayList<>();
 
         for (AttendanceRecord record : records) {
             absentDates.add(record.getDate());
         }
+       List<Geek> allGeeks =(List<Geek>) userInterface.allGeeks();
+        for (Geek geeks : allGeeks) {
+            if(geeks.getUserId().equals(userId)) {
+                LocalDate startOfContract = geeks.getLearnershipStartDate();
+                LocalDate endOfContract = geeks.getLearnershipEndDate();
+                LocalDate startOfWeek = startOfContract.with(DayOfWeek.MONDAY);
+                LocalDate endOfWeek = startOfWeek.plusDays(4);
+                LocalDate yesterday = currentDate.minusDays(1);
 
-        Optional<User> user = userRepository.findById(userId);
+                List<AttendanceResponseDto> absentUsers = new ArrayList<>();
 
-        LocalDate startOfContract = user.get().getLearnershipStartDate();
-        LocalDate endOfContract = user.get().getLearnershipEndDate();
-
-        LocalDate startOfWeek = startOfContract.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = startOfWeek.plusDays(4);
-        LocalDate yesterday = currentDate.minusDays(1);
-
-        List<AttendanceResponseDto> absentUsers = new ArrayList<>();
-
-        for (LocalDate date = startOfWeek; date.isBefore(yesterday.plusDays(1)); date = date.plusDays(1)) {
-            if (date.isBefore(startOfContract) || date.isAfter(endOfContract)) {
-                continue; // Skip dates outside the contract period
+                for (LocalDate date = startOfWeek; date.isBefore(yesterday.plusDays(1)); date = date.plusDays(1)) {
+                    if (date.isBefore(startOfContract) || date.isAfter(endOfContract)) {
+                        continue; // Skip dates outside the contract period
+                    }
+                    if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                        continue; // Skip weekends
+                    }
+                    if (!absentDates.contains(date)) {
+                        AttendanceResponseDto absentUser = new AttendanceResponseDto();
+                        absentUser.setDate(date);
+                        absentUser.setUserId(userId);
+                        absentUsers.add(absentUser);
+                    }
+                }
+                return absentUsers;
             }
-            if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                continue; // Skip weekends
-            }
-            if (!absentDates.contains(date)) {
-                AttendanceResponseDto absentUser = new AttendanceResponseDto();
-                absentUser.setDate(date);
-                absentUser.setUserId(userId);
-                absentUsers.add(absentUser);
-            }
+
         }
-        return absentUsers;
+      return null;
     }
 
     public List<AttendanceResponseDto> getLateUsers(){

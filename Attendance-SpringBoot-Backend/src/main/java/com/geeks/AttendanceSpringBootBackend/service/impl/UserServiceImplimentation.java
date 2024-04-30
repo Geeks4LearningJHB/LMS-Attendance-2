@@ -33,23 +33,6 @@ public class UserServiceImplimentation implements UserInterface {
     @Override
     public ResponseEntity<?> allGeeks(){
 
-        Object body = userFeignInterface.getAllGeeks().getBody();
-
-        // Check if the body is not null and is an instance of List<User>
-        if (body != null && body instanceof List<?>) {
-            try {
-                // Cast the body to List<User>
-                List<Geek> geekList = (List<Geek>) body;
-                log.info("geeks: {}", geekList);
-            } catch (ClassCastException e) {
-                // Handle if the cast fails
-                e.printStackTrace();
-            }
-        } else {
-            // Handle if the body is null or not an instance of List<User>
-            return null; // or throw an exception
-        }
-
         return userFeignInterface.getAllGeeks();
     }
 

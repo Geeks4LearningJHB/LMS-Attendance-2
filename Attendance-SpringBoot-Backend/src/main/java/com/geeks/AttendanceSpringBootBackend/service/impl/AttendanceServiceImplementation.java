@@ -3,9 +3,11 @@ package com.geeks.AttendanceSpringBootBackend.service.impl;
 import com.geeks.AttendanceSpringBootBackend.entity.AttendanceRecord;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.Geek;
+import com.geeks.AttendanceSpringBootBackend.entity.dto.SponsorDto;
 import com.geeks.AttendanceSpringBootBackend.enums.Status;
 import com.geeks.AttendanceSpringBootBackend.exceptions.AttendanceExceptions;
 import com.geeks.AttendanceSpringBootBackend.exceptions.UserException;
+import com.geeks.AttendanceSpringBootBackend.feign.UserFeignInterface;
 import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
 import com.geeks.AttendanceSpringBootBackend.service.AttendanceInterface;
 import com.geeks.AttendanceSpringBootBackend.service.IpAdressInterface;
@@ -41,7 +43,8 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     private TimeFetcherApi timeFetcherApi;
     @Autowired
     private UserInterface userInterface;
-
+    @Autowired
+    private UserFeignInterface userFeignInterface;
 
     @Autowired
     private CheckOutTimeImplimentation logOutTimeImplimentation;
@@ -192,7 +195,23 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
         currentDate = LocalDate.parse(date , formatDate);
         List<AttendanceRecord> attendanceRecords  =  attendanceRepository.findAttendanceByDateOrderByLogInTimeDesc(currentDate);
-        return attendanceDtoMapper.mapToResponseDtoList(attendanceRecords);
+        List<AttendanceResponseDto> attendanceResponseDtos = attendanceDtoMapper.mapToResponseDtoList(attendanceRecords);
+
+        for(int i=0;i<attendanceResponseDtos.size();i++){
+            AttendanceResponseDto attendanceResponseDto = attendanceResponseDtos.get(i);
+
+            String userId = attendanceResponseDto.getUserId();
+            Geek geek = userFeignInterface.getGeekNameById(userId).getBody();
+            attendanceResponseDto.setName(geek.getFirstname() +" "+geek.getLastname());
+
+            SponsorDto sponsorDto = userFeignInterface.getSponsorNameByGeekId(userId).getBody();
+            attendanceResponseDto.setSponsor(sponsorDto.getSponsorName());
+
+            logger.info(geek.getFirstname());
+        }
+
+
+        return attendanceResponseDtos;
 
 
     }
@@ -245,6 +264,7 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         currentDate = LocalDate.parse(date , formatDate);
         LocalDate yesterdaysDate;
 
+
         if (currentDate.getDayOfWeek() == DayOfWeek.MONDAY) {
             yesterdaysDate = currentDate.minusDays(3);
         } else {
@@ -256,47 +276,53 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
     public List<AttendanceResponseDto> allEarly(LocalDate date) {
         List<AttendanceRecord> records = attendanceRepository.findAttendanceByDateOrderByLogInTimeDesc(date);
-        List<AttendanceRecord> earlyLogOuts = new ArrayList<AttendanceRecord>();
+        List<AttendanceResponseDto> earlyLogOuts = new ArrayList<>();
 
-        for (AttendanceRecord attRecords : records) {
-            if (attRecords.isScanned() && attRecords.getLogOutTime()
-                    .isBefore(attRecords.getCheckOutTime().minusMinutes(5))) {
+        List<AttendanceResponseDto> attendanceResponseDtos = attendanceDtoMapper.mapToResponseDtoList(records);
 
-                earlyLogOuts.add(attRecords);
+        for(int i=0;i<attendanceResponseDtos.size();i++){
+            AttendanceResponseDto attendanceResponseDto = attendanceResponseDtos.get(i);
+            String userId = attendanceResponseDto.getUserId();
+            Geek geek = userFeignInterface.getGeekNameById(userId).getBody();
+            attendanceResponseDto.setName(geek.getFirstname() +" "+geek.getLastname());
+            SponsorDto sponsorDto = userFeignInterface.getSponsorNameByGeekId(userId).getBody();
+            attendanceResponseDto.setSponsor(sponsorDto.getSponsorName());
+
+            if (attendanceResponseDto.isScanned() && attendanceResponseDto.getLogOutTime() != null &&
+                    attendanceResponseDto.getLogOutTime().isBefore(attendanceResponseDto.getCheckOutTime().minusMinutes(5))) {
+                earlyLogOuts.add(attendanceResponseDto);
             }
+
+
         }
-        return attendanceDtoMapper.mapToResponseDtoList(earlyLogOuts);
+
+
+        return earlyLogOuts;
     }
 
     @Override
     public List<Geek> absentGeeks() {
         date  =  timeFetcherApi.getCurrentDateInSouthAfrica();
         time  = timeFetcherApi.getCurrentTimeInSouthAfrica();
-
         //format date and time to the localDate pattern
         currentTime = LocalTime.parse(time , formatter);
         currentDate = LocalDate.parse(date , formatDate);
-
         LocalTime checkTime = LocalTime.of(7 ,30);
         List<Geek> absentGeeks = new ArrayList<>();
         if ((currentTime.isAfter(checkTime) &&currentTime.isBefore(LocalTime.of(17,30)))){
-            ResponseEntity<?> allGeeks = userInterface.allGeeks();
-            logger.info("Users{}:"+ allGeeks);
-
-            List<Geek> geekList = new ArrayList<>();
-            geekList.add((Geek) allGeeks.getBody());
-
+            List<Geek> allGeeks = userFeignInterface.getAllGeeks().getBody();
             //run for each
-            for (Geek geek : geekList) {
+            for (Geek geek : allGeeks) {
                 AttendanceRecord todayRecord = attendanceRepository
                         .findByUserIdAndDate(geek.getUserId(),currentDate);
                 logger.info(todayRecord);
-
                 if (todayRecord == null) {
+                    SponsorDto sponsorDto = userFeignInterface.getSponsorNameByGeekId(geek.getUserId()).getBody();
+                    geek.setSponsor(sponsorDto.getSponsorName());
                     absentGeeks.add(geek);
+
                     logger.info("Number of absent : " + geek);
                 }
-
             }
             return absentGeeks;
         }
@@ -309,7 +335,6 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         List<AttendanceRecord> early = new ArrayList<>();
 
         for (AttendanceRecord record : records) {
-
             if (record.isScanned() && record.getLogOutTime()
                     .isBefore(record.getCheckOutTime().minusMinutes(5))) {
                 early.add(record);
@@ -331,7 +356,9 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
         for (AttendanceRecord record : records) {
             absentDates.add(record.getDate());
         }
-       List<Geek> allGeeks =(List<Geek>) userInterface.allGeeks();
+
+       List<Geek> allGeeks = userFeignInterface.getAllGeeks().getBody();
+
         for (Geek geeks : allGeeks) {
             if(geeks.getUserId().equals(userId)) {
                 LocalDate startOfContract = geeks.getLearnershipStartDate();

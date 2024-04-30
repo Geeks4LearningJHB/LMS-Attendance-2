@@ -22,10 +22,12 @@ public class Geek {
     @Enumerated(EnumType.STRING)
     private UserRole role;
     private String idNumber;
-
     private LocalDate learnershipStartDate;
     private LocalDate learnershipEndDate;
     private String password;
     private String sponsorId;
+    private String sponsor;
+
     private String batchId;
+
 }

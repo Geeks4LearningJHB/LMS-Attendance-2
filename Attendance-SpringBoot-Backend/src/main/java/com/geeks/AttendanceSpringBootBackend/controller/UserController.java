@@ -23,7 +23,7 @@ public class UserController {
 //        return userInterface.viewUsers();
 //    }
 
-    @GetMapping("/get/allGeeks")
+    @GetMapping("/geeks/get/allGeeks")
     public ResponseEntity<?> getAllGeeks() {
         return userInterface.allGeeks();
     }

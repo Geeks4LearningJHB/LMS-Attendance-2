@@ -22,9 +22,10 @@ public class AttendanceResponseDto {
     private String logInLocation;
     private String userId;
     private Status status;
-//    private String name;
-//    private String surname;
-//    private String sponsor;
+
+
+    private String name;
+    private String sponsor;
 //    private UserRole role;
     private LocalTime logOutTime;
     private boolean scanned;

@@ -24,32 +24,26 @@ public class AttendanceMapperServiceImpl implements AttendanceMapperInterface {
         dto.setDate(attendanceRecord.getDate());
         dto.setLogInLocation(attendanceRecord.getLogInLocation());
         dto.setCheckOutTime(attendanceRecord.getCheckOutTime());
-//        dto.setName(attendanceRecord);
+        //dto.setName(attendanceRecord.get);
 //        dto.setSurname(attendanceRecord.getUserId().getLastname());
 //        dto.setSponsor(attendanceRecord.getUserId().getSponsorId());
 //        dto.setLogOutTime(attendanceRecord.getLogOutTime());
 //        dto.setRole(attendanceRecord.getUserId().getRole());
         dto.setScanned(attendanceRecord.isScanned());
         return dto;
-
     }
-
-
     //Convert the requestDto to an Attendance Entity
-
     public AttendanceRecord mapTOEntity(AttendanceRequestDto requestDto) {
-
         AttendanceRecord attendanceRecord = new AttendanceRecord();
-
         attendanceRecord.setLogInTime(requestDto.getLogInTime());
         attendanceRecord.setDate(requestDto.getDate());
         attendanceRecord.setLogInLocation(requestDto.getLogInLocation());
         attendanceRecord.setCheckOutTime(requestDto.getCheckOutTime());
         attendanceRecord.setStatus(requestDto.getStatus());
 
+
         return attendanceRecord;
     }
-
     public List<AttendanceResponseDto> mapToResponseDtoList(List<AttendanceRecord> attendanceRecords) {
         return attendanceRecords.stream()
                 .map(this::mapToDto)

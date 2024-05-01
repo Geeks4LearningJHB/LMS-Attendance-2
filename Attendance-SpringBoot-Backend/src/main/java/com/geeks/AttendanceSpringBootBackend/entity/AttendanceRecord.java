@@ -1,5 +1,6 @@
 package com.geeks.AttendanceSpringBootBackend.entity;
 
+import com.geeks.AttendanceSpringBootBackend.entity.dto.Geek;
 import com.geeks.AttendanceSpringBootBackend.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,8 @@ public class AttendanceRecord {
     @Column(nullable = false)
     private boolean scanned = false;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User userId;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+    private String userId;
+
 }

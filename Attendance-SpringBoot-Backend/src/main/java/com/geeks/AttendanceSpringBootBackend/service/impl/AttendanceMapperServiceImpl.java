@@ -18,38 +18,32 @@ public class AttendanceMapperServiceImpl implements AttendanceMapperInterface {
 
         AttendanceResponseDto dto = new AttendanceResponseDto();
         dto.setId(attendanceRecord.getId());
-        dto.setUserId(attendanceRecord.getUserId().getUserId());
+        dto.setUserId(attendanceRecord.getUserId());
         dto.setStatus(attendanceRecord.getStatus());
         dto.setLogInTime(attendanceRecord.getLogInTime());
         dto.setDate(attendanceRecord.getDate());
         dto.setLogInLocation(attendanceRecord.getLogInLocation());
         dto.setCheckOutTime(attendanceRecord.getCheckOutTime());
-        dto.setName(attendanceRecord.getUserId().getUserName());
-        dto.setSurname(attendanceRecord.getUserId().getUserSurname());
-        dto.setSponsor(attendanceRecord.getUserId().getSponsor());
-        dto.setLogOutTime(attendanceRecord.getLogOutTime());
-        dto.setRole(attendanceRecord.getUserId().getRole());
+        //dto.setName(attendanceRecord.get);
+//        dto.setSurname(attendanceRecord.getUserId().getLastname());
+//        dto.setSponsor(attendanceRecord.getUserId().getSponsorId());
+//        dto.setLogOutTime(attendanceRecord.getLogOutTime());
+//        dto.setRole(attendanceRecord.getUserId().getRole());
         dto.setScanned(attendanceRecord.isScanned());
         return dto;
-
     }
-
-
     //Convert the requestDto to an Attendance Entity
-
     public AttendanceRecord mapTOEntity(AttendanceRequestDto requestDto) {
-
         AttendanceRecord attendanceRecord = new AttendanceRecord();
-
         attendanceRecord.setLogInTime(requestDto.getLogInTime());
         attendanceRecord.setDate(requestDto.getDate());
         attendanceRecord.setLogInLocation(requestDto.getLogInLocation());
         attendanceRecord.setCheckOutTime(requestDto.getCheckOutTime());
         attendanceRecord.setStatus(requestDto.getStatus());
 
+
         return attendanceRecord;
     }
-
     public List<AttendanceResponseDto> mapToResponseDtoList(List<AttendanceRecord> attendanceRecords) {
         return attendanceRecords.stream()
                 .map(this::mapToDto)

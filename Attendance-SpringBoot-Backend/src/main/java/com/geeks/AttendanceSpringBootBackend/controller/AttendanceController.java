@@ -1,7 +1,7 @@
 package com.geeks.AttendanceSpringBootBackend.controller;
 
-import com.geeks.AttendanceSpringBootBackend.entity.User;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.AttendanceResponseDto;
+import com.geeks.AttendanceSpringBootBackend.entity.dto.Geek;
 import com.geeks.AttendanceSpringBootBackend.entity.dto.UserResponseDTO;
 import com.geeks.AttendanceSpringBootBackend.exceptions.UserException;
 import com.geeks.AttendanceSpringBootBackend.repository.AttendanceRepository;
@@ -38,9 +38,9 @@ public class AttendanceController {
     CheckOutTimeImplimentation checkOutTimeImplimentation;
 
     @PostMapping("/create")
-    public ResponseEntity<AttendanceResponseDto> addNewAttendance(@RequestBody User user){
+    public ResponseEntity<AttendanceResponseDto> addNewAttendance(@RequestBody Geek geek){
 
-        AttendanceResponseDto attendanceResponseDto =attendanceInterface.newAttendance(user);
+        AttendanceResponseDto attendanceResponseDto =attendanceInterface.newAttendance(geek);
         return ResponseEntity.status(HttpStatus.CREATED).body(attendanceResponseDto);
     }
     @GetMapping("/view-all")
@@ -75,7 +75,7 @@ public class AttendanceController {
         return ResponseEntity.ok(attendanceRecord);
     }
     @GetMapping("/view-by-user-id/{userId}")
-    public List<AttendanceResponseDto> attendanceByUserId(@PathVariable long userId){
+    public List<AttendanceResponseDto> attendanceByUserId(@PathVariable String userId){
         return attendanceInterface.getAllUserAttendances(userId);
     }
 
@@ -116,19 +116,19 @@ public class AttendanceController {
     }
 
     @GetMapping("/absent")
-    public ResponseEntity<List<UserResponseDTO>> getAbsentGeeks() {
+    public ResponseEntity<List<Geek>> getAbsentGeeks() {
 
-     List<UserResponseDTO> absent =  attendanceInterface.absentGeeks();
+     List<Geek> absent =  attendanceInterface.absentGeeks();
         return ResponseEntity.ok(absent);
     }
     @GetMapping("/user-early-logouts/{userId}")
-    public List<AttendanceResponseDto> getUserEarlyLogOut(@PathVariable long userId){
+    public List<AttendanceResponseDto> getUserEarlyLogOut(@PathVariable String userId){
 
         logger.info("TRIGGERED!");
         return attendanceInterface.getUserEarlyLogOut(userId);
     }
     @GetMapping("/user-absent/{userId}")
-    public List<AttendanceResponseDto> getAbsentUserDays(@PathVariable long userId){
+    public List<AttendanceResponseDto> getAbsentUserDays(@PathVariable String userId){
         return attendanceInterface.getAbsentUserDays(userId);
     }
     @GetMapping("/late-users")

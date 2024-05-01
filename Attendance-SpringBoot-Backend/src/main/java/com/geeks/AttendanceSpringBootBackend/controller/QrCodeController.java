@@ -70,7 +70,7 @@ public class QrCodeController {
         // Concatenating fields to form QR string
       String updateUrl = "http://localhost:8080/attendance/scan-by-attendance-id/";
       if (attendanceRecord.isScanned()){
-          return attendanceRecord.getName() + "Already scanned Thanks!";
+          return attendanceRecord.getUserId() + "Already scanned Thanks!";
       }
       return updateUrl + attendanceRecord.getId();
     }

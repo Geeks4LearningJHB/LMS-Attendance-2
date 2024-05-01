@@ -90,14 +90,9 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
        //String logInIp =  "41.140.81.0";
         String logInIp =   ipAdressInterface.getLocation();
 
-       // List<User> users = userRepository.findAll();
-//        LocalDate testingDate = LocalDate.now().plusDays(1);
-//        LocalTime testingTime = LocalTime.of(8 , 35);
-
         AttendanceRecord currentDateAttendance = attendanceRepository
                .findByUserIdAndDate(geek.getUserId() , currentDate);
 
-        //User exists if our system gets to this line
         attendanceRecord.setUserId(geek.getUserId());
 
         //check if the geek has attendance record for that day
@@ -114,7 +109,6 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
                 else{
                     attendanceRecord.setStatus(Status.LATE);
                 }
-                //save the atendance and return it
                 newAttendanceRecord = attendanceRepository.save(attendanceRecord);
                 mappedAttendance=     attendanceDtoMapper.mapToDto(newAttendanceRecord);
                 return mappedAttendance;
@@ -143,7 +137,14 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     public AttendanceResponseDto getAttendanceRecordById(long id) {
         Optional<AttendanceRecord> attendanceRecordOptional = attendanceRepository.findById(id);
         if (attendanceRecordOptional.isPresent()) {
-            return  attendanceDtoMapper.mapToDto(attendanceRecordOptional.get());
+          String userId =   attendanceRecordOptional.get().getUserId();
+            Geek geek = userFeignInterface.getGeekNameById(userId).getBody();
+            SponsorDto sponsorDto = userFeignInterface.getSponsorNameByGeekId(userId).getBody();
+            String name =  geek.getFirstname();
+           AttendanceResponseDto attendanceResponseDto =   attendanceDtoMapper.mapToDto(attendanceRecordOptional.get());
+            attendanceResponseDto.setName(name);
+            attendanceResponseDto.setSponsor(sponsorDto.getSponsorName());
+            return attendanceResponseDto;
         } else {
             // handle not found scenario
             return null;
@@ -180,14 +181,20 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
     @Override
     public List<AttendanceResponseDto> getAllUserAttendances(String userId) {
+        List<AttendanceRecord> attendanceRecords  =  attendanceRepository.findAllByUserIdOrderByDateDesc(userId);
+        List<AttendanceResponseDto> attendanceResponseDtoList = new ArrayList<>();
 
-         List<AttendanceRecord> attendanceRecords  =  attendanceRepository.findAllByUserIdOrderByDateDesc(userId);
-        System.out.println("Records");
-        for (AttendanceRecord att : attendanceRecords){
-             System.out.println(att);
-         }
-         return attendanceDtoMapper.mapToResponseDtoList(attendanceRecords);
-
+        for (AttendanceRecord  att: attendanceRecords){
+            Geek geek = userFeignInterface.getGeekNameById(att.getUserId()).getBody();
+            SponsorDto sponsorDto = userFeignInterface.getSponsorNameByGeekId(att.getUserId()).getBody();
+            String name =  geek.getFirstname();
+            AttendanceResponseDto attendanceResponseDto =   attendanceDtoMapper.mapToDto(att);
+            attendanceResponseDto.setName(name +" " + geek.getLastname());
+            attendanceResponseDto.setSponsor(sponsorDto.getSponsorName());
+            attendanceResponseDto.setLogOutTime(att.getLogOutTime());
+            attendanceResponseDtoList.add(attendanceResponseDto)    ;
+        }
+         return attendanceResponseDtoList;
     }
 
     @Override
@@ -219,7 +226,6 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
     @Override
     public AttendanceResponseDto updateLogOutTime(long id) {
         Optional<AttendanceRecord> attendanceRecordOptional = attendanceRepository.findById(id);
-
         time  = timeFetcherApi.getCurrentTimeInSouthAfrica();
         //format date and time to the localDate pattern
         currentTime = LocalTime.parse(time , formatter);
@@ -396,11 +402,19 @@ public class AttendanceServiceImplementation implements AttendanceInterface {
 
         List<AttendanceRecord> records = attendanceRepository.findAttendanceByDateOrderByLogInTimeDesc(currentDate);
         List<AttendanceRecord> lateComers = new ArrayList<AttendanceRecord>();
+        List<AttendanceResponseDto> attendanceResponseDtosList = new ArrayList<>();
+
         for (AttendanceRecord attRecords : records) {
             if (attRecords.getStatus().equals(Status.LATE)){
-                lateComers.add(attRecords);
+                Geek geek = userFeignInterface.getGeekNameById(attRecords.getUserId()).getBody();
+                SponsorDto sponsorDto = userFeignInterface.getSponsorNameByGeekId(attRecords.getUserId()).getBody();
+                String name =  geek.getFirstname();
+                AttendanceResponseDto attendanceResponseDto =   attendanceDtoMapper.mapToDto(attRecords);
+                attendanceResponseDto.setName(name);
+                attendanceResponseDto.setSponsor(sponsorDto.getSponsorName());
+                attendanceResponseDtosList.add(attendanceResponseDto) ;
             }
         }
-        return attendanceDtoMapper.mapToResponseDtoList(lateComers);
+        return attendanceResponseDtosList;
     }
 }
